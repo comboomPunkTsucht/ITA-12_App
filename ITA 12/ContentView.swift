@@ -10,7 +10,6 @@ import SwiftUI
 import Foundation
 
 struct ContentView: View {
-	
 	var body: some View {
 		
 		TabView {
@@ -111,29 +110,7 @@ struct ContentView: View {
 				.navigationBarTitle(Text("Web"))
 #endif
 		}.frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320)
-			.onAppear {
-				createMenuBar()
-			}
 	}
-#if os(macOS)
-	func createMenuBar() {
-		let mainMenu = NSApp.mainMenu ?? NSMenu()
-		let appMenu = NSMenu()
-		let mainMenuItem = NSMenuItem()
-		mainMenu.addItem(mainMenuItem)
-		NSApp.mainMenu = mainMenu
-		
-		let appMenuItem = NSMenuItem()
-		appMenu.addItem(appMenuItem)
-		mainMenuItem.submenu = appMenu
-		
-		appMenu.addItem(withTitle: "Go Back", action: .none, keyEquivalent: "ö")
-		appMenu.addItem(withTitle: "Go Forward", action: .none, keyEquivalent: "ä")
-		appMenu.addItem(withTitle: "Go Home", action: .none, keyEquivalent: "ü")
-		appMenu.addItem(withTitle: "Reload", action: .none, keyEquivalent: "r")
-	}
-
-#endif
 }
 
 #if os(iOS)
@@ -539,13 +516,6 @@ struct OSZimtView: View {
 		webView.reload()
 	}
 }
-/*
- struct Message: Identifiable {
- var id = UUID()
- var text: String
- var isSentByUser: Bool
- }
- */
 
 struct ChatGPTView: View {
 	
@@ -627,168 +597,153 @@ struct ChatGPTView: View {
 
 
 
-struct WWWView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
+	struct WWWView: View {
+			// Konfigurieren der WKWebViewConfiguration-Instanz
+		static let webViewConfiguration: WKWebViewConfiguration = {
+			let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+			configuration.allowsInlineMediaPlayback = true
+			configuration.allowsPictureInPictureMediaPlayback = true
 #endif
-		return configuration
-	}()
-	
-	@State private var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
-	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
-	@State private var searchText = ""
-	var body: some View {
-		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
-			HStack {
-				TextField("Suche", text: $searchText, onCommit: search)
-					.textFieldStyle(RoundedBorderTextFieldStyle())
+			return configuration
+		}()
+		
+		@State private var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
+		let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
+		@State private var searchText = ""
+		var body: some View {
+			VStack{
+				CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+				HStack {
+					TextField("Suche", text: $searchText, onCommit: search)
+						.textFieldStyle(RoundedBorderTextFieldStyle())
 #if os(iOS)
-					.autocapitalization(.none)
-					.disableAutocorrection(true)
-					.keyboardType(.URL)
+						.autocapitalization(.none)
+						.disableAutocorrection(true)
+						.keyboardType(.URL)
 #endif
-				Button(action: search) {
-					Image(systemName: "magnifyingglass.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 40.0)
+					Button(action: search) {
+						Image(systemName: "magnifyingglass.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 40.0)
+					}
+					.keyboardShortcut(.defaultAction)
+					Button(action: goBack) {
+						Image(systemName: "arrowshape.turn.up.left.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 40.0)
+					}
+					.keyboardShortcut("ö", modifiers: .command)
+					
+					Button(action: goForward) {
+						Image(systemName: "arrowshape.turn.up.right.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 40.0)
+					}
+					.keyboardShortcut("ä", modifiers: .command)
+					
+					Button(action: goHome) {
+						Image(systemName: "house.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 40.0)
+					}
+					.keyboardShortcut("ü", modifiers: .command)
+					
+					Button(action: reload) {
+						Image(systemName: "arrow.clockwise.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 40.0)
+					}
+					.keyboardShortcut("r", modifiers: .command)
+					
 				}
-				.keyboardShortcut(.defaultAction)
-				Button(action: goBack) {
-					Image(systemName: "arrowshape.turn.up.left.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 40.0)
-				}
-				.keyboardShortcut("ö", modifiers: .command)
-				
-				Button(action: goForward) {
-					Image(systemName: "arrowshape.turn.up.right.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 40.0)
-				}
-				.keyboardShortcut("ä", modifiers: .command)
-				
-				Button(action: goHome) {
-					Image(systemName: "house.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 40.0)
-				}
-				.keyboardShortcut("ü", modifiers: .command)
-				
-				Button(action: reload) {
-					Image(systemName: "arrow.clockwise.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 40.0)
-				}
-				.keyboardShortcut("r", modifiers: .command)
-				
+				.aspectRatio(contentMode: .fit)
 			}
-			.aspectRatio(contentMode: .fit)
 		}
-	}
-	
-	
-	func goBack() {
-		webView.goBack()
-	}
-	
-	func goForward() {
-		webView.goForward()
-	}
-	
-	func goHome() {
-		webView.load(URLRequest(url: startURL))
-	}
-	
-	func reload() {
-		webView.reload()
-	}
-	func search() {
-			// Check if the search text starts with "!yt:"
-		if searchText.hasPrefix("!yt:") {
-				// Extract the search query
-			let searchQuery = searchText.replacingOccurrences(of: "!yt:", with: "")
-				// Check if the search query is a video ID
-			if searchQuery.count == 11 && searchQuery.range(of: #"[^0-9a-zA-Z_-]"#, options: .regularExpression) == nil {
-					// Create the YouTube video URL
-				let youtubeURL = URL(string: "https://www.youtube.com/watch?v=\(searchQuery)")
-					// Load the YouTube video URL in the web view
-				webView.load(URLRequest(url: youtubeURL!))
-			} else {
-					// Create the YouTube search URL
-				let encodedSearchQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-				let youtubeURL = URL(string: "https://www.youtube.com/results?search_query=\(encodedSearchQuery)")
-					// Load the YouTube search URL in the web view
-				webView.load(URLRequest(url: youtubeURL!))
-			}
-		} else {
-				// Check if the search bar is empty (including whitespace)
-			if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-					// The search bar is empty
-					// Perform an action here if the search bar is empty
-					// For example:
-				print("The search bar is empty")
-			} else {
-					// The search bar is not empty
-					// Perform your normal search function here
-				if let urlWithProtocol = addProtocolToURL(searchText) {
-						// If the search text matches a URL, add the protocol and load the URL
-					webView.load(URLRequest(url: urlWithProtocol))
+		
+		
+		func goBack() {
+			webView.goBack()
+		}
+		
+		func goForward() {
+			webView.goForward()
+		}
+		
+		func goHome() {
+			webView.load(URLRequest(url: startURL))
+		}
+		
+		func reload() {
+			webView.reload()
+		}
+		func search() {
+				// Check if the search text starts with "!yt:"
+			if searchText.hasPrefix("!yt:") {
+					// Extract the search query
+				let searchQuery = searchText.replacingOccurrences(of: "!yt:", with: "")
+					// Check if the search query is a video ID
+				if searchQuery.count == 11 && searchQuery.range(of: #"[^0-9a-zA-Z_-]"#, options: .regularExpression) == nil {
+						// Create the YouTube video URL
+					if let youtubeURL = URL(string: "https://www.youtube.com/watch?v=\(searchQuery)") {
+							// Load the YouTube video URL in the web view
+						webView.load(URLRequest(url: youtubeURL))
+					}
 				} else {
-						// Otherwise, perform a Bing search
-					let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-					if let url = URL(string: "https://www.bing.com/search?q=\(encodedSearchText)") {
-						webView.load(URLRequest(url: url))
+						// Create the YouTube search URL
+					if let encodedSearchQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+					   let youtubeURL = URL(string: "https://www.youtube.com/results?search_query=\(encodedSearchQuery)") {
+							// Load the YouTube search URL in the web view
+						webView.load(URLRequest(url: youtubeURL))
+					}
+				}
+			} else {
+					// Check if the search bar is empty (including whitespace)
+				if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+						// The search bar is empty
+						// Perform an action here if the search bar is empty
+						// For example:
+					print("The search bar is empty")
+				} else {
+						// Check if the search text has an HTTP/HTTPS protocol
+					if let urlWithProtocol = addProtocolToURL(searchText), urlWithProtocol.absoluteString.lowercased().hasPrefix("http://") || urlWithProtocol.absoluteString.lowercased().hasPrefix("https://") {
+							// If the search text matches a URL, add the protocol and load the URL
+						webView.load(URLRequest(url: urlWithProtocol))
+					} else {
+							// Perform a Bing search
+						if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+						   let url = URL(string: "https://www.bing.com/search?q=\(encodedSearchText)") {
+							webView.load(URLRequest(url: url))
+						}
 					}
 				}
 			}
 		}
-	}
-	
-	#if os(iOS)
-	func addProtocolToURL(_ urlString: String) -> URL? {
-		if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
-			return url
-		} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\..+$", options: .regularExpression) != nil {
-			let urlWithProtocol = "http://" + urlString
-			return URL(string: urlWithProtocol)
-		} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", options: .regularExpression) != nil {
-			let urlWithProtocol = "http://" + urlString
-			return URL(string: urlWithProtocol)
+
+		
+		func addProtocolToURL(_ urlString: String) -> URL? {
+			if let url = URL(string: urlString), url.scheme != nil {
+				return url
+			} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\..+$", options: .regularExpression) != nil,
+					  let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+					  let urlWithProtocol = URL(string: "https://" + encodedURLString) {
+				return urlWithProtocol
+			}
+			return nil
 		}
-		return nil
+
+
 	}
-	#elseif os(macOS)
-	
-	func addProtocolToURL(_ urlString: String) -> URL? {
-		if let url = URL(string: urlString), FileManager.default.fileExists(atPath: url.path) {
-			return url
-		} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\..+$", options: .regularExpression) != nil {
-			let urlWithProtocol = "http://" + urlString
-			return URL(string: urlWithProtocol)
-		} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", options: .regularExpression) != nil {
-			let urlWithProtocol = "http://" + urlString
-			return URL(string: urlWithProtocol)
-		}
-		return nil
-	}
-	#endif
-	
-}
 
 struct WebUntisView: View {
 		// Konfigurieren der WKWebViewConfiguration-Instanz
