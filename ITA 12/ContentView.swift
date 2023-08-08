@@ -11,7 +11,8 @@ import Foundation
 
 struct ContentView: View {
 	var body: some View {
-		
+	
+		#if os(iOS)
 		TabView {
 			ClassSideView()
 				.tabItem{
@@ -22,9 +23,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20.0)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("Klassen Webseite"))
-#endif
 			MoodleView()
 				.tabItem {
 					Text("Moodle")
@@ -34,9 +33,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20.0)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("moodel"))
-#endif
 			TimeTableView()
 				.tabItem {
 					Text("Stundenplan")
@@ -46,9 +43,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("Stundenplan"))
-#endif
 			WebUntisView()
 				.tabItem {
 					Text("WebUntis")
@@ -58,9 +53,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("WebUntis"))
-#endif
 			OSZimtView()
 				.tabItem {
 					Text("OSZ IMT Website")
@@ -70,9 +63,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("OSZ IMT Webseite"))
-#endif
 			ChatGPTView()
 				.tabItem {
 					Text("ChatGPT")
@@ -82,9 +73,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("ChatGPT"))
-#endif
 			DiscordView()
 				.tabItem {
 					Text("Discord")
@@ -94,9 +83,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("Discord"))
-#endif
 			WWWView()
 				.tabItem {
 					Text("Browse Web")
@@ -106,12 +93,48 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 40)
 				}
-#if os(iOS)
 				.navigationBarTitle(Text("Web"))
-#endif
-		}.frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320)
+		}
+		
+		#elseif os(macOS)
+		
+		NavigationView {
+			List {
+				NavigationLink(destination: ClassSideView()) {
+					Label("Klassen Webseite", systemImage: "doc.richtext")
+				}
+				NavigationLink(destination: MoodleView()) {
+					Label("Moodle", systemImage: "studentdesk")
+				}
+				NavigationLink(destination: TimeTableView()) {
+					Label("Stundenplan", systemImage: "info.circle")
+				}
+				NavigationLink(destination: WebUntisView()) {
+					Label("WebUntis", systemImage: "info.circle")
+				}
+				NavigationLink(destination: OSZimtView()) {
+					Label("OSZ IMT Webseite", systemImage: "graduationcap.circle")
+				}
+				NavigationLink(destination: ChatGPTView()) {
+					Label("ChatGPT", systemImage: "message.circle")
+				}
+				NavigationLink(destination: DiscordView()) {
+					Label("Discord", systemImage: "message.badge.circle.rtl")
+				}
+				NavigationLink(destination: WWWView()) {
+					Label("Browse Web", systemImage: "globe")
+				}
+			}
+			.listStyle(SidebarListStyle())
+			.frame(minWidth: 190, idealWidth: 190, maxWidth: 190)
+			
+			ClassSideView()
+		}
+		.frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320)
+		#endif
 	}
 }
+
 
 #if os(iOS)
 struct CustomWebView: UIViewRepresentable {
