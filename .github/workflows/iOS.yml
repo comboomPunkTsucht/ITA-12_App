@@ -1,0 +1,2 @@
+- name: iOS Build/Release Action
+  uses: hectorguerrini/build-ios-action@v1.0.4
