@@ -39,17 +39,28 @@ extension AppDeligate {
 			return
 		}
 		guard let menuButton = statusITem.button else { return }
+		let positionView = NSView(frame: menuButton.bounds)
+		positionView.identifier = NSUserInterfaceItemIdentifier("positionView")
+		menuButton.addSubview(positionView)
 		popover.show(relativeTo: menuButton.bounds, of: menuButton, preferredEdge: .maxY)
+		menuButton.bounds = menuButton.bounds.offsetBy(dx: 0, dy: menuButton.bounds.height)
 		popover.contentViewController?.view.window?.makeKey()
 	}
 }
-extension AppDeligate {
+extension AppDeligate:NSPopoverDelegate {
 	func setupPopover(){
 		popover.behavior = .transient
 		popover.animates = true
 		popover.contentSize = .init(width: 1280, height: 720)
 		popover.contentViewController = NSViewController()
 		popover.contentViewController?.view = NSHostingView(rootView: ContentView().padding())
+		popover.delegate = self
+	}
+	func popoverDidClose(_ notification: Notification) {
+		let positionView = statusITem.button?.subviews.first {
+			$0.identifier == NSUserInterfaceItemIdentifier("positionView")
+		}
+		positionView?.removeFromSuperview()
 	}
 }
 
