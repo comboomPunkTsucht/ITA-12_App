@@ -26,7 +26,7 @@ class AppDeligate: NSObject, NSApplicationDelegate {
 extension AppDeligate {
 	func setupMenuBar(){
 		//print("Hello v")
-		statusITem = NSStatusBar.system.statusItem(withLength: 64)
+		statusITem = NSStatusBar.system.statusItem(withLength: 40)
 		guard let menuButton = statusITem.button
 		else { return }
 		menuButton.title = "ITA 12"
