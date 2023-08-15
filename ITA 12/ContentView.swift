@@ -245,7 +245,8 @@ struct CustomWebView: NSViewRepresentable {
 	}
 	
 	func updateNSView(_ nsView: WKWebView, context: Context) {}
-}#endif
+}
+#endif
 
 
 struct ClassSideView: View {

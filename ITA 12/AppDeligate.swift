@@ -25,25 +25,10 @@ class AppDeligate: NSObject, NSApplicationDelegate {
 }
 extension AppDeligate {
 	func setupMenuBar(){
-		print("Hello v")
+		//print("Hello v")
 		statusITem = NSStatusBar.system.statusItem(withLength: 64)
-		guard /*let contentView = self.menubarIconView,*/
-			  let menuButton = statusITem.button
+		guard let menuButton = statusITem.button
 		else { return }
-		/*
-		let hostingView = NSHostingView(rootView: MenubarIconView())
-		
-		hostingView.translatesAutoresizingMaskIntoConstraints = false
-		
-		menubarIconView?.addSubview(hostingView)
-		
-		NSLayoutConstraint.activate([
-			hostingView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			hostingView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-			hostingView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			hostingView.leftAnchor.constraint(equalTo: contentView.leftAnchor)
-		])
-		*/
 		menuButton.title = "ITA 12"
 		menuButton.action = #selector(menubarItemClicked)
 	}
@@ -64,7 +49,7 @@ extension AppDeligate {
 		popover.animates = true
 		popover.contentSize = .init(width: 1280, height: 720)
 		popover.contentViewController = NSViewController()
-		popover.contentViewController?.view = NSHostingView(rootView: PopouverHelpView().frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320).padding())
+		popover.contentViewController?.view = NSHostingView(rootView: ContentView().padding())
 	}
 }
 

@@ -7,14 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
 		91E6C0A62A829B4400F3E206 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91E6C0A52A829B4400F3E206 /* Assets.xcassets */; };
 		91E6C0AA2A829B4400F3E206 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91E6C0A92A829B4400F3E206 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		91DF2CB42A8BE5C700553A95 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		91733A9A2A8B128600B42B90 /* ITA-12-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ITA-12-Info.plist"; sourceTree = SOURCE_ROOT; };
+		91DAF3742A8C18A900C86573 /* AppDeligate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDeligate.swift; sourceTree = "<group>"; };
+		91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
+		91DF2CA42A8BE5C400553A95 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		91E6C09E2A829B4100F3E206 /* ITA 12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ITA 12.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91E6C0A12A829B4100F3E206 /* ITA_12App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITA_12App.swift; sourceTree = "<group>"; };
 		91E6C0A32A829B4100F3E206 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -34,10 +51,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91DF2CA12A8BE5C400553A95 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */,
+				91DF2CA42A8BE5C400553A95 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		91E6C0952A829B4100F3E206 = {
 			isa = PBXGroup;
 			children = (
 				91E6C0A02A829B4100F3E206 /* ITA 12 */,
+				91DF2CA12A8BE5C400553A95 /* Frameworks */,
 				91E6C09F2A829B4100F3E206 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +83,7 @@
 				91733A9A2A8B128600B42B90 /* ITA-12-Info.plist */,
 				91E6C0A12A829B4100F3E206 /* ITA_12App.swift */,
 				91E6C0A32A829B4100F3E206 /* ContentView.swift */,
+				91DAF3742A8C18A900C86573 /* AppDeligate.swift */,
 				91E6C0A52A829B4400F3E206 /* Assets.xcassets */,
 				91E6C0A72A829B4400F3E206 /* ITA_12.entitlements */,
 				91E6C0A82A829B4400F3E206 /* Preview Content */,
@@ -81,6 +109,7 @@
 				91E6C09A2A829B4100F3E206 /* Sources */,
 				91E6C09B2A829B4100F3E206 /* Frameworks */,
 				91E6C09C2A829B4100F3E206 /* Resources */,
+				91DF2CB42A8BE5C700553A95 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -142,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */,
+				91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */,
 				91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,9 +304,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ITA 12/ITA_12.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -284,6 +315,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ITA-12-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ITA 12";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -298,8 +330,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -316,9 +348,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ITA 12/ITA_12.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -326,6 +359,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ITA-12-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ITA 12";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -340,8 +374,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
