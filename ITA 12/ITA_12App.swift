@@ -15,7 +15,7 @@ struct ITA_12App: App {
 	#endif
     var body: some Scene {
         WindowGroup {
-            ContentView()
+			ContentView()
         }
     }
 }

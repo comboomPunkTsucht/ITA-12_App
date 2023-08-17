@@ -9,10 +9,16 @@ import WebKit
 import SwiftUI
 import Foundation
 
+@available(macOS 14.0, *)
+@available(iOS 17.0, *)
 struct ContentView: View {
+	#if os(macOS)
+	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
+	@State var selectedSideBarItem: SideBarItem = .ClassSide
+	#endif
 	var body: some View {
-	
-		#if os(iOS)
+		
+#if os(iOS)
 		TabView {
 			ClassSideView()
 				.tabItem{
@@ -96,51 +102,92 @@ struct ContentView: View {
 				.navigationBarTitle(Text("Web"))
 		}
 		
-		#elseif os(macOS)
+#elseif os(macOS)
 		
-		NavigationView {
-			List {
-				NavigationLink(destination: ClassSideView()) {
-					Label("Klassen Webseite", systemImage: "doc.richtext")
+		NavigationSplitView(columnVisibility: $sideBarVisibility) {
+			List(SideBarItem.allCases, selection: $selectedSideBarItem) { item in
+				NavigationLink(destination: destinationView(for: item)) {
+					Label(item.title, systemImage: item.systemImage)
 				}
 				
-				.padding(5)
-				NavigationLink(destination: MoodleView()) {
-					Label("Moodle", systemImage: "studentdesk")
-				}.padding(5)
-				NavigationLink(destination: TimeTableView()) {
-					Label("Stundenplan", systemImage: "info.circle")
-				}.padding(5)
-				NavigationLink(destination: WebUntisView()) {
-					Label("WebUntis", systemImage: "info.circle")
-				}.padding(5)
-				NavigationLink(destination: OSZimtView()) {
-					Label("OSZ IMT Webseite", systemImage: "graduationcap.circle")
-				}.padding(5)
-				NavigationLink(destination: ChatGPTView()) {
-					Label("ChatGPT", systemImage: "message.circle")
-				}.padding(5)
-				NavigationLink(destination: DiscordView()) {
-					Label("Discord", systemImage: "message.badge.circle.rtl")
-				}.padding(5)
-				NavigationLink(destination: WWWView()) {
-					Label("Browse Web", systemImage: "globe")
-				}.padding(5)
 			}
 			.listStyle(SidebarListStyle())
-			.frame(minWidth: 190, idealWidth: 190, maxWidth: 190)
-			.background(BlurView())
-			.padding([.horizontal, .top])
-			.padding(10)
-			
-			ClassSideView()
+				.frame(minWidth: 190, idealWidth: 190, maxWidth: 190)
+				.background(BlurView())
+		} detail: {
+			destinationView(for: selectedSideBarItem)
 		}
+		
 		.frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320)
 		#endif
 	}
+	
+	#if os(macOS)
+	func destinationView(for item: SideBarItem) -> some View {
+		switch item {
+			case .ClassSide:
+				return AnyView(ClassSideView())
+			case .Moodle:
+				return AnyView(MoodleView())
+			case .TimeTable:
+				return AnyView(TimeTableView())
+			case .WebUntis:
+				return AnyView(WebUntisView())
+			case .OSZimt:
+				return AnyView(OSZimtView())
+			case .ChatGPT:
+				return AnyView(ChatGPTView())
+			case .Discord:
+				return AnyView(DiscordView())
+			case .WWW:
+				return AnyView(WWWView())
+		}
+	}
+	#endif
+	
 }
 
 #if os(macOS)
+
+enum SideBarItem: String, Identifiable, CaseIterable {
+	var id: String { rawValue }
+	
+	case ClassSide
+	case Moodle
+	case TimeTable
+	case WebUntis
+	case OSZimt
+	case ChatGPT
+	case Discord
+	case WWW
+	
+	var title: String {
+		switch self {
+			case .ClassSide: return "Klassen Webseite"
+			case .Moodle: return "Moodle"
+			case .TimeTable: return "Stundenplan"
+			case .WebUntis: return "WebUntis"
+			case .OSZimt: return "OSZ IMT Webseite"
+			case .ChatGPT: return "ChatGPT"
+			case .Discord: return "Discord"
+			case .WWW: return "Browse Web"
+		}
+	}
+	
+	var systemImage: String {
+		switch self {
+			case .ClassSide: return "doc.richtext"
+			case .Moodle: return "studentdesk"
+			case .TimeTable: return "info.circle"
+			case .WebUntis: return "info.circle"
+			case .OSZimt: return "graduationcap.circle"
+			case .ChatGPT: return "message.circle"
+			case .Discord: return "message.badge.circle.rtl"
+			case .WWW: return "globe"
+		}
+	}
+}
+
 struct BlurView: NSViewRepresentable {
 	func makeNSView(context: Context) -> NSVisualEffectView {
 		let view = NSVisualEffectView()
