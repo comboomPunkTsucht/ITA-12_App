@@ -15,12 +15,26 @@ struct ContentView: View {
 	#if os(macOS)
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem = .ClassSide
+	
+	// views
+	
+	@State var classSideView = AnyView(ClassSideView())
+	@State var moodleView = AnyView(MoodleView())
+	@State var timeTableView = AnyView(TimeTableView())
+	@State var webUntisView = AnyView(WebUntisView())
+	@State var oszimtView = AnyView(OSZimtView())
+	@State var chatGPTView = AnyView(ChatGPTView())
+	@State var discordView = AnyView(DiscordView())
+	@State var wwwView = AnyView(WWWView())
+
+	
+	
 	#endif
 	var body: some View {
 		
 #if os(iOS)
 		TabView {
-			ClassSideView()
+			classSideView
 				.tabItem{
 					Text("Klassen Wbseite")
 					Image(systemName: "doc.richtext")
@@ -30,7 +44,7 @@ struct ContentView: View {
 						.frame(width: 20.0)
 				}
 				.navigationBarTitle(Text("Klassen Webseite"))
-			MoodleView()
+			moodleView
 				.tabItem {
 					Text("Moodle")
 					Image(systemName: "studentdesk")
@@ -40,7 +54,7 @@ struct ContentView: View {
 						.frame(width: 20.0)
 				}
 				.navigationBarTitle(Text("moodel"))
-			TimeTableView()
+			timeTableView
 				.tabItem {
 					Text("Stundenplan")
 					Image(systemName: "info.circle")
@@ -50,7 +64,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("Stundenplan"))
-			WebUntisView()
+			webUntisView
 				.tabItem {
 					Text("WebUntis")
 					Image(systemName: "info.circle")
@@ -60,7 +74,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("WebUntis"))
-			OSZimtView()
+			oszimtView
 				.tabItem {
 					Text("OSZ IMT Website")
 					Image(systemName: "graduationcap.circle")
@@ -70,7 +84,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("OSZ IMT Webseite"))
-			ChatGPTView()
+			chatGPTView
 				.tabItem {
 					Text("ChatGPT")
 					Image(systemName: "message.circle")
@@ -80,7 +94,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("ChatGPT"))
-			DiscordView()
+			discordView
 				.tabItem {
 					Text("Discord")
 					Image(systemName: "message.badge.circle.rtl")
@@ -90,7 +104,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("Discord"))
-			WWWView()
+			wwwView
 				.tabItem {
 					Text("Browse Web")
 					Image(systemName: "globe")
@@ -100,7 +114,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle(Text("Web"))
-		}
+		}.ignoresSafeArea(.all)
 		
 #elseif os(macOS)
 		
@@ -111,36 +125,45 @@ struct ContentView: View {
 				}
 				
 			}
+			.frame(width: 190)
 			.listStyle(SidebarListStyle())
-				.frame(minWidth: 190, idealWidth: 190, maxWidth: 190)
-				.background(BlurView())
+			.padding(.leading)
+			.background(BlurView())
 		} detail: {
 			destinationView(for: selectedSideBarItem)
+		}.padding(0)
+		.background(BlurView())
+		.onAppear {
+			
+			if selectedSideBarItem != .ClassSide {
+				selectedSideBarItem = SideBarItem.allCases.first ?? .ClassSide
+			}
 		}
+#endif
 		
-		.frame(minWidth: 1280,idealWidth: 1920, maxWidth: 7680, minHeight: 720, idealHeight: 1080, maxHeight: 4320)
-		#endif
 	}
 	
 	#if os(macOS)
 	func destinationView(for item: SideBarItem) -> some View {
 		switch item {
 			case .ClassSide:
-				return AnyView(ClassSideView())
+				return classSideView
 			case .Moodle:
-				return AnyView(MoodleView())
+				return moodleView
 			case .TimeTable:
-				return AnyView(TimeTableView())
+				return timeTableView
 			case .WebUntis:
-				return AnyView(WebUntisView())
+				return webUntisView
 			case .OSZimt:
-				return AnyView(OSZimtView())
+				return oszimtView
 			case .ChatGPT:
-				return AnyView(ChatGPTView())
+				return chatGPTView
 			case .Discord:
-				return AnyView(DiscordView())
+				return discordView
 			case .WWW:
-				return AnyView(WWWView())
+				return wwwView
+			default:
+				return classSideView
 		}
 	}
 	#endif
@@ -232,6 +255,7 @@ struct CustomWebView: UIViewRepresentable {
 	func makeCoordinator() -> Coordinator {
 		Coordinator(self)
 	}
+	
 	
 	func makeUIView(context: Context) -> WKWebView {
 			// Importieren von Cookies aus Safari

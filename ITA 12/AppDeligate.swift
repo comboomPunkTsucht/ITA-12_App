@@ -53,7 +53,7 @@ extension AppDeligate:NSPopoverDelegate {
 		popover.animates = true
 		popover.contentSize = .init(width: 1280, height: 720)
 		popover.contentViewController = NSViewController()
-		popover.contentViewController?.view = NSHostingView(rootView: ContentView().padding())
+		popover.contentViewController?.view = NSHostingView(rootView: ContentView().frame(width: 1280, height: 720).padding(.bottom).padding(.trailing).padding(.top).background(BlurView()))
 		popover.delegate = self
 	}
 	func popoverDidClose(_ notification: Notification) {
