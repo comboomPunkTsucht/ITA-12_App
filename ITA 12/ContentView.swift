@@ -16,6 +16,7 @@ struct ContentView: View {
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem = .ClassSide
 	
+#endif
 	// views
 	
 	@State var classSideView = AnyView(ClassSideView())
@@ -29,22 +30,23 @@ struct ContentView: View {
 
 	
 	
-	#endif
+	
 	var body: some View {
 		
 #if os(iOS)
 		TabView {
-			classSideView
-				.tabItem{
-					Text("Klassen Wbseite")
+			self.classSideView
+				.tabItem {
+					Text("Klassen Webseite")
 					Image(systemName: "doc.richtext")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20.0)
 				}
-				.navigationBarTitle(Text("Klassen Webseite"))
-			moodleView
+				.navigationBarTitle("Klassen Webseite")
+			
+			self.moodleView
 				.tabItem {
 					Text("Moodle")
 					Image(systemName: "studentdesk")
@@ -53,8 +55,9 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20.0)
 				}
-				.navigationBarTitle(Text("moodel"))
-			timeTableView
+				.navigationBarTitle("Moodle")
+			
+			self.timeTableView
 				.tabItem {
 					Text("Stundenplan")
 					Image(systemName: "info.circle")
@@ -63,8 +66,9 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("Stundenplan"))
-			webUntisView
+				.navigationBarTitle("Stundenplan")
+			
+			self.webUntisView
 				.tabItem {
 					Text("WebUntis")
 					Image(systemName: "info.circle")
@@ -73,8 +77,9 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("WebUntis"))
-			oszimtView
+				.navigationBarTitle("WebUntis")
+			
+			self.oszimtView
 				.tabItem {
 					Text("OSZ IMT Website")
 					Image(systemName: "graduationcap.circle")
@@ -83,8 +88,9 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("OSZ IMT Webseite"))
-			chatGPTView
+				.navigationBarTitle("OSZ IMT Webseite")
+			
+			self.chatGPTView
 				.tabItem {
 					Text("ChatGPT")
 					Image(systemName: "message.circle")
@@ -93,18 +99,20 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("ChatGPT"))
-			discordView
+				.navigationBarTitle("ChatGPT")
+			
+			self.discordView
 				.tabItem {
 					Text("Discord")
-					Image(systemName: "message.badge.circle.rtl")
+					Image(systemName: "message.badge.circle.fill")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("Discord"))
-			wwwView
+				.navigationBarTitle("Discord")
+			
+			self.wwwView
 				.tabItem {
 					Text("Browse Web")
 					Image(systemName: "globe")
@@ -113,8 +121,10 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle(Text("Web"))
-		}.ignoresSafeArea(.all)
+				.navigationBarTitle("Web")
+		}
+		.edgesIgnoringSafeArea(.all)
+
 		
 #elseif os(macOS)
 		

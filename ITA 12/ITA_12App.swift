@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ITA_12App: App {
@@ -38,6 +39,7 @@ struct ITA_12App: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+#if os(macOS)
 				.frame(
 					minWidth: minWidth,
 					idealWidth: calculateIdealWidth(),
@@ -46,7 +48,7 @@ struct ITA_12App: App {
 					idealHeight: calculateIdealHeight(),
 					maxHeight: .infinity
 				)
-			#if os(macOS)
+			
 				.padding(.bottom)
 				.padding(.trailing)
 				.padding(.top)
