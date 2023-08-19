@@ -104,7 +104,7 @@ struct ContentView: View {
 			self.discordView
 				.tabItem {
 					Text("Discord")
-					Image(systemName: "message.badge.circle.fill")
+					Image(systemName: "message.badge.circle.rtl")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
