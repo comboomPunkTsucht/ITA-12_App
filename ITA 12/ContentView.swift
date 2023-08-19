@@ -137,7 +137,7 @@ struct ContentView: View {
 			}
 			.frame(width: 190)
 			.listStyle(SidebarListStyle())
-			.padding(.leading)
+			
 			.background(BlurView())
 		} detail: {
 			destinationView(for: selectedSideBarItem)

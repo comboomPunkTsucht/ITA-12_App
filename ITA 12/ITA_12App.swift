@@ -12,53 +12,57 @@ import SwiftData
 struct ITA_12App: App {
 	
 	#if os(macOS)
+	@State private var appState: AppState = AppState()
 	@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
-	private let minWidth: CGFloat = 1920 * 0.88
-	private let minHeight: CGFloat = 1080 * 0.88
 	
 	@State private var screenWidth: CGFloat
 	@State private var screenHeight: CGFloat
 	
-	init() {
-		let initialScreenWidth = NSScreen.main?.frame.size.width ?? minWidth
-		let initialScreenHeight = NSScreen.main?.frame.size.height ?? minHeight
+	private var minWidth: CGFloat = 0.0
+	private var minHeight: CGFloat = 0.0
+	private var idealWidth: CGFloat = 0.0
+	private var idealHeight: CGFloat = 0.0
+	
+	
+	 init() {
+		 
+			 
+			// Calculate initial screen width and height
+		let initialScreenWidth = NSScreen.main?.frame.size.width ?? 1280
+		let initialScreenHeight = NSScreen.main?.frame.size.height ?? 720
 		
+			// Initialize the state properties
 		_screenWidth = State(initialValue: initialScreenWidth)
 		_screenHeight = State(initialValue: initialScreenHeight)
-	}
-	
-	private func calculateIdealWidth() -> CGFloat {
-		return max(screenWidth / 2, minWidth)
-	}
-	
-	private func calculateIdealHeight() -> CGFloat {
-		return max(screenHeight / 2, minHeight)
+		
+			 // Initialize minWidth and minHeight using the calculated values
+		 minWidth = screenWidth * appState.minFactor
+		 minHeight = screenHeight * appState.minFactor
+		 idealWidth = screenWidth * appState.idealFactor
+		 idealHeight = screenHeight * appState.idealFactor
+		
+		
 	}
 #endif
+
 	
 	var body: some Scene {
 		WindowGroup {
+
 			ContentView()
 #if os(macOS)
-				.frame(
-					minWidth: minWidth,
-					idealWidth: calculateIdealWidth(),
-					maxWidth: .infinity,
-					minHeight: minHeight,
-					idealHeight: calculateIdealHeight(),
-					maxHeight: .infinity
-				)
+				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(BlurView())
 			
-				.padding(.bottom)
-				.padding(.trailing)
-				.padding(.top)
-				.background(BlurView())
 			#endif
 		}
 	}
 }
 
-																																																																						
-																																																																						
-																																																																						
-																																																																						
+
+#if os(macOS)
+class AppState: ObservableObject {
+	public var minFactor: CGFloat = 0.5
+	public var idealFactor: CGFloat = 0.75
+	
+}
+#endif
