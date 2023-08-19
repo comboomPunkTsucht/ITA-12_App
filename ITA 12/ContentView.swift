@@ -19,14 +19,14 @@ struct ContentView: View {
 #endif
 	// views
 	
-	@State var classSideView = AnyView(ClassSideView())
-	@State var moodleView = AnyView(MoodleView())
-	@State var timeTableView = AnyView(TimeTableView())
-	@State var webUntisView = AnyView(WebUntisView())
-	@State var oszimtView = AnyView(OSZimtView())
-	@State var chatGPTView = AnyView(ChatGPTView())
-	@State var discordView = AnyView(DiscordView())
-	@State var wwwView = AnyView(WWWView())
+	@State var classSideView = AnyView(ClassSideView().padding(10).background(BlurView()))
+	@State var moodleView = AnyView(MoodleView().padding(10).background(BlurView()))
+	@State var timeTableView = AnyView(TimeTableView().padding(10).background(BlurView()))
+	@State var webUntisView = AnyView(WebUntisView().padding(10).background(BlurView()))
+	@State var oszimtView = AnyView(OSZimtView().padding(10).background(BlurView()))
+	@State var chatGPTView = AnyView(ChatGPTView().padding(10).background(BlurView()))
+	@State var discordView = AnyView(DiscordView().padding(10).background(BlurView()))
+	@State var wwwView = AnyView(WWWView().padding(10).background(BlurView()))
 
 	
 	
@@ -136,12 +136,15 @@ struct ContentView: View {
 				
 			}
 			.frame(width: 190)
+			.padding(.top,10)
+			.padding(.bottom,10)
+			.padding(.leading,10)
+			.padding(.trailing,0)
 			.listStyle(SidebarListStyle())
-			
 			.background(BlurView())
 		} detail: {
 			destinationView(for: selectedSideBarItem)
-		}.padding(0)
+		}
 		.background(BlurView())
 		.onAppear {
 			
