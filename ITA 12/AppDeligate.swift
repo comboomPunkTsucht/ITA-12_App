@@ -7,8 +7,8 @@
 #if os(macOS)
 import Cocoa
 import SwiftUI
-import Combine
-import LaunchAtLogin
+//import Combine
+//import LaunchAtLogin
 
 class AppDeligate: NSObject, NSApplicationDelegate {
 	var statusITem:NSStatusItem!
