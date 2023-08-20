@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-import SwiftData
+#if os(macOS)
+import LaunchAtLogin
+#endif
 
 @main
 struct ITA_12App: App {
@@ -51,10 +53,20 @@ struct ITA_12App: App {
 
 			ContentView()
 #if os(macOS)
-				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(BlurView())
+				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(.ultraThinMaterial).background(BlurView())
 			
 			#endif
 		}
+		#if os(macOS)
+		.commands {
+			CommandGroup(after:.appInfo) {
+				Divider()
+				LaunchAtLogin.Toggle {
+					Text("Launch at login")
+				}
+			}
+		}
+		#endif
 	}
 }
 

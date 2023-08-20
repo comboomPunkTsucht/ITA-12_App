@@ -7,12 +7,19 @@
 #if os(macOS)
 import Cocoa
 import SwiftUI
+import Combine
+import LaunchAtLogin
 
 class AppDeligate: NSObject, NSApplicationDelegate {
 	var statusITem:NSStatusItem!
 	let popover = NSPopover()
+	var statusMenu: NSMenu!
+	private let appName: String = "ITA 12"
 	@State private var appState: AppState = AppState()
 	@State var contentView = AnyView(ContentView())
+	@State private var launchAtLogin = LaunchAtLogin.isEnabled
+	
+
 	
 	
 	
@@ -45,6 +52,22 @@ class AppDeligate: NSObject, NSApplicationDelegate {
 
 		setupMenuBar()
 		setupPopover()
+		/*
+		statusMenu = NSMenu(title: appName)
+		if let mainMenu = NSApp.mainMenu, mainMenu.items.count > 0 {
+			let firstItem = mainMenu.items[0]
+			mainMenu.setSubmenu(statusMenu, for: firstItem)
+		}
+		
+		let customMenuItem = NSMenuItem(title: "Toggle Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+		statusMenu.addItem(customMenuItem)
+		
+		let separator = NSMenuItem.separator()
+		statusMenu.addItem(separator)
+		
+		let quitMenuItem = NSMenuItem(title: "Quit \(appName)", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+		statusMenu.addItem(quitMenuItem)
+		NSApp.mainMenu!.addItem(NSMenuItem())*/
 	}
 	
 }
@@ -71,6 +94,9 @@ extension AppDeligate {
 		menuButton.bounds = menuButton.bounds.offsetBy(dx: 0, dy: menuButton.bounds.height)
 		popover.contentViewController?.view.window?.makeKey()
 	}
+	/*@objc func toggleLaunchAtLogin(){
+		launchAtLogin.toggle()
+	}*/
 }
 extension AppDeligate:NSPopoverDelegate {
 	func setupPopover(){
@@ -78,7 +104,7 @@ extension AppDeligate:NSPopoverDelegate {
 		popover.animates = true
 		popover.contentSize = .init(width: popupWidth, height: popupHeight)
 		popover.contentViewController = NSViewController()
-		popover.contentViewController?.view = NSHostingView(rootView: contentView.frame(width: popupWidth, height: popupHeight).background(BlurView()))
+		popover.contentViewController?.view = NSHostingView(rootView: contentView.frame(width: popupWidth, height: popupHeight).background(.ultraThinMaterial).background(BlurView()))
 		popover.delegate = self
 	}
 	func popoverDidClose(_ notification: Notification) {
