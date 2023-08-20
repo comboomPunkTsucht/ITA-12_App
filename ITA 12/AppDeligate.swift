@@ -90,7 +90,7 @@ extension AppDeligate {
 		let positionView = NSView(frame: menuButton.bounds)
 		positionView.identifier = NSUserInterfaceItemIdentifier("positionView")
 		menuButton.addSubview(positionView)
-		popover.show(relativeTo: menuButton.bounds, of: menuButton, preferredEdge: .maxY)
+		popover.show(relativeTo: menuButton.bounds, of: menuButton, preferredEdge: NSRectEdge(rawValue: UInt(NSStatusBar.system.thickness))!)
 		menuButton.bounds = menuButton.bounds.offsetBy(dx: 0, dy: menuButton.bounds.height)
 		popover.contentViewController?.view.window?.makeKey()
 	}
