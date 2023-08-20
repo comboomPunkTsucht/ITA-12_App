@@ -17,7 +17,7 @@ class AppDeligate: NSObject, NSApplicationDelegate {
 	private let appName: String = "ITA 12"
 	@State private var appState: AppState = AppState()
 	@State var contentView = AnyView(ContentView())
-	@State private var launchAtLogin = LaunchAtLogin.isEnabled
+	//@State private var launchAtLogin = LaunchAtLogin.isEnabled
 	
 
 	

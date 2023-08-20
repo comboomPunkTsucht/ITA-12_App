@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		91525D6F2A91E47B0062A083 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 91525D6E2A91E47B0062A083 /* LaunchAtLogin */; };
-		91525D712A91E7630062A083 /* VMLaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91525D702A91E7630062A083 /* VMLaunchAtLogin.swift */; };
+		91525DD52A9238DD0062A083 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 91525DD42A9238DD0062A083 /* LaunchAtLogin */; };
 		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
@@ -17,20 +16,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		91DF2CB42A8BE5C700553A95 /* Embed Foundation Extensions */ = {
+		91525DD22A9233F30062A083 /* Embed System Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
+			dstPath = "$(SYSTEM_EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
 			files = (
 			);
-			name = "Embed Foundation Extensions";
+			name = "Embed System Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		91525D702A91E7630062A083 /* VMLaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VMLaunchAtLogin.swift; sourceTree = "<group>"; };
+		91525DC52A9233F30062A083 /* libEndpointSecurity.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libEndpointSecurity.tbd; path = usr/lib/libEndpointSecurity.tbd; sourceTree = SDKROOT; };
 		91733A9A2A8B128600B42B90 /* ITA-12-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ITA-12-Info.plist"; sourceTree = SOURCE_ROOT; };
 		91DAF3742A8C18A900C86573 /* AppDeligate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDeligate.swift; sourceTree = "<group>"; };
 		91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
@@ -44,11 +43,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		91E6C09B2A829B4100F3E206 /* Frameworks */ = {
+		91525D772A922EC10062A083 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91525D6F2A91E47B0062A083 /* LaunchAtLogin in Frameworks */,
+				91525DD52A9238DD0062A083 /* LaunchAtLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +59,7 @@
 			children = (
 				91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */,
 				91DF2CA42A8BE5C400553A95 /* SwiftUI.framework */,
+				91525DC52A9233F30062A083 /* libEndpointSecurity.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -91,7 +91,6 @@
 				91E6C0A52A829B4400F3E206 /* Assets.xcassets */,
 				91E6C0A72A829B4400F3E206 /* ITA_12.entitlements */,
 				91E6C0A82A829B4400F3E206 /* Preview Content */,
-				91525D702A91E7630062A083 /* VMLaunchAtLogin.swift */,
 			);
 			path = "ITA 12";
 			sourceTree = "<group>";
@@ -112,10 +111,9 @@
 			buildConfigurationList = 91E6C0AD2A829B4400F3E206 /* Build configuration list for PBXNativeTarget "ITA 12" */;
 			buildPhases = (
 				91E6C09A2A829B4100F3E206 /* Sources */,
-				91E6C09B2A829B4100F3E206 /* Frameworks */,
+				91525D772A922EC10062A083 /* Frameworks */,
 				91E6C09C2A829B4100F3E206 /* Resources */,
-				91525D722A91E84D0062A083 /* ShellScript */,
-				91DF2CB42A8BE5C700553A95 /* Embed Foundation Extensions */,
+				91525DD22A9233F30062A083 /* Embed System Extensions */,
 			);
 			buildRules = (
 			);
@@ -123,7 +121,7 @@
 			);
 			name = "ITA 12";
 			packageProductDependencies = (
-				91525D6E2A91E47B0062A083 /* LaunchAtLogin */,
+				91525DD42A9238DD0062A083 /* LaunchAtLogin */,
 			);
 			productName = "ITA 12";
 			productReference = 91E6C09E2A829B4100F3E206 /* ITA 12.app */;
@@ -149,12 +147,12 @@
 			developmentRegion = de;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				Base,
 				de,
+				Base,
 			);
 			mainGroup = 91E6C0952A829B4100F3E206;
 			packageReferences = (
-				91525D6D2A91E47B0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
+				91525DD32A9238DD0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 			);
 			productRefGroup = 91E6C09F2A829B4100F3E206 /* Products */;
 			projectDirPath = "";
@@ -177,35 +175,11 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		91525D722A91E84D0062A083 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh",
-				"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLoginHelper.zip",
-				"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLoginHelper-with-runtime.zip",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		91E6C09A2A829B4100F3E206 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91525D712A91E7630062A083 /* VMLaunchAtLogin.swift in Sources */,
 				91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */,
 				91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */,
 				91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */,
@@ -245,7 +219,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -262,9 +236,10 @@
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*]" = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -309,7 +284,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -320,9 +295,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*]" = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -338,6 +314,7 @@
 		91E6C0AE2A829B4400F3E206 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -375,7 +352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
+				SDKROOT = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -387,6 +364,7 @@
 		91E6C0AF2A829B4400F3E206 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -424,7 +402,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
+				SDKROOT = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -457,9 +435,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91525D6D2A91E47B0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+		91525DD32A9238DD0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -468,9 +446,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		91525D6E2A91E47B0062A083 /* LaunchAtLogin */ = {
+		91525DD42A9238DD0062A083 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91525D6D2A91E47B0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			package = 91525DD32A9238DD0062A083 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
