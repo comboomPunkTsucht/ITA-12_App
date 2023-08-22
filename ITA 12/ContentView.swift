@@ -408,12 +408,22 @@ struct ClassSideView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText);
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -475,6 +485,11 @@ struct ClassSideView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -496,11 +511,21 @@ struct MoodleView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://moodle.oszimt.de/")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -562,6 +587,11 @@ struct MoodleView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -582,11 +612,21 @@ struct TimeTableView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -648,6 +688,11 @@ struct TimeTableView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -668,12 +713,22 @@ struct OSZimtView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://oszimt.de")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -735,6 +790,11 @@ struct OSZimtView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -756,11 +816,21 @@ struct ChatGPTView: View {
 	
 	@State  var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://chat.openai.com/")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -822,6 +892,11 @@ struct ChatGPTView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -973,7 +1048,7 @@ struct WWWView: View {
 				} else {
 						// Perform a Bing search
 					if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-					   let url = URL(string: "https://duckduckgo.com/?q=hey\(encodedSearchText)") {
+					   let url = URL(string: "https://duckduckgo.com/?q=\(encodedSearchText)") {
 						webView.load(URLRequest(url: url))
 						
 					}
@@ -1032,12 +1107,22 @@ struct WebUntisView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1099,6 +1184,11 @@ struct WebUntisView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
@@ -1119,12 +1209,22 @@ struct DiscordView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ptb.discord.com/login")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1186,6 +1286,11 @@ struct DiscordView: View {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
 	
 	func reload() {
 			// Implement reload logic
