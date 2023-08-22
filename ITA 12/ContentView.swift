@@ -8,6 +8,7 @@
 import WebKit
 import SwiftUI
 import Foundation
+import CoreData
 #if os(macOS)
 import Cocoa
 #endif
@@ -15,13 +16,13 @@ import Cocoa
 @available(macOS 14.0, *)
 @available(iOS 17.0, *)
 struct ContentView: View {
+	
 	#if os(macOS)
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem = .ClassSide
 	
-#endif
+
 	// views
-	
 	@State var classSideView = AnyView(ClassSideView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var timeTableView = AnyView( TimeTableView().padding(10).background(.ultraThinMaterial).background(BlurView()))
@@ -30,9 +31,21 @@ struct ContentView: View {
 	@State var chatGPTView = AnyView( ChatGPTView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var discordView = AnyView(  DiscordView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var wwwView = AnyView( WWWView().padding(10).background(.ultraThinMaterial).background(BlurView()))
-
+	//@State var settingsView = AnyView(SettingsView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	
-	
+#endif
+	#if os(iOS)
+		// views
+	@State var classSideView = AnyView(ClassSideView().padding(10).background(.ultraThinMaterial))
+	@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial))
+	@State var timeTableView = AnyView( TimeTableView().padding(10).background(.ultraThinMaterial))
+	@State var webUntisView = AnyView( WebUntisView().padding(10).background(.ultraThinMaterial))
+	@State var oszimtView = AnyView( OSZimtView().padding(10).background(.ultraThinMaterial))
+	@State var chatGPTView = AnyView( ChatGPTView().padding(10).background(.ultraThinMaterial))
+	@State var discordView = AnyView(  DiscordView().padding(10).background(.ultraThinMaterial))
+	@State var wwwView = AnyView( WWWView().padding(10).background(.ultraThinMaterial))
+		//@State var settingsView = AnyView(SettingsView().padding(10).background(.ultraThinMaterial).background(BlurView()))
+	#endif
 	
 	var body: some View {
 		
@@ -115,7 +128,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("Discord")
 			
-			self.wwwView
+			self.wwwView//.environment(\.managedObjectContext, viewContext)
 				.tabItem {
 					Text("Browse Web")
 					Image(systemName: "globe")
@@ -125,6 +138,17 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle("Web")
+			/*self.settingsView.environment(\.managedObjectContext, viewContext)
+				.tabItem {
+					Text("Settings")
+					Image(systemName: "gear")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+				}
+				.navigationBarTitle("Settings")*/
+
 		}
 		.edgesIgnoringSafeArea(.all)
 
@@ -188,7 +212,7 @@ struct ContentView: View {
 	#if os(macOS)
 		
 	
-	func destinationView(for item: SideBarItem) -> some View {
+	func destinationView(for item: SideBarItem) -> AnyView {
 		switch item {
 			case .ClassSide:
 				return classSideView
@@ -205,13 +229,14 @@ struct ContentView: View {
 			case .Discord:
 				return discordView
 			case .WWW:
-				return wwwView
+				return AnyView(wwwView)//.environment(\.managedObjectContext, viewContext))
+			//case .Settings:
+				//return AnyView(settingsView.environment(\.managedObjectContext, viewContext))
 				}
 	}
 
 	
 	#endif
-	
 }
 
 #if os(macOS)
@@ -227,6 +252,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	case ChatGPT
 	case Discord
 	case WWW
+	//case Settings
 	
 	var title: String {
 		switch self {
@@ -238,6 +264,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 			case .ChatGPT: return "ChatGPT"
 			case .Discord: return "Discord"
 			case .WWW: return "Browse Web"
+			//case .Settings: return "Settings"
 		}
 	}
 	
@@ -251,6 +278,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 			case .ChatGPT: return "message.circle"
 			case .Discord: return "message.badge.circle.rtl"
 			case .WWW: return "globe"
+			//case .Settings: return "gear"
 		}
 	}
 }
@@ -335,6 +363,9 @@ struct CustomWebView: NSViewRepresentable {
 			if let url = webView.url {
 				if url.absoluteString.hasPrefix("https://ita12docoszimt.serveblog.net/") {
 					parent.searchText = ""
+				} else if url.absoluteString.hasPrefix("https://www.youtube.com/watch?v=o-YBDTqX_ZU") {
+					parent.searchText = ""
+
 				} else {
 					parent.searchText = url.absoluteString
 				}
@@ -379,14 +410,12 @@ struct ClassSideView: View {
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	@State private var searchText = ""
 	
-	let actionHandler = MenuActionHandler()
-	
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText);
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -396,32 +425,32 @@ struct ClassSideView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
-.frame(width: 20)
+						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
-.frame(width: 20)
+						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor)
-.frame(width: 20)
+						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("r", modifiers: .command)
@@ -433,6 +462,23 @@ struct ClassSideView: View {
 			
 		}
 
+	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
 	}
 }
 struct MoodleView: View {
@@ -451,13 +497,12 @@ struct MoodleView: View {
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://moodle.oszimt.de/")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -467,7 +512,7 @@ struct MoodleView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -477,7 +522,7 @@ struct MoodleView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -487,7 +532,7 @@ struct MoodleView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -504,6 +549,23 @@ struct MoodleView: View {
 			
 		}
 
+	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
 	}
 }
 
@@ -521,13 +583,12 @@ struct TimeTableView: View {
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -537,7 +598,7 @@ struct TimeTableView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -547,7 +608,7 @@ struct TimeTableView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -557,7 +618,7 @@ struct TimeTableView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -575,6 +636,23 @@ struct TimeTableView: View {
 		}
 
 	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
+	}
 }
 
 struct OSZimtView: View {
@@ -591,14 +669,13 @@ struct OSZimtView: View {
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://oszimt.de")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -608,7 +685,7 @@ struct OSZimtView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -618,7 +695,7 @@ struct OSZimtView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -628,7 +705,7 @@ struct OSZimtView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -645,6 +722,23 @@ struct OSZimtView: View {
 			
 		}
 
+	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
 	}
 }
 
@@ -663,13 +757,12 @@ struct ChatGPTView: View {
 	@State  var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://chat.openai.com/")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -679,7 +772,7 @@ struct ChatGPTView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -689,7 +782,7 @@ struct ChatGPTView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -699,7 +792,7 @@ struct ChatGPTView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -717,11 +810,34 @@ struct ChatGPTView: View {
 		}
 
 	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
+	}
 }
 
 
 
 struct WWWView: View {
+	/*@Environment(\.managedObjectContext) private var viewContext
+	 
+	 @FetchRequest(
+	 sortDescriptors: [NSSortDescriptor(keyPath: \SearchEngineSettings.selectedSearchEngine, ascending: true)],
+	 animation: .default)
+	 private var searchEngineSettings: FetchedResults<SearchEngineSettings>*/
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -734,14 +850,24 @@ struct WWWView: View {
 	
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 	
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
-				TextField("Suche", text: $searchText, onCommit: {actionHandler.searchb(for: webView, searchText: searchText)})
+				Button(action: rickrol) {
+					Image(systemName: "")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor.opacity(0.0))
+						.frame(width: 0)
+				}
+				.buttonStyle(PlainButtonStyle())
+				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				
+				TextField("Suche", text: $searchText, onCommit: search)
 					.textFieldStyle(PlainTextFieldStyle())
 					.padding(.vertical, 8)
 					.padding(.horizontal)
@@ -752,7 +878,7 @@ struct WWWView: View {
 					.disableAutocorrection(true)
 					.keyboardType(.webSearch)
 #endif
-				Button(action: {actionHandler.searchb(for: webView, searchText: searchText)}) {
+				Button(action: search) {
 					Image(systemName: "magnifyingglass.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -761,7 +887,7 @@ struct WWWView: View {
 				}
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut(.defaultAction)
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -771,7 +897,7 @@ struct WWWView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -781,7 +907,7 @@ struct WWWView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -791,7 +917,7 @@ struct WWWView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -801,6 +927,7 @@ struct WWWView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("r", modifiers: .command)
 				
+				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
@@ -808,8 +935,88 @@ struct WWWView: View {
 			
 		}
 		
+		
+		
 	}
-
+	func search() {
+			// Check if the search text starts with "!yt:"
+		if searchText.hasPrefix("!yt ") {
+				// Extract the search query
+			let searchQuery = searchText.replacingOccurrences(of: "!yt ", with: "")
+				// Check if the search query is a video ID
+			if searchQuery.count == 11 && searchQuery.range(of: #"[^0-9a-zA-Z_-]"#, options: .regularExpression) == nil {
+					// Create the YouTube video URL
+				if let youtubeURL = URL(string: "https://www.youtube.com/watch?v=\(searchQuery)") {
+						// Load the YouTube video URL in the web view
+					webView.load(URLRequest(url: youtubeURL))
+				}
+			} else {
+					// Create the YouTube search URL
+				if let encodedSearchQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+				   let youtubeURL = URL(string: "https://www.youtube.com/results?search_query=\(encodedSearchQuery)") {
+						// Load the YouTube search URL in the web view
+					webView.load(URLRequest(url: youtubeURL))
+				}
+			}
+		} else {
+				// Check if the search bar is empty (including whitespace)
+			if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+					// The search bar is empty
+					// Perform an action here if the search bar is empty
+					// For example:
+				print("The search bar is empty")
+			} else {
+					// Check if the search text has an HTTP/HTTPS protocol
+				if let urlWithProtocol = addProtocolToURL(searchText), urlWithProtocol.absoluteString.lowercased().hasPrefix("http://") || urlWithProtocol.absoluteString.lowercased().hasPrefix("https://") {
+						// If the search text matches a URL, add the protocol and load the URL
+					webView.load(URLRequest(url: urlWithProtocol))
+				} else {
+						// Perform a Bing search
+					if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+					   let url = URL(string: "https://duckduckgo.com/?q=hey\(encodedSearchText)") {
+						webView.load(URLRequest(url: url))
+						
+					}
+				}
+			}
+		}
+		
+	}
+	
+	
+	func addProtocolToURL(_ urlString: String) -> URL? {
+		if let url = URL(string: urlString), url.scheme != nil {
+			return url
+		} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\..+$", options: .regularExpression) != nil,
+				  let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+				  let urlWithProtocol = URL(string: "https://" + encodedURLString) {
+			return urlWithProtocol
+		}
+		return nil
+	}
+	
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
+	}
 }
 
 struct WebUntisView: View {
@@ -826,14 +1033,13 @@ struct WebUntisView: View {
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -843,7 +1049,7 @@ struct WebUntisView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -853,7 +1059,7 @@ struct WebUntisView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -863,7 +1069,7 @@ struct WebUntisView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -880,6 +1086,23 @@ struct WebUntisView: View {
 			
 		}
 
+	}
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: startURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
 	}
 }
 
@@ -897,14 +1120,13 @@ struct DiscordView: View {
 	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ptb.discord.com/login")!
 	@State private var searchText = ""
-	let actionHandler = MenuActionHandler()
 
 	var body: some View {
 		VStack{
 			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Spacer()
-				Button(action: {actionHandler.goBackb(for: webView)}) {
+				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -914,7 +1136,7 @@ struct DiscordView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button(action: {actionHandler.goForwardb(for: webView)}) {
+				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -924,7 +1146,7 @@ struct DiscordView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ä", modifiers: .command)
 				
-				Button(action: {actionHandler.goHomeb(for: webView,startURL: startURL)}) {
+				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -934,7 +1156,7 @@ struct DiscordView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button(action: {actionHandler.reloadb(for: webView)}) {
+				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
@@ -952,93 +1174,25 @@ struct DiscordView: View {
 		}
 
 	}
-}
-
-
-
-#Preview {
-    ContentView()
-}
-
-
-class MenuActionHandler: NSObject {
-
-	private func searchp(for webView: WKWebView, searchText: String) {
-				// Check if the search text starts with "!yt:"
-			if searchText.hasPrefix("!yt:") {
-					// Extract the search query
-				let searchQuery = searchText.replacingOccurrences(of: "!yt:", with: "")
-					// Check if the search query is a video ID
-				if searchQuery.count == 11 && searchQuery.range(of: #"[^0-9a-zA-Z_-]"#, options: .regularExpression) == nil {
-						// Create the YouTube video URL
-					if let youtubeURL = URL(string: "https://www.youtube.com/watch?v=\(searchQuery)") {
-							// Load the YouTube video URL in the web view
-						webView.load(URLRequest(url: youtubeURL))
-					}
-				} else {
-						// Create the YouTube search URL
-					if let encodedSearchQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-					   let youtubeURL = URL(string: "https://www.youtube.com/results?search_query=\(encodedSearchQuery)") {
-							// Load the YouTube search URL in the web view
-						webView.load(URLRequest(url: youtubeURL))
-					}
-				}
-			} else {
-					// Check if the search bar is empty (including whitespace)
-				if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-						// The search bar is empty
-						// Perform an action here if the search bar is empty
-						// For example:
-					print("The search bar is empty")
-				} else {
-						// Check if the search text has an HTTP/HTTPS protocol
-					if let urlWithProtocol = addProtocolToURL(searchText), urlWithProtocol.absoluteString.lowercased().hasPrefix("http://") || urlWithProtocol.absoluteString.lowercased().hasPrefix("https://") {
-							// If the search text matches a URL, add the protocol and load the URL
-						webView.load(URLRequest(url: urlWithProtocol))
-					} else {
-							// Perform a Bing search
-						if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-						   let url = URL(string: "https://www.bing.com/search?q=\(encodedSearchText)") {
-							webView.load(URLRequest(url: url))
-						}
-					}
-				}
-			}
-			
-		}
-
-		
-		func addProtocolToURL(_ urlString: String) -> URL? {
-			if let url = URL(string: urlString), url.scheme != nil {
-				return url
-			} else if urlString.range(of: "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\..+$", options: .regularExpression) != nil,
-					  let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-					  let urlWithProtocol = URL(string: "https://" + encodedURLString) {
-				return urlWithProtocol
-			}
-			return nil
-		}
-	
-	func goBackb(for webView: WKWebView) {
+	func goBack() {
 		webView.goBack()
 	}
-	func goForwardb(for webView: WKWebView) {
+	func goForward() {
 			// Implement go forward logic
 		webView.goForward()
 	}
 	
-	func goHomeb(for webView: WKWebView, startURL: URL) {
+	func goHome() {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
 	
-	func reloadb(for webView: WKWebView) {
+	func reload() {
 			// Implement reload logic
 		webView.reload()
-		
 	}
-	
-	func searchb(for webView: WKWebView, searchText: String) {
-			searchp(for: webView, searchText: searchText)
-	}
+}
+
+#Preview {
+	ContentView()
 }

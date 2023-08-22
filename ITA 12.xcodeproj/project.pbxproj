@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		91525DD52A9238DD0062A083 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 91525DD42A9238DD0062A083 /* LaunchAtLogin */; };
+		915D33322A93FD8E008ADCAF /* Persistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915D33312A93FD8E008ADCAF /* Persistant.swift */; };
+		915D33392A940359008ADCAF /* ITA_12.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */; };
+		915D33422A940675008ADCAF /* SearchEngineSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915D33402A940675008ADCAF /* SearchEngineSettings+CoreDataClass.swift */; };
+		915D33432A940675008ADCAF /* SearchEngineSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915D33412A940675008ADCAF /* SearchEngineSettings+CoreDataProperties.swift */; };
 		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
@@ -30,6 +34,10 @@
 
 /* Begin PBXFileReference section */
 		91525DC52A9233F30062A083 /* libEndpointSecurity.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libEndpointSecurity.tbd; path = usr/lib/libEndpointSecurity.tbd; sourceTree = SDKROOT; };
+		915D33312A93FD8E008ADCAF /* Persistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistant.swift; sourceTree = "<group>"; };
+		915D33382A940359008ADCAF /* ITA_12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ITA_12.xcdatamodel; sourceTree = "<group>"; };
+		915D33402A940675008ADCAF /* SearchEngineSettings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngineSettings+CoreDataClass.swift"; sourceTree = "<group>"; };
+		915D33412A940675008ADCAF /* SearchEngineSettings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngineSettings+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		91733A9A2A8B128600B42B90 /* ITA-12-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ITA-12-Info.plist"; sourceTree = SOURCE_ROOT; };
 		91DAF3742A8C18A900C86573 /* AppDeligate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDeligate.swift; sourceTree = "<group>"; };
 		91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
@@ -91,6 +99,10 @@
 				91E6C0A52A829B4400F3E206 /* Assets.xcassets */,
 				91E6C0A72A829B4400F3E206 /* ITA_12.entitlements */,
 				91E6C0A82A829B4400F3E206 /* Preview Content */,
+				915D33312A93FD8E008ADCAF /* Persistant.swift */,
+				915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */,
+				915D33402A940675008ADCAF /* SearchEngineSettings+CoreDataClass.swift */,
+				915D33412A940675008ADCAF /* SearchEngineSettings+CoreDataProperties.swift */,
 			);
 			path = "ITA 12";
 			sourceTree = "<group>";
@@ -180,9 +192,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915D33422A940675008ADCAF /* SearchEngineSettings+CoreDataClass.swift in Sources */,
 				91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */,
 				91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */,
+				915D33392A940359008ADCAF /* ITA_12.xcdatamodeld in Sources */,
+				915D33322A93FD8E008ADCAF /* Persistant.swift in Sources */,
 				91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */,
+				915D33432A940675008ADCAF /* SearchEngineSettings+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +338,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.5;
+				CURRENT_PROJECT_VERSION = 1.5.1;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -348,7 +364,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -372,7 +388,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.5;
+				CURRENT_PROJECT_VERSION = 1.5.1;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -398,7 +414,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -452,6 +468,19 @@
 			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				915D33382A940359008ADCAF /* ITA_12.xcdatamodel */,
+			);
+			currentVersion = 915D33382A940359008ADCAF /* ITA_12.xcdatamodel */;
+			path = ITA_12.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 91E6C0962A829B4100F3E206 /* Project object */;
 }
