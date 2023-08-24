@@ -6,18 +6,14 @@
 //
 
 import SwiftUI
-import CoreData
 #if os(macOS)
 import LaunchAtLogin
 #endif
-
+var appState: AppState = AppState()
 @main
 struct ITA_12App: App {
 	
-	//let persistenceController = PersistenceController.shared
-	
 	#if os(macOS)
-	@State private var appState: AppState = AppState()
 	@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
 	
 	@State private var screenWidth: CGFloat
@@ -48,6 +44,51 @@ struct ITA_12App: App {
 		
 		
 	}
+	
+	
+	func getCurrentView(for item: SideBarItem) -> URL {
+		switch item {
+			/*case .Moodle:
+				return URL(string: "https://moodle.oszimt.de/my/")!
+			case .TimeTable:
+				return URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
+			case .WebUntis:
+				return URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
+			case .OSZimt:
+				return URL(string: "https://chat.openai.com/")!*/
+			case .ChatGPT:
+				return URL(string: "https://www.oszimt.de/")!
+			case .Discord:
+				return URL(string: "https://ptb.discord.com/login")!
+			default:
+				return URL(string: "https://ita12docoszimt.serveblog.net/")!
+		}
+	}
+	
+	func goBack() {
+		webView.goBack()
+	}
+	func goForward() {
+			// Implement go forward logic
+		webView.goForward()
+	}
+	
+	func goHome() {
+			// Implement go home logic
+		webView.load(URLRequest(url: getCurrentView(for: selectedSideBarItem_Global)))
+	}
+	func rickrol() {
+		print("rickrol")
+			// Implement go home logic
+		webView.load(URLRequest(url: rickrollURL))
+	}
+	
+	func reload() {
+			// Implement reload logic
+		webView.reload()
+	}
+	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
+	@State private var searchText = ""
 #endif
 
 	
@@ -55,7 +96,6 @@ struct ITA_12App: App {
 		WindowGroup {
 
 			ContentView()
-				//.environment(\.managedObjectContext, persistenceController.container.viewContext)
 
 #if os(macOS)
 				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(.ultraThinMaterial).background(BlurView())
@@ -63,6 +103,9 @@ struct ITA_12App: App {
 			#endif
 		}
 		#if os(macOS)
+		Settings{
+			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: 600,minHeight: 100,idealHeight: 100,maxHeight: 150).background(.ultraThinMaterial).background(BlurView())
+		}
 		.commands {
 			CommandGroup(after:.appInfo) {
 				Divider()
@@ -70,10 +113,23 @@ struct ITA_12App: App {
 					Text("Launch at login")
 				}
 			}
+			CommandGroup(replacing:.undoRedo) {
+				Button("Go Back", action: goBack)
+				.keyboardShortcut("ö", modifiers: .command)
 				
+				Button("Go Forword", action: goForward)
+				.keyboardShortcut("ä", modifiers: .command)
+				
+				Button("Go Home", action: goHome)
+				.keyboardShortcut("ü", modifiers: .command)
+				
+				Button("Reload", action: reload)
+				.keyboardShortcut("r", modifiers: .command)
+			}
 					
 				
 			}
+		
 		
 		
 		#endif
@@ -81,83 +137,109 @@ struct ITA_12App: App {
 }
 
 
-#if os(macOS)
-class AppState: ObservableObject {
+class AppState: ObservableObject, Codable {
 	public var minFactor: CGFloat = 0.5
 	public var idealFactor: CGFloat = 0.75
-	
+	public var searchEngine: String = "https://duckduckgo.com/?q="
+	public var selectedSE:String = "DuckDuckGo"
+	public var cSEisSet: Bool = false
 }
-
-/*
-
 struct SettingsView: View {
-	@Environment(\.managedObjectContext) private var viewContext
 	
-	@FetchRequest(
-		sortDescriptors: [NSSortDescriptor(keyPath: \SearchEngineSettings.selectedSearchEngine, ascending: true)],
-		animation: .default)
-	private var searchEngineSettings: FetchedResults<SearchEngineSettings>
-	@State private var selectedEngines: Set<String> = []
-	@State private var customEngine: String = ""
+	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
+	let aColors = ["Blau", "Lila", "Rosa", "Rot", "Orange", "Gelb", "Grün", "Graphit"]
 	
-	let availableEngines: [String: String] = [
-		"Google": "https://www.google.com/search?q=%s",
-		"Bing": "https://www.bing.com/search?q=%s",
-		"DuckDuckGo": "https://duckduckgo.com/?q=%s",
-		"Other" : ""
-	]
+	@State private var selectedSE: String = "DuckDuckGo"
+	@State private var cSE: String = ""
 	
-	var body: some View {
-		Form {
-			Section(header: Text("Select Search Engines")) {
-				ForEach(availableEngines.keys.sorted(), id: \.self) { engineName in
-					Toggle(engineName, isOn: Binding(
-						get: { selectedEngines.contains(engineName) },
-						set: { isSelected in
-							if isSelected {
-								selectedEngines.insert(engineName)
-							} else {
-								selectedEngines.remove(engineName)
-							}
-						}
-					))
-				}
-			}
-			
-			Section(header: Text("Custom Search Engine")) {
-				TextField("Enter a custom search engine", text: $customEngine)
-			}
-			
-			Section {
-				Button("Select") {
-					if let selectedEngine = selectedEngines.first {
-						let searchEngineSettings = SearchEngineSettings(context: viewContext)
-						searchEngineSettings.selectedSearchEngine = formatSearchEngineString(for: selectedEngine)
-						
-							// Save the custom search engine as well
-						if let  selectedEngineC = selectedEngine.last {
-							searchEngineSettings.selectedSearchEngine = customEngine
-						}
-						
-						do {
-							try viewContext.save()
-						} catch {
-							let nsError = error as NSError
-							fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-						}
-					}
-				}
+	init(){
+		if let data = UserDefaults.standard.data(forKey: "Settings") {
+			do {
+				appState = try JSONDecoder().decode(AppState.self, from: data)
+			} catch {
+				print("Error decoding custom data: \(error)")
 			}
 		}
-#if os(iOS)
-		.navigationBarTitle("Search Engine Selection")
-#endif
+		
+		selectedSE = appState.selectedSE
+		if appState.cSEisSet {
+			cSE = appState.searchEngine
+		}
 	}
+	
+	
 	
 	func formatSearchEngineString(for unformatted: String) -> String {
 		let delimiter = "%s"
 		let output = unformatted.lowercased().components(separatedBy: delimiter)
 		return output[0]
 	}
- 
-}*/#endif
+	
+	
+	
+	func safeSE() {
+		switch selectedSE {
+			case "Google":
+				appState.searchEngine = "https://www.google.com/search?q="
+			case "Bing":
+				appState.searchEngine = "https://www.bing.com/search?q="
+			case "Yahoo":
+				appState.searchEngine = "https://search.yahoo.com/search?p="
+			case "Other":
+				appState.cSEisSet = true
+				appState.searchEngine = formatSearchEngineString(for: cSE)
+			default:
+				appState.searchEngine = "https://duckduckgo.com/?q="
+		}
+	}
+	
+	
+	
+	var body: some View {
+		VStack {
+			Form{
+				
+				Section(header: Text("Search Engine")) {
+					Picker("Select Search Engine", selection: $selectedSE ) {
+						ForEach(searchEngines, id: \.self) { engine in
+							Text(engine)
+						}
+					}
+					
+					if selectedSE == "Other" {
+						TextField("Suchurl mit dem Ende ?q=%s", text: $cSE, onCommit: safeSE)
+							.textFieldStyle(PlainTextFieldStyle())
+							.padding(.vertical, 8)
+							.padding(.horizontal)
+							.clipShape(Capsule())
+							.background(Capsule().strokeBorder(Color.accentColor))
+#if os(iOS)
+							.autocapitalization(.none)
+							.disableAutocorrection(true)
+#endif
+					}
+					
+					Button("Select Search Engine", action: {
+						safeSE()
+						appState.selectedSE = selectedSE
+						do {
+								// Encode and save the custom data to UserDefaults
+							let data = try JSONEncoder().encode(appState)
+							UserDefaults.standard.set(data, forKey: "Settings")
+						} catch {
+							print("Error encoding custom data: \(error)")
+						}
+							// Speichern der ausgewählten Suchmaschine
+					})// Laden der ausgewählten Suchmaschine
+				}
+				
+			}
+#if os(iOS)
+			.navigationBarTitle("Search Engine Settings")
+#endif
+		//
+			
+		}
+	}
+}
+

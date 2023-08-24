@@ -8,43 +8,41 @@
 import WebKit
 import SwiftUI
 import Foundation
-import CoreData
 #if os(macOS)
 import Cocoa
 #endif
 
+var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
+var selectedSideBarItem_Global: SideBarItem = .ClassSide
 @available(macOS 14.0, *)
 @available(iOS 17.0, *)
 struct ContentView: View {
-	
 	#if os(macOS)
+	
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem = .ClassSide
-	
-
 	// views
 	@State var classSideView = AnyView(ClassSideView().padding(10).background(.ultraThinMaterial).background(BlurView()))
-	@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial).background(BlurView()))
+	/*@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var timeTableView = AnyView( TimeTableView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var webUntisView = AnyView( WebUntisView().padding(10).background(.ultraThinMaterial).background(BlurView()))
-	@State var oszimtView = AnyView( OSZimtView().padding(10).background(.ultraThinMaterial).background(BlurView()))
+	@State var oszimtView = AnyView( OSZimtView().padding(10).background(.ultraThinMaterial).background(BlurView()))*/
 	@State var chatGPTView = AnyView( ChatGPTView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var discordView = AnyView(  DiscordView().padding(10).background(.ultraThinMaterial).background(BlurView()))
 	@State var wwwView = AnyView( WWWView().padding(10).background(.ultraThinMaterial).background(BlurView()))
-	//@State var settingsView = AnyView(SettingsView().padding(10).background(.ultraThinMaterial).background(BlurView()))
+	@State var settingsView = AnyView(SettingsView().frame(maxWidth: .infinity,maxHeight: .infinity).padding(10).background(.ultraThinMaterial).background(BlurView()))
 	
 #endif
 	#if os(iOS)
 		// views
 	@State var classSideView = AnyView(ClassSideView().padding(10).background(.ultraThinMaterial))
-	@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial))
+	/*@State var moodleView = AnyView(MoodleView().padding(10).background(.ultraThinMaterial))
 	@State var timeTableView = AnyView( TimeTableView().padding(10).background(.ultraThinMaterial))
 	@State var webUntisView = AnyView( WebUntisView().padding(10).background(.ultraThinMaterial))
-	@State var oszimtView = AnyView( OSZimtView().padding(10).background(.ultraThinMaterial))
-	@State var chatGPTView = AnyView( ChatGPTView().padding(10).background(.ultraThinMaterial))
+	@State var oszimtView = AnyView( OSZimtView().padding(10).background(.ultraThinMaterial))*/
 	@State var discordView = AnyView(  DiscordView().padding(10).background(.ultraThinMaterial))
 	@State var wwwView = AnyView( WWWView().padding(10).background(.ultraThinMaterial))
-		//@State var settingsView = AnyView(SettingsView().padding(10).background(.ultraThinMaterial).background(BlurView()))
+	@State var settingsView = AnyView(SettingsView().padding(10).background(.ultraThinMaterial))
 	#endif
 	
 	var body: some View {
@@ -62,7 +60,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("Klassen Webseite")
 			
-			self.moodleView
+			/*self.moodleView
 				.tabItem {
 					Text("Moodle")
 					Image(systemName: "studentdesk")
@@ -104,18 +102,7 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle("OSZ IMT Webseite")
-			
-			self.chatGPTView
-				.tabItem {
-					Text("ChatGPT")
-					Image(systemName: "message.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-				}
-				.navigationBarTitle("ChatGPT")
+				.navigationBarTitle("OSZ IMT Webseite")*/
 			
 			self.discordView
 				.tabItem {
@@ -138,7 +125,7 @@ struct ContentView: View {
 						.frame(width: 20)
 				}
 				.navigationBarTitle("Web")
-			/*self.settingsView.environment(\.managedObjectContext, viewContext)
+			self.settingsView
 				.tabItem {
 					Text("Settings")
 					Image(systemName: "gear")
@@ -147,8 +134,16 @@ struct ContentView: View {
 						.foregroundColor(Color.accentColor)
 						.frame(width: 20)
 				}
-				.navigationBarTitle("Settings")*/
+				.navigationBarTitle("Settings")
 
+		}.onAppear{
+			if let data = UserDefaults.standard.data(forKey: "Settings") {
+				do {
+					appState = try JSONDecoder().decode(AppState.self, from: data)
+				} catch {
+					print("Error decoding custom data: \(error)")
+				}
+			}
 		}
 		.edgesIgnoringSafeArea(.all)
 
@@ -176,10 +171,17 @@ struct ContentView: View {
 		.background(.ultraThinMaterial)
 		.background(BlurView())
 		.onAppear {
-			
 			if selectedSideBarItem != .ClassSide {
 				selectedSideBarItem = SideBarItem.allCases.first ?? .ClassSide
+				
 			}
+			if let data = UserDefaults.standard.data(forKey: "Settings") {
+				do {
+					appState = try JSONDecoder().decode(AppState.self, from: data)
+				} catch {
+					print("Error decoding custom data: \(error)")
+				}
+		}
 		}.navigationSplitViewStyle(.prominentDetail)
 		
 		/*	.commands {
@@ -215,23 +217,37 @@ struct ContentView: View {
 	func destinationView(for item: SideBarItem) -> AnyView {
 		switch item {
 			case .ClassSide:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return classSideView
-			case .Moodle:
+		/*	case .Moodle:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return moodleView
 			case .TimeTable:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return timeTableView
 			case .WebUntis:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return webUntisView
 			case .OSZimt:
-				return oszimtView
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
+				return oszimtView */
 			case .ChatGPT:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return chatGPTView
 			case .Discord:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
 				return discordView
 			case .WWW:
-				return AnyView(wwwView)//.environment(\.managedObjectContext, viewContext))
-			//case .Settings:
-				//return AnyView(settingsView.environment(\.managedObjectContext, viewContext))
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = selectedSideBarItem
+				return AnyView(wwwView)
 				}
 	}
 
@@ -239,50 +255,47 @@ struct ContentView: View {
 	#endif
 }
 
-#if os(macOS)
+
 
 enum SideBarItem: String, Identifiable, CaseIterable {
 	var id: String { rawValue }
 	
 	case ClassSide
-	case Moodle
+/*	case Moodle
 	case TimeTable
 	case WebUntis
-	case OSZimt
+	case OSZimt */
 	case ChatGPT
 	case Discord
 	case WWW
-	//case Settings
 	
 	var title: String {
 		switch self {
 			case .ClassSide: return "Klassen Webseite"
-			case .Moodle: return "Moodle"
+		/*	case .Moodle: return "Moodle"
 			case .TimeTable: return "Stundenplan"
 			case .WebUntis: return "WebUntis"
-			case .OSZimt: return "OSZ IMT Webseite"
+			case .OSZimt: return "OSZ IMT Webseite" */
 			case .ChatGPT: return "ChatGPT"
 			case .Discord: return "Discord"
 			case .WWW: return "Browse Web"
-			//case .Settings: return "Settings"
 		}
 	}
 	
 	var systemImage: String {
 		switch self {
 			case .ClassSide: return "doc.richtext"
-			case .Moodle: return "studentdesk"
+		/*	case .Moodle: return "studentdesk"
 			case .TimeTable: return "info.circle"
 			case .WebUntis: return "info.circle"
-			case .OSZimt: return "graduationcap.circle"
+			case .OSZimt: return "graduationcap.circle"*/
 			case .ChatGPT: return "message.circle"
 			case .Discord: return "message.badge.circle.rtl"
 			case .WWW: return "globe"
-			//case .Settings: return "gear"
 		}
 	}
 }
-
+#if os(macOS)
 struct BlurView: NSViewRepresentable {
 	func makeNSView(context: Context) -> NSVisualEffectView {
 		let view = NSVisualEffectView()
@@ -299,7 +312,7 @@ struct BlurView: NSViewRepresentable {
 
 #if os(iOS)
 struct CustomWebView: UIViewRepresentable {
-	@Binding var webView: WKWebView
+	var webView: WKWebView
 	let request: URLRequest
 	@Binding var searchText: String
 	let webViewConfiguration = WKWebViewConfiguration()
@@ -346,7 +359,8 @@ struct CustomWebView: UIViewRepresentable {
 }
 #elseif os(macOS)
 struct CustomWebView: NSViewRepresentable {
-	@Binding var webView: WKWebView
+	
+	var webView: WKWebView
 	let request: URLRequest
 	@Binding var searchText: String
 	let webViewConfiguration = WKWebViewConfiguration()
@@ -393,30 +407,38 @@ struct CustomWebView: NSViewRepresentable {
 	func updateNSView(_ nsView: WKWebView, context: Context) {}
 }
 #endif
+// Webview definition
+ let webViewConfiguration: WKWebViewConfiguration = {
+	let configuration = WKWebViewConfiguration()
+#if os(iOS)
+	 configuration.allowsInlineMediaPlayback = true
+	 configuration.allowsPictureInPictureMediaPlayback = true
+#endif
+	return configuration
+}()
+
+#if os(macOS)
+var webView = WKWebView(frame: .zero, configuration:webViewConfiguration)
+
+#endif
+//--------
 
 
 struct ClassSideView: View {
 		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText);
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText);
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor.opacity(0.0))
@@ -433,7 +455,6 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -443,7 +464,6 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -453,7 +473,6 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -463,7 +482,6 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -497,31 +515,22 @@ struct ClassSideView: View {
 	}
 }
 struct MoodleView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
-	let startURL = URL(string: "https://moodle.oszimt.de/")!
+		// Konfigurieren der WKWebViewConfiguration-Instanz
+	let startURL = URL(string: "https://moodle.oszimt.de/my/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor.opacity(0.0))
+						foregroundColor(Color.accentColor.opacity(0.0))
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -535,7 +544,6 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -545,7 +553,6 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -555,7 +562,6 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -565,7 +571,7 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
+				
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -600,29 +606,22 @@ struct MoodleView: View {
 }
 
 struct TimeTableView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
+		// Konfigurieren der WKWebViewConfiguration-Instanz
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor.opacity(0.0))
+						foregroundColor(Color.accentColor.opacity(0.0))
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -636,7 +635,6 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -646,7 +644,6 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -656,7 +653,6 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -666,7 +662,7 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
+				
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -701,30 +697,23 @@ struct TimeTableView: View {
 }
 
 struct OSZimtView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
+		// Konfigurieren der WKWebViewConfiguration-Instanz
 	let startURL = URL(string: "https://oszimt.de")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor.opacity(0.0))
+						foregroundColor(Color.accentColor.opacity(0.0))
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -738,7 +727,6 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -748,7 +736,6 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -758,7 +745,6 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -768,7 +754,7 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
+				
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -803,27 +789,18 @@ struct OSZimtView: View {
 }
 
 struct ChatGPTView: View {
-	
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State  var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://chat.openai.com/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor.opacity(0.0))
@@ -840,7 +817,6 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -850,7 +826,6 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -860,7 +835,6 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -870,7 +844,6 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -878,7 +851,7 @@ struct ChatGPTView: View {
 			
 			
 		}
-
+		
 	}
 	func goBack() {
 		webView.goBack()
@@ -896,7 +869,7 @@ struct ChatGPTView: View {
 		print("rickrol")
 			// Implement go home logic
 		webView.load(URLRequest(url: rickrollURL))
-}
+	}
 	
 	func reload() {
 			// Implement reload logic
@@ -907,33 +880,19 @@ struct ChatGPTView: View {
 
 
 struct WWWView: View {
-	/*@Environment(\.managedObjectContext) private var viewContext
-	 
-	 @FetchRequest(
-	 sortDescriptors: [NSSortDescriptor(keyPath: \SearchEngineSettings.selectedSearchEngine, ascending: true)],
-	 animation: .default)
-	 private var searchEngineSettings: FetchedResults<SearchEngineSettings>*/
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor.opacity(0.0))
@@ -970,7 +929,6 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -980,7 +938,6 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -990,7 +947,6 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -1000,7 +956,6 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
 				
 				
 			}
@@ -1048,7 +1003,7 @@ struct WWWView: View {
 				} else {
 						// Perform a Bing search
 					if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-					   let url = URL(string: "https://duckduckgo.com/?q=\(encodedSearchText)") {
+					   let url = URL(string: "\(appState.searchEngine)\(encodedSearchText)") {
 						webView.load(URLRequest(url: url))
 						
 					}
@@ -1086,7 +1041,7 @@ struct WWWView: View {
 		print("rickrol")
 			// Implement go home logic
 		webView.load(URLRequest(url: rickrollURL))
-}
+	}
 	
 	func reload() {
 			// Implement reload logic
@@ -1095,27 +1050,19 @@ struct WWWView: View {
 }
 
 struct WebUntisView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
-
+	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor.opacity(0.0))
@@ -1132,7 +1079,6 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -1142,7 +1088,6 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -1152,7 +1097,6 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -1162,7 +1106,6 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -1170,7 +1113,7 @@ struct WebUntisView: View {
 			
 			
 		}
-
+		
 	}
 	func goBack() {
 		webView.goBack()
@@ -1188,7 +1131,7 @@ struct WebUntisView: View {
 		print("rickrol")
 			// Implement go home logic
 		webView.load(URLRequest(url: rickrollURL))
-}
+	}
 	
 	func reload() {
 			// Implement reload logic
@@ -1197,27 +1140,19 @@ struct WebUntisView: View {
 }
 
 struct DiscordView: View {
-		// Konfigurieren der WKWebViewConfiguration-Instanz
-	static let webViewConfiguration: WKWebViewConfiguration = {
-		let configuration = WKWebViewConfiguration()
 #if os(iOS)
-		configuration.allowsInlineMediaPlayback = true
-		configuration.allowsPictureInPictureMediaPlayback = true
+	@State var webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
 #endif
-		return configuration
-	}()
-	
-	@State var webView = WKWebView(frame: .zero, configuration: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ptb.discord.com/login")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
-
+	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: $webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webView, request: URLRequest(url: startURL), searchText: $searchText)
 			HStack {
 				Button(action: rickrol) {
-					Image(systemName: "")
+					Image(systemName: "gear")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundColor(Color.accentColor.opacity(0.0))
@@ -1234,7 +1169,6 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -1244,7 +1178,6 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
 				
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
@@ -1254,7 +1187,6 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
 				
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
@@ -1264,7 +1196,7 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("r", modifiers: .command)
+				
 				
 			}
 			.aspectRatio(contentMode: .fit)
@@ -1272,7 +1204,7 @@ struct DiscordView: View {
 			
 			
 		}
-
+		
 	}
 	func goBack() {
 		webView.goBack()
@@ -1290,7 +1222,7 @@ struct DiscordView: View {
 		print("rickrol")
 			// Implement go home logic
 		webView.load(URLRequest(url: rickrollURL))
-}
+	}
 	
 	func reload() {
 			// Implement reload logic
