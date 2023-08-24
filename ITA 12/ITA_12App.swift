@@ -23,7 +23,14 @@ struct ITA_12App: App {
 	private var minHeight: CGFloat = 0.0
 	private var idealWidth: CGFloat = 0.0
 	private var idealHeight: CGFloat = 0.0
-	
+	let classSideView = ClassSideView()
+	let moodleView = MoodleView()
+	let timetableView = TimeTableView()
+	let webUntisView = WebUntisView()
+	let oszimtView = OSZimtView()
+	let chatGPTView = ChatGPTView()
+	let discodView = DiscordView()
+	let wwwView = WWWView()
 	
 	 init() {
 		 
@@ -44,51 +51,128 @@ struct ITA_12App: App {
 		
 		
 	}
-	
-	
-	func getCurrentView(for item: SideBarItem) -> URL {
-		switch item {
-			/*case .Moodle:
-				return URL(string: "https://moodle.oszimt.de/my/")!
-			case .TimeTable:
-				return URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
-			case .WebUntis:
-				return URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
-			case .OSZimt:
-				return URL(string: "https://chat.openai.com/")!*/
-			case .ChatGPT:
-				return URL(string: "https://www.oszimt.de/")!
-			case .Discord:
-				return URL(string: "https://ptb.discord.com/login")!
-			default:
-				return URL(string: "https://ita12docoszimt.serveblog.net/")!
-		}
-	}
+	/*
 	
 	func goBack() {
-		webView.goBack()
+		switch selectedSideBarItem_Global {
+			case .ClassSide:
+				print(selectedSideBarItem_Global.title)
+				classSideView.goBack()
+			case .Moodle:
+				print(selectedSideBarItem_Global.title)
+				moodleView.goBack()
+			case .TimeTable:
+				print(selectedSideBarItem_Global.title)
+				timetableView.goBack()
+			case .WebUntis:
+				print(selectedSideBarItem_Global.title)
+				webUntisView.goBack()
+			case .OSZimt:
+				print(selectedSideBarItem_Global.title)
+				oszimtView.goBack()
+			case .ChatGPT:
+				print(selectedSideBarItem_Global.title)
+				chatGPTView.goBack()
+			case .Discord:
+				print(selectedSideBarItem_Global.title)
+				discodView.goBack()
+			case .WWW:
+				print(selectedSideBarItem_Global.title)
+				wwwView.goBack()
+				
+		}
 	}
 	func goForward() {
 			// Implement go forward logic
-		webView.goForward()
+		switch selectedSideBarItem_Global {
+			case .ClassSide:
+				print(selectedSideBarItem_Global.title)
+				classSideView.goForward()
+			case .Moodle:
+				print(selectedSideBarItem_Global.title)
+				moodleView.goForward()
+			case .TimeTable:
+				print(selectedSideBarItem_Global.title)
+				timetableView.goForward()
+			case .WebUntis:
+				print(selectedSideBarItem_Global.title)
+				webUntisView.goForward()
+			case .OSZimt:
+				print(selectedSideBarItem_Global.title)
+				oszimtView.goForward()
+			case .ChatGPT:
+				print(selectedSideBarItem_Global.title)
+				chatGPTView.goForward()
+			case .Discord:
+				print(selectedSideBarItem_Global.title)
+				discodView.goForward()
+			case .WWW:
+				print(selectedSideBarItem_Global.title)
+				wwwView.goForward()
+		}
 	}
 	
-	func goHome() {
-			// Implement go home logic
-		webView.load(URLRequest(url: getCurrentView(for: selectedSideBarItem_Global)))
-	}
-	func rickrol() {
-		print("rickrol")
-			// Implement go home logic
-		webView.load(URLRequest(url: rickrollURL))
-	}
+		func goHome() {
+				// Implement go home logic
+			switch selectedSideBarItem_Global {
+				case .ClassSide:
+					print(selectedSideBarItem_Global.title)
+					classSideView.goHome()
+				case .Moodle:
+					print(selectedSideBarItem_Global.title)
+					moodleView.goHome()
+				case .TimeTable:
+					print(selectedSideBarItem_Global.title)
+					timetableView.goHome()
+				case .WebUntis:
+					print(selectedSideBarItem_Global.title)
+					webUntisView.goHome()
+				case .OSZimt:
+					print(selectedSideBarItem_Global.title)
+					oszimtView.goHome()
+				case .ChatGPT:
+					print(selectedSideBarItem_Global.title)
+					chatGPTView.goHome()
+				case .Discord:
+					print(selectedSideBarItem_Global.title)
+					discodView.goHome()
+				case .WWW:
+					print(selectedSideBarItem_Global.title)
+					wwwView.goHome()
+			}
+		}
 	
-	func reload() {
-			// Implement reload logic
-		webView.reload()
-	}
-	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
-	@State private var searchText = ""
+		func reload() {
+				// Implement reload logic
+			switch selectedSideBarItem_Global {
+				case .ClassSide:
+					print(selectedSideBarItem_Global.title)
+					classSideView.reload()
+				case .Moodle:
+					print(selectedSideBarItem_Global.title)
+					moodleView.reload()
+				case .TimeTable:
+					print(selectedSideBarItem_Global.title)
+					timetableView.reload()
+					print(selectedSideBarItem_Global.title)
+				case .WebUntis:
+					webUntisView.reload()
+					print(selectedSideBarItem_Global.title)
+				case .OSZimt:
+					oszimtView.reload()
+					print(selectedSideBarItem_Global.title)
+				case .ChatGPT:
+					chatGPTView.reload()
+					print(selectedSideBarItem_Global.title)
+				case .Discord:
+					discodView.reload()
+					print(selectedSideBarItem_Global.title)
+				case .WWW:
+					print(selectedSideBarItem_Global.title)
+					wwwView.reload()
+			}
+		}
+	 */
 #endif
 
 	
@@ -96,10 +180,13 @@ struct ITA_12App: App {
 		WindowGroup {
 
 			ContentView()
-
-#if os(macOS)
+			#if os(macOS)
 				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(.ultraThinMaterial).background(BlurView())
-			
+			#elseif os(iOS)
+				.background(
+					.ultraThinMaterial
+				)
+				.background(Color.black, ignoresSafeAreaEdges: .all)
 			#endif
 		}
 		#if os(macOS)
@@ -113,19 +200,45 @@ struct ITA_12App: App {
 					Text("Launch at login")
 				}
 			}
-			CommandGroup(replacing:.undoRedo) {
-				Button("Go Back", action: goBack)
+		/*	CommandGroup(replacing:.undoRedo) {
+				Button(action: goBack) {
+					Image(systemName: "arrowshape.turn.up.left.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+					Text("Go Back")
+				}
 				.keyboardShortcut("ö", modifiers: .command)
 				
-				Button("Go Forword", action: goForward)
+				Button(action: goForward) {
+					Image(systemName: "arrowshape.turn.up.right.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+					Text("Go Forward")
+				}
 				.keyboardShortcut("ä", modifiers: .command)
-				
-				Button("Go Home", action: goHome)
+				Button(action: goHome) {
+					Image(systemName: "house.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+					Text("Go Home")
+				}
 				.keyboardShortcut("ü", modifiers: .command)
 				
-				Button("Reload", action: reload)
+					Button(action: reload) {
+						Image(systemName: "arrow.clockwise.circle")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundColor(Color.accentColor)
+							.frame(width: 20)
+						Text("Reload")
+					}
 				.keyboardShortcut("r", modifiers: .command)
-			}
+			}*/
 					
 				
 			}
@@ -135,7 +248,6 @@ struct ITA_12App: App {
 		#endif
 	}
 }
-
 
 class AppState: ObservableObject, Codable {
 	public var minFactor: CGFloat = 0.5
