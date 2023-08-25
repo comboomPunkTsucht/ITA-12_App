@@ -393,10 +393,10 @@ struct ContentView: View {
 			BlurView()
 		)
 		.onAppear {
-			if selectedSideBarItem != .ClassSide {
-				selectedSideBarItem = SideBarItem.allCases.first ?? .ClassSide
+			selectedSideBarItem = .ClassSide
+			selectedSideBarItem_Global = .ClassSide
 				
-			}
+			
 			if let data = UserDefaults.standard.data(
 				forKey: "Settings"
 			) {
@@ -694,7 +694,7 @@ struct ClassSideView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -704,8 +704,9 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("ö", modifiers: .command)
-				
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -714,8 +715,9 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("ä", modifiers: .command)
-				
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -724,8 +726,9 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("ü", modifiers: .command)
-				
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -734,15 +737,44 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .ClassSide
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .ClassSide_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .ClassSide_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .ClassSide_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .ClassSide_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -765,30 +797,6 @@ struct ClassSideView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 struct MoodleView: View {
@@ -820,7 +828,7 @@ struct MoodleView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -830,8 +838,9 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -840,8 +849,9 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -850,8 +860,9 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -860,15 +871,44 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .Moodle
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .Moodle_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .Moodle_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .Moodle_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .Moodle_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -891,30 +931,6 @@ struct MoodleView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 
@@ -945,7 +961,7 @@ struct TimeTableView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -955,8 +971,9 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -965,8 +982,9 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -975,8 +993,9 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -985,15 +1004,44 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .TimeTable
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .TimeTable_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .TimeTable_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .TimeTable_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .TimeTable_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -1016,30 +1064,6 @@ struct TimeTableView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 
@@ -1071,7 +1095,7 @@ struct OSZimtView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1081,8 +1105,9 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -1091,8 +1116,9 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -1101,8 +1127,9 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -1111,15 +1138,44 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .OSZimt
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .OSZimt_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .OSZimt_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .OSZimt_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .OSZimt_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -1142,30 +1198,6 @@ struct OSZimtView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 
@@ -1197,7 +1229,7 @@ struct ChatGPTView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1207,8 +1239,9 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -1217,8 +1250,9 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -1227,8 +1261,9 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -1237,15 +1272,44 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .ChatGPT
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .ChatGPT_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .ChatGPT_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .ChatGPT_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .ChatGPT_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -1268,30 +1332,6 @@ struct ChatGPTView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 
@@ -1415,7 +1455,7 @@ struct WWWView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				
 				TextField("Suche", text: $searchText, onCommit: search)
 					.textFieldStyle(PlainTextFieldStyle())
@@ -1445,8 +1485,9 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -1455,8 +1496,9 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -1465,8 +1507,9 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -1475,19 +1518,46 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
-				
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .WWW
+			startTimer()
 		}
-		
-		
-		
 	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .WWW_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .WWW_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .WWW_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .WWW_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
+	}
+
 	func search() {
 		webViewManager.search(for: searchText)
 	}
@@ -1514,30 +1584,7 @@ struct WWWView: View {
 			// Implement reload logic
 		webViewManager.reload()
 	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
 	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
-	}
 }
 
 struct WebUntisView: View {
@@ -1568,7 +1615,7 @@ struct WebUntisView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1578,8 +1625,9 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -1588,8 +1636,9 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -1598,8 +1647,9 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -1608,15 +1658,44 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .WebUntis
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .WebUntis_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .WebUntis_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .WebUntis_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .WebUntis_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -1639,30 +1718,6 @@ struct WebUntisView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 
@@ -1694,7 +1749,7 @@ struct DiscordView: View {
 						.frame(width: 0)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: [.command,.shift])
+				.keyboardShortcut("f", modifiers: [.command, .shift])
 				Spacer()
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
@@ -1704,8 +1759,9 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ö", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut("<", modifiers: .command)
+#endif
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
@@ -1714,8 +1770,9 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ä", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(">", modifiers: .command)
+#endif
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -1724,8 +1781,9 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut("ü", modifiers: .command)
-				
+#if os(iOS)
+				.keyboardShortcut(".", modifiers: .command)
+#endif
 				Button(action: reload) {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
@@ -1734,15 +1792,44 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+#if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
+#endif
 				
 			}
 			.aspectRatio(contentMode: .fit)
 			.padding([.horizontal, .bottom])
 			
 			
+		}.onAppear {
+			selectedSideBarItem_Global = .Discord
+			startTimer()
 		}
-		
+	}
+	
+	func startTimer() {
+		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+			switch menubarAktions {
+				case .Discord_goBack:
+					print("goBack")
+					goBack()
+					menubarAktions = .nothing
+				case .Discord_goForword:
+					print("goForword")
+					goForward()
+					menubarAktions = .nothing
+				case .Discord_goHome:
+					print("goHome")
+					goHome()
+					menubarAktions = .nothing
+				case .Discord_reload:
+					print("reload")
+					reload()
+					menubarAktions = .nothing
+				default:
+					break
+			}
+		}
 	}
 	func goBack() {
 		webViewManager.goBack()
@@ -1765,30 +1852,6 @@ struct DiscordView: View {
 	func reload() {
 			// Implement reload logic
 		webViewManager.reload()
-	}
-	var goBackAction: () -> Void {
-		return {
-			self.goBack() // Call goBack function
-		}
-	}
-	
-	var goForwardAction: () -> Void {
-		return {
-			self.goForward() // Call goForward function
-		}
-	}
-	
-	var goHomeAction: () -> Void {
-		return {
-			self.goHome() // Call goHome function
-		}
-	}
-	
-	var reloadAction: () -> Void {
-		return {
-			print("calling the real")
-			self.reload() // Call reload function
-		}
 	}
 }
 

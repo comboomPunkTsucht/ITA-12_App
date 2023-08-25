@@ -23,14 +23,6 @@ struct ITA_12App: App {
 	private var minHeight: CGFloat = 0.0
 	private var idealWidth: CGFloat = 0.0
 	private var idealHeight: CGFloat = 0.0
-	let classSideView = ClassSideView()
-	let moodleView = MoodleView()
-	let timetableView = TimeTableView()
-	let webUntisView = WebUntisView()
-	let oszimtView = OSZimtView()
-	let chatGPTView = ChatGPTView()
-	let discodView = DiscordView()
-	let wwwView = WWWView()
 	
 	 init() {
 		 
@@ -51,128 +43,128 @@ struct ITA_12App: App {
 		
 		
 	}
-	/*
+	
 	
 	func goBack() {
 		switch selectedSideBarItem_Global {
-			case .ClassSide:
-				print(selectedSideBarItem_Global.title)
-				classSideView.goBack()
 			case .Moodle:
 				print(selectedSideBarItem_Global.title)
-				moodleView.goBack()
+				menubarAktions = .Moodle_goBack
 			case .TimeTable:
 				print(selectedSideBarItem_Global.title)
-				timetableView.goBack()
+				menubarAktions = .TimeTable_goBack
 			case .WebUntis:
 				print(selectedSideBarItem_Global.title)
-				webUntisView.goBack()
+				menubarAktions = .WebUntis_goBack
 			case .OSZimt:
 				print(selectedSideBarItem_Global.title)
-				oszimtView.goBack()
+				menubarAktions = .OSZimt_goBack
 			case .ChatGPT:
 				print(selectedSideBarItem_Global.title)
-				chatGPTView.goBack()
+				menubarAktions = .ChatGPT_goBack
 			case .Discord:
 				print(selectedSideBarItem_Global.title)
-				discodView.goBack()
+				menubarAktions = .Discord_goBack
 			case .WWW:
 				print(selectedSideBarItem_Global.title)
-				wwwView.goBack()
+				menubarAktions = .WWW_goBack
+			default:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .ClassSide_goBack
 				
 		}
 	}
 	func goForward() {
 			// Implement go forward logic
 		switch selectedSideBarItem_Global {
-			case .ClassSide:
-				print(selectedSideBarItem_Global.title)
-				classSideView.goForward()
 			case .Moodle:
 				print(selectedSideBarItem_Global.title)
-				moodleView.goForward()
+				menubarAktions = .Moodle_goForword
 			case .TimeTable:
 				print(selectedSideBarItem_Global.title)
-				timetableView.goForward()
+				menubarAktions = .TimeTable_goForword
 			case .WebUntis:
 				print(selectedSideBarItem_Global.title)
-				webUntisView.goForward()
+				menubarAktions = .WebUntis_goForword
 			case .OSZimt:
 				print(selectedSideBarItem_Global.title)
-				oszimtView.goForward()
+				menubarAktions = .OSZimt_goForword
 			case .ChatGPT:
 				print(selectedSideBarItem_Global.title)
-				chatGPTView.goForward()
+				menubarAktions = .ChatGPT_goForword
 			case .Discord:
 				print(selectedSideBarItem_Global.title)
-				discodView.goForward()
+				menubarAktions = .Discord_goForword
 			case .WWW:
 				print(selectedSideBarItem_Global.title)
-				wwwView.goForward()
+				menubarAktions = .WWW_goForword
+			default:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .ClassSide_goForword
 		}
 	}
 	
 		func goHome() {
 				// Implement go home logic
 			switch selectedSideBarItem_Global {
-				case .ClassSide:
-					print(selectedSideBarItem_Global.title)
-					classSideView.goHome()
 				case .Moodle:
 					print(selectedSideBarItem_Global.title)
-					moodleView.goHome()
+					menubarAktions = .Moodle_goHome
 				case .TimeTable:
 					print(selectedSideBarItem_Global.title)
-					timetableView.goHome()
+					menubarAktions = .TimeTable_goHome
 				case .WebUntis:
 					print(selectedSideBarItem_Global.title)
-					webUntisView.goHome()
+					menubarAktions = .WebUntis_goHome
 				case .OSZimt:
 					print(selectedSideBarItem_Global.title)
-					oszimtView.goHome()
+					menubarAktions = .OSZimt_goHome
 				case .ChatGPT:
 					print(selectedSideBarItem_Global.title)
-					chatGPTView.goHome()
+					menubarAktions = .ChatGPT_goHome
 				case .Discord:
 					print(selectedSideBarItem_Global.title)
-					discodView.goHome()
+					menubarAktions = .Discord_goHome
 				case .WWW:
 					print(selectedSideBarItem_Global.title)
-					wwwView.goHome()
+					menubarAktions = .WWW_goHome
+				default:
+					print(selectedSideBarItem_Global.title)
+					menubarAktions = .ClassSide_goHome
 			}
 		}
 	
 		func reload() {
 				// Implement reload logic
 			switch selectedSideBarItem_Global {
-				case .ClassSide:
-					print(selectedSideBarItem_Global.title)
-					classSideView.reload()
 				case .Moodle:
 					print(selectedSideBarItem_Global.title)
-					moodleView.reload()
+					menubarAktions = .Moodle_reload
 				case .TimeTable:
 					print(selectedSideBarItem_Global.title)
-					timetableView.reload()
+					menubarAktions = .TimeTable_reload
 					print(selectedSideBarItem_Global.title)
 				case .WebUntis:
-					webUntisView.reload()
+					menubarAktions = .WebUntis_reload
 					print(selectedSideBarItem_Global.title)
 				case .OSZimt:
-					oszimtView.reload()
+					menubarAktions = .OSZimt_reload
 					print(selectedSideBarItem_Global.title)
 				case .ChatGPT:
-					chatGPTView.reload()
+					menubarAktions = .ChatGPT_reload
 					print(selectedSideBarItem_Global.title)
 				case .Discord:
-					discodView.reload()
+					menubarAktions = .Discord_reload
 					print(selectedSideBarItem_Global.title)
 				case .WWW:
 					print(selectedSideBarItem_Global.title)
-					wwwView.reload()
+					menubarAktions = .WWW_reload
+				default:
+					print(selectedSideBarItem_Global.title)
+					menubarAktions = .ClassSide_reload
 			}
 		}
-	 */
+	 
 #endif
 
 	
@@ -186,7 +178,9 @@ struct ITA_12App: App {
 				.background(
 					.ultraThinMaterial
 				)
-				.background(Color.black, ignoresSafeAreaEdges: .all)
+				.background(
+					Color.black
+				)
 			#endif
 		}
 		#if os(macOS)
@@ -200,7 +194,7 @@ struct ITA_12App: App {
 					Text("Launch at login")
 				}
 			}
-		/*	CommandGroup(replacing:.undoRedo) {
+			CommandGroup(before: .toolbar) {
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
@@ -209,7 +203,7 @@ struct ITA_12App: App {
 						.frame(width: 20)
 					Text("Go Back")
 				}
-				.keyboardShortcut("ö", modifiers: .command)
+				.keyboardShortcut("<", modifiers: .command)
 				
 				Button(action: goForward) {
 					Image(systemName: "arrowshape.turn.up.right.circle")
@@ -219,7 +213,7 @@ struct ITA_12App: App {
 						.frame(width: 20)
 					Text("Go Forward")
 				}
-				.keyboardShortcut("ä", modifiers: .command)
+				.keyboardShortcut(">", modifiers: .command)
 				Button(action: goHome) {
 					Image(systemName: "house.circle")
 						.resizable()
@@ -227,7 +221,7 @@ struct ITA_12App: App {
 						.foregroundColor(Color.accentColor)
 					Text("Go Home")
 				}
-				.keyboardShortcut("ü", modifiers: .command)
+				.keyboardShortcut(".", modifiers: .command)
 				
 					Button(action: reload) {
 						Image(systemName: "arrow.clockwise.circle")
@@ -238,7 +232,8 @@ struct ITA_12App: App {
 						Text("Reload")
 					}
 				.keyboardShortcut("r", modifiers: .command)
-			}*/
+				Divider()
+			}
 					
 				
 			}
@@ -248,6 +243,49 @@ struct ITA_12App: App {
 		#endif
 	}
 }
+var menubarAktions: MenubarAktions = .nothing
+enum MenubarAktions: String, Identifiable, CaseIterable {
+	var id: String {
+		rawValue
+	}
+	case ClassSide_goBack
+	case ClassSide_goForword
+	case ClassSide_goHome
+	case ClassSide_reload
+	case Moodle_goBack
+	case Moodle_goForword
+	case Moodle_goHome
+	case Moodle_reload
+	case TimeTable_goBack
+	case TimeTable_goForword
+	case TimeTable_goHome
+	case TimeTable_reload
+	case WebUntis_goBack
+	case WebUntis_goForword
+	case WebUntis_goHome
+	case WebUntis_reload
+	case OSZimt_goBack
+	case OSZimt_goForword
+	case OSZimt_goHome
+	case OSZimt_reload
+	case ChatGPT_goBack
+	case ChatGPT_goForword
+	case ChatGPT_goHome
+	case ChatGPT_reload
+	case Discord_goBack
+	case Discord_goForword
+	case Discord_goHome
+	case Discord_reload
+	case WWW_goBack
+	case WWW_goForword
+	case WWW_goHome
+	case WWW_reload
+	case nothing
+	
+	
+	
+}
+
 
 class AppState: ObservableObject, Codable {
 	public var minFactor: CGFloat = 0.5
