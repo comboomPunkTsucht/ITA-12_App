@@ -100,18 +100,6 @@ struct ContentView: View {
 			BlurView()
 		)
 	)
-	@State var settingsView = AnyView(
-		SettingsView().frame(
-			maxWidth: .infinity,
-			maxHeight: .infinity
-		).padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
 	
 #endif
 #if os(iOS)
@@ -121,56 +109,72 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+			
 	)
 	@State var moodleView = AnyView(
 		MoodleView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var timeTableView = AnyView(
 		TimeTableView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var webUntisView = AnyView(
 		WebUntisView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var oszimtView = AnyView(
 		OSZimtView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var discordView = AnyView(
 		DiscordView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var wwwView = AnyView(
 		WWWView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 	@State var settingsView = AnyView(
 		SettingsView().padding(
 			10
 		).background(
 			.ultraThinMaterial
-		)
+		).background(
+			Color.black)
+		
 	)
 #endif
 	
@@ -178,7 +182,7 @@ struct ContentView: View {
 		
 #if os(iOS)
 		TabView {
-			self.classSideView
+			self.classSideView.background(.black)
 				.tabItem {
 					Text(
 						"Klassen Webseite"
@@ -201,7 +205,7 @@ struct ContentView: View {
 					"Klassen Webseite"
 				)
 			
-			self.moodleView
+			self.moodleView.background(.black)
 				.tabItem {
 					Text("Moodle")
 					Image(systemName: "studentdesk")
@@ -212,7 +216,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("Moodle")
 			
-			self.timeTableView
+			self.timeTableView.background(.black)
 				.tabItem {
 					Text("Stundenplan")
 					Image(systemName: "info.circle")
@@ -223,7 +227,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("Stundenplan")
 			
-			self.webUntisView
+			self.webUntisView.background(.black)
 				.tabItem {
 					Text("WebUntis")
 					Image(systemName: "info.circle")
@@ -234,7 +238,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("WebUntis")
 			
-			self.oszimtView
+			self.oszimtView.background(.black)
 				.tabItem {
 					Text("OSZ IMT Website")
 					Image(systemName: "graduationcap.circle")
@@ -245,7 +249,7 @@ struct ContentView: View {
 				}
 				.navigationBarTitle("OSZ IMT Webseite")
 			
-			self.discordView
+			self.discordView.background(.black)
 				.tabItem {
 					Text(
 						"Discord"
@@ -268,7 +272,7 @@ struct ContentView: View {
 					"Discord"
 				)
 			
-			self.wwwView//.environment(\.managedObjectContext, viewContext)
+			self.wwwView.background(.black)
 				.tabItem {
 					Text(
 						"Browse Web"
@@ -290,7 +294,8 @@ struct ContentView: View {
 				.navigationBarTitle(
 					"Web"
 				)
-			self.settingsView
+			self.settingsView.background(.black)
+			
 				.tabItem {
 					Text(
 						"Settings"
@@ -313,23 +318,7 @@ struct ContentView: View {
 					"Settings"
 				)
 			
-		}.onAppear{
-			if let data = UserDefaults.standard.data(
-				forKey: "Settings"
-			) {
-				do {
-					appState = try JSONDecoder().decode(
-						AppState.self,
-						from: data
-					)
-				} catch {
-					print(
-						"Error decoding custom data: \(error)"
-					)
-				}
-			}
-		}
-		
+		}.background(.black)
 		
 		
 #elseif os(macOS)
@@ -395,22 +384,6 @@ struct ContentView: View {
 		.onAppear {
 			selectedSideBarItem = .ClassSide
 			selectedSideBarItem_Global = .ClassSide
-				
-			
-			if let data = UserDefaults.standard.data(
-				forKey: "Settings"
-			) {
-				do {
-					appState = try JSONDecoder().decode(
-						AppState.self,
-						from: data
-					)
-				} catch {
-					print(
-						"Error decoding custom data: \(error)"
-					)
-				}
-			}
 		}.navigationSplitViewStyle(
 			.prominentDetail
 		)
@@ -677,6 +650,7 @@ struct ClassSideView: View {
 		return configuration
 	}()
 	
+	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
@@ -809,7 +783,6 @@ struct MoodleView: View {
 #endif
 		return configuration
 	}()
-	
 	
 	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
@@ -945,6 +918,7 @@ struct TimeTableView: View {
 		return configuration
 	}()
 	
+	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
@@ -1077,6 +1051,7 @@ struct OSZimtView: View {
 #endif
 		return configuration
 	}()
+	
 	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://oszimt.de")!
@@ -1213,6 +1188,7 @@ struct ChatGPTView: View {
 		return configuration
 	}()
 	
+	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://chat.openai.com/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
@@ -1337,8 +1313,9 @@ struct ChatGPTView: View {
 
 class WebViewManager: ObservableObject {
 	@Published var webView: WKWebView
+	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
-	init(for configuration:WKWebViewConfiguration) {
+	init(for configuration: WKWebViewConfiguration) {
 		self.webView = WKWebView(frame: .zero, configuration: configuration)
 	}
 	
@@ -1371,24 +1348,22 @@ class WebViewManager: ObservableObject {
 				print("The search bar is empty")
 			} else {
 					// Check if the search text has an HTTP/HTTPS protocol
-				if let urlWithProtocol = addProtocolToURL(searchText), urlWithProtocol.absoluteString.lowercased().hasPrefix("http://") || urlWithProtocol.absoluteString.lowercased().hasPrefix("https://") {
+				if let urlWithProtocol = addProtocolToURL(searchText),
+				   urlWithProtocol.absoluteString.lowercased().hasPrefix("http://") || urlWithProtocol.absoluteString.lowercased().hasPrefix("https://") {
 						// If the search text matches a URL, add the protocol and load the URL
 					webView.load(URLRequest(url: urlWithProtocol))
 				} else {
-						// Perform a Bing search
-					if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-					   let url = URL(
-						string: "\(appState.searchEngine)\(encodedSearchText)"
-					   ) {
-						webView.load(URLRequest(url: url))
-						
+						// Perform a search using the specified search engine or DuckDuckGo as a fallback
+					if let encodedSearchText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+						let searchURLString = "\(searchEngine ?? "https://duckduckgo.com/?q=")\(encodedSearchText)"
+						if let url = URL(string: searchURLString) {
+							webView.load(URLRequest(url: url))
+						}
 					}
 				}
 			}
 		}
-		
 	}
-	
 	
 	func addProtocolToURL(_ urlString: String) -> URL? {
 		if let url = URL(string: urlString), url.scheme != nil {
@@ -1429,6 +1404,7 @@ class WebViewManager: ObservableObject {
 }
 
 struct WWWView: View {
+	
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
 #if os(iOS)
@@ -1437,6 +1413,7 @@ struct WWWView: View {
 #endif
 		return configuration
 	}()
+	
 	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
@@ -1598,6 +1575,7 @@ struct WebUntisView: View {
 		return configuration
 	}()
 	
+	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
@@ -1731,6 +1709,7 @@ struct DiscordView: View {
 #endif
 		return configuration
 	}()
+	
 	
 	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ptb.discord.com/login")!

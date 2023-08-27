@@ -11,11 +11,11 @@ import SwiftUI
 //import LaunchAtLogin
 
 class AppDeligate: NSObject, NSApplicationDelegate {
+	var appState: AppState = AppState()
 	var statusITem:NSStatusItem!
 	let popover = NSPopover()
 	var statusMenu: NSMenu!
 	private let appName: String = "ITA 12"
-	@State private var appState: AppState = AppState()
 	@State var contentView = AnyView(ContentView())
 	//@State private var launchAtLogin = LaunchAtLogin.isEnabled
 	

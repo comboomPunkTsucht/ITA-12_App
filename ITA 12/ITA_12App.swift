@@ -9,13 +9,13 @@ import SwiftUI
 #if os(macOS)
 import LaunchAtLogin
 #endif
-var appState: AppState = AppState()
+
 @main
 struct ITA_12App: App {
 	
 	#if os(macOS)
 	@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
-	
+	var appState: AppState = AppState()
 	@State private var screenWidth: CGFloat
 	@State private var screenHeight: CGFloat
 	
@@ -25,8 +25,6 @@ struct ITA_12App: App {
 	private var idealHeight: CGFloat = 0.0
 	
 	 init() {
-		 
-			 
 			// Calculate initial screen width and height
 		let initialScreenWidth = NSScreen.main?.frame.size.width ?? 1280
 		let initialScreenHeight = NSScreen.main?.frame.size.height ?? 720
@@ -36,12 +34,11 @@ struct ITA_12App: App {
 		_screenHeight = State(initialValue: initialScreenHeight)
 		
 			 // Initialize minWidth and minHeight using the calculated values
+		 
 		 minWidth = screenWidth * appState.minFactor
 		 minHeight = screenHeight * appState.minFactor
 		 idealWidth = screenWidth * appState.idealFactor
 		 idealHeight = screenHeight * appState.idealFactor
-		
-		
 	}
 	
 	
@@ -170,22 +167,29 @@ struct ITA_12App: App {
 	
 	var body: some Scene {
 		WindowGroup {
-
 			ContentView()
-			#if os(macOS)
-				.frame(minWidth: minWidth,idealWidth: idealWidth,maxWidth: .infinity,minHeight: minHeight,idealHeight: idealHeight,maxHeight: .infinity).background(.ultraThinMaterial).background(BlurView())
-			#elseif os(iOS)
-				.background(
-					.ultraThinMaterial
+#if os(macOS)
+				.frame(
+					minWidth: minWidth,
+					idealWidth: idealWidth,
+					maxWidth: .infinity,
+					minHeight: minHeight,
+					idealHeight: idealHeight,
+					maxHeight: .infinity
 				)
+				.background(.ultraThinMaterial)
+				.background(BlurView())
+#elseif os(iOS)
 				.background(
 					Color.black
 				)
-			#endif
+#endif
 		}
+
 		#if os(macOS)
 		Settings{
-			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: 600,minHeight: 100,idealHeight: 100,maxHeight: 150).background(.ultraThinMaterial).background(BlurView())
+			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: 600,minHeight: 100,idealHeight: 100,maxHeight: 150).background(.ultraThinMaterial)
+				.background(BlurView())
 		}
 		.commands {
 			CommandGroup(after:.appInfo) {
@@ -288,36 +292,28 @@ enum MenubarAktions: String, Identifiable, CaseIterable {
 
 
 class AppState: ObservableObject, Codable {
-	public var minFactor: CGFloat = 0.5
-	public var idealFactor: CGFloat = 0.75
-	public var searchEngine: String = "https://duckduckgo.com/?q="
-	public var selectedSE:String = "DuckDuckGo"
-	public var cSEisSet: Bool = false
+	public var minFactor: CGFloat
+	public var idealFactor: CGFloat
+	
+	init() {
+		minFactor = 0.5
+		idealFactor = 0.75
+	}
 }
 struct SettingsView: View {
+	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
-	let aColors = ["Blau", "Lila", "Rosa", "Rot", "Orange", "Gelb", "Grün", "Graphit"]
 	
-	@State private var selectedSE: String = "DuckDuckGo"
-	@State private var cSE: String = ""
+	@AppStorage("ITA 12_selectedSE") var selectedSEIndex: Int = 2  // Default to "DuckDuckGo" (index 2)
+	@AppStorage("ITA 12_cSE") var cSE: String?
+	@AppStorage("ITA 12_cSEisSet") var cSEisSet: Bool?
 	
-	init(){
-		if let data = UserDefaults.standard.data(forKey: "Settings") {
-			do {
-				appState = try JSONDecoder().decode(AppState.self, from: data)
-			} catch {
-				print("Error decoding custom data: \(error)")
-			}
-		}
-		
-		selectedSE = appState.selectedSE
-		if appState.cSEisSet {
-			cSE = appState.searchEngine
+	init() {
+		if cSEisSet ?? false {
+			cSE = searchEngine
 		}
 	}
-	
-	
 	
 	func formatSearchEngineString(for unformatted: String) -> String {
 		let delimiter = "%s"
@@ -325,39 +321,39 @@ struct SettingsView: View {
 		return output[0]
 	}
 	
-	
-	
 	func safeSE() {
-		switch selectedSE {
-			case "Google":
-				appState.searchEngine = "https://www.google.com/search?q="
-			case "Bing":
-				appState.searchEngine = "https://www.bing.com/search?q="
-			case "Yahoo":
-				appState.searchEngine = "https://search.yahoo.com/search?p="
-			case "Other":
-				appState.cSEisSet = true
-				appState.searchEngine = formatSearchEngineString(for: cSE)
+		switch selectedSEIndex {
+			case 0:
+				searchEngine = "https://www.google.com/search?q="
+			case 1:
+				searchEngine = "https://www.bing.com/search?q="
+			case 3:
+				searchEngine = "https://search.yahoo.com/search?p="
+			case 4:
+				cSEisSet = true
+				searchEngine = formatSearchEngineString(for: cSE!)
 			default:
-				appState.searchEngine = "https://duckduckgo.com/?q="
+				searchEngine = "https://duckduckgo.com/?q="
 		}
 	}
 	
-	
-	
 	var body: some View {
 		VStack {
-			Form{
-				
+			Form {
 				Section(header: Text("Search Engine")) {
-					Picker("Select Search Engine", selection: $selectedSE ) {
-						ForEach(searchEngines, id: \.self) { engine in
-							Text(engine)
+					Picker("Select Search Engine", selection: $selectedSEIndex) {
+						ForEach(0..<searchEngines.count, id: \.self) { index in
+							Text(searchEngines[index])
 						}
 					}
 					
-					if selectedSE == "Other" {
-						TextField("Suchurl mit dem Ende ?q=%s", text: $cSE, onCommit: safeSE)
+					if searchEngines[selectedSEIndex] == "Other" {
+						let localCSEBinding = Binding<String>(
+							get: { cSE ?? "" },
+							set: { newValue in cSE = newValue }
+						)
+						
+						TextField("Custom search URL ending with ?q=%s", text: localCSEBinding, onCommit: safeSE)
 							.textFieldStyle(PlainTextFieldStyle())
 							.padding(.vertical, 8)
 							.padding(.horizontal)
@@ -369,27 +365,17 @@ struct SettingsView: View {
 #endif
 					}
 					
-					Button("Select Search Engine", action: {
+					Button("Save Search Engine", action: {
 						safeSE()
-						appState.selectedSE = selectedSE
-						do {
-								// Encode and save the custom data to UserDefaults
-							let data = try JSONEncoder().encode(appState)
-							UserDefaults.standard.set(data, forKey: "Settings")
-						} catch {
-							print("Error encoding custom data: \(error)")
-						}
-							// Speichern der ausgewählten Suchmaschine
-					})// Laden der ausgewählten Suchmaschine
+					})
 				}
-				
 			}
+			
 #if os(iOS)
 			.navigationBarTitle("Search Engine Settings")
 #endif
-		//
-			
 		}
 	}
 }
+
 

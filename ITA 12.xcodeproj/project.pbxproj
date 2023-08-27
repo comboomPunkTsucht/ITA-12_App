@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		911A46052A96001D005C4812 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 911A46042A96001D005C4812 /* LaunchAtLogin */; settings = {ATTRIBUTES = (Required, ); }; };
-		915D33392A940359008ADCAF /* ITA_12.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */; };
+		91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F5F2A98E2B000EC2DE8 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		91BAF34E2A98F16500FF78EB /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 91BAF34D2A98F16500FF78EB /* LaunchAtLogin */; };
 		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
@@ -16,23 +17,13 @@
 		91E6C0AA2A829B4400F3E206 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91E6C0A92A829B4400F3E206 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		91525DD22A9233F30062A083 /* Embed System Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(SYSTEM_EXTENSIONS_FOLDER_PATH)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			name = "Embed System Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		91354F5B2A98E1F900EC2DE8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
+		91354F5F2A98E2B000EC2DE8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		91525DC52A9233F30062A083 /* libEndpointSecurity.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libEndpointSecurity.tbd; path = usr/lib/libEndpointSecurity.tbd; sourceTree = SDKROOT; };
-		915D33382A940359008ADCAF /* ITA_12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ITA_12.xcdatamodel; sourceTree = "<group>"; };
 		91733A9A2A8B128600B42B90 /* ITA-12-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ITA-12-Info.plist"; sourceTree = SOURCE_ROOT; };
+		917F2A0A2A98F51800383978 /* ITA_12.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ITA_12.entitlements; sourceTree = "<group>"; };
 		91DAF3742A8C18A900C86573 /* AppDeligate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDeligate.swift; sourceTree = "<group>"; };
 		91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
 		91DF2CA42A8BE5C400553A95 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
@@ -40,7 +31,6 @@
 		91E6C0A12A829B4100F3E206 /* ITA_12App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITA_12App.swift; sourceTree = "<group>"; };
 		91E6C0A32A829B4100F3E206 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		91E6C0A52A829B4400F3E206 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		91E6C0A72A829B4400F3E206 /* ITA_12.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ITA_12.entitlements; sourceTree = "<group>"; };
 		91E6C0A92A829B4400F3E206 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,7 +39,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				911A46052A96001D005C4812 /* LaunchAtLogin in Frameworks */,
+				91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */,
+				91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */,
+				91BAF34E2A98F16500FF78EB /* LaunchAtLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +51,9 @@
 		91DF2CA12A8BE5C400553A95 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */,
+				91354F5F2A98E2B000EC2DE8 /* WebKit.framework */,
+				91354F5B2A98E1F900EC2DE8 /* CoreData.framework */,
 				91DF2CA22A8BE5C400553A95 /* WidgetKit.framework */,
 				91DF2CA42A8BE5C400553A95 /* SwiftUI.framework */,
 				91525DC52A9233F30062A083 /* libEndpointSecurity.tbd */,
@@ -91,9 +86,8 @@
 				91E6C0A32A829B4100F3E206 /* ContentView.swift */,
 				91DAF3742A8C18A900C86573 /* AppDeligate.swift */,
 				91E6C0A52A829B4400F3E206 /* Assets.xcassets */,
-				91E6C0A72A829B4400F3E206 /* ITA_12.entitlements */,
+				917F2A0A2A98F51800383978 /* ITA_12.entitlements */,
 				91E6C0A82A829B4400F3E206 /* Preview Content */,
-				915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */,
 			);
 			path = "ITA 12";
 			sourceTree = "<group>";
@@ -116,7 +110,6 @@
 				91E6C09A2A829B4100F3E206 /* Sources */,
 				91525D772A922EC10062A083 /* Frameworks */,
 				91E6C09C2A829B4100F3E206 /* Resources */,
-				91525DD22A9233F30062A083 /* Embed System Extensions */,
 			);
 			buildRules = (
 			);
@@ -124,7 +117,7 @@
 			);
 			name = "ITA 12";
 			packageProductDependencies = (
-				911A46042A96001D005C4812 /* LaunchAtLogin */,
+				91BAF34D2A98F16500FF78EB /* LaunchAtLogin */,
 			);
 			productName = "ITA 12";
 			productReference = 91E6C09E2A829B4100F3E206 /* ITA 12.app */;
@@ -185,7 +178,6 @@
 			files = (
 				91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */,
 				91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */,
-				915D33392A940359008ADCAF /* ITA_12.xcdatamodeld in Sources */,
 				91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,7 +310,6 @@
 		91E6C0AE2A829B4400F3E206 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -326,7 +317,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.6.2;
+				CURRENT_PROJECT_VERSION = 1.6.3;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -352,7 +343,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.6.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -368,7 +359,6 @@
 		91E6C0AF2A829B4400F3E206 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -376,7 +366,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.6.2;
+				CURRENT_PROJECT_VERSION = 1.6.3;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -402,7 +392,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.6.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -450,25 +440,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		911A46042A96001D005C4812 /* LaunchAtLogin */ = {
+		91BAF34D2A98F16500FF78EB /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 911A46032A96001D005C4812 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		915D33372A940359008ADCAF /* ITA_12.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				915D33382A940359008ADCAF /* ITA_12.xcdatamodel */,
-			);
-			currentVersion = 915D33382A940359008ADCAF /* ITA_12.xcdatamodel */;
-			path = ITA_12.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 91E6C0962A829B4100F3E206 /* Project object */;
 }
