@@ -103,6 +103,8 @@ struct ContentView: View {
 	
 #endif
 #if os(iOS)
+	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
+	@State var selectedSideBarItem: SideBarItem? = .ClassSide
 		// views
 	@State var classSideView = AnyView(
 		ClassSideView().padding(
@@ -179,150 +181,7 @@ struct ContentView: View {
 #endif
 	
 	var body: some View {
-		
-#if os(iOS)
-		TabView {
-			self.classSideView.background(.black)
-				.tabItem {
-					Text(
-						"Klassen Webseite"
-					)
-					Image(
-						systemName: "doc.richtext"
-					)
-					.resizable()
-					.aspectRatio(
-						contentMode: .fit
-					)
-					.foregroundColor(
-						Color.accentColor
-					)
-					.frame(
-						width: 20.0
-					)
-				}
-				.navigationBarTitle(
-					"Klassen Webseite"
-				)
-			
-			self.moodleView.background(.black)
-				.tabItem {
-					Text("Moodle")
-					Image(systemName: "studentdesk")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20.0)
-				}
-				.navigationBarTitle("Moodle")
-			
-			self.timeTableView.background(.black)
-				.tabItem {
-					Text("Stundenplan")
-					Image(systemName: "info.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-				}
-				.navigationBarTitle("Stundenplan")
-			
-			self.webUntisView.background(.black)
-				.tabItem {
-					Text("WebUntis")
-					Image(systemName: "info.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-				}
-				.navigationBarTitle("WebUntis")
-			
-			self.oszimtView.background(.black)
-				.tabItem {
-					Text("OSZ IMT Website")
-					Image(systemName: "graduationcap.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-				}
-				.navigationBarTitle("OSZ IMT Webseite")
-			
-			self.discordView.background(.black)
-				.tabItem {
-					Text(
-						"Discord"
-					)
-					Image(
-						systemName: "message.badge.circle.rtl"
-					)
-					.resizable()
-					.aspectRatio(
-						contentMode: .fit
-					)
-					.foregroundColor(
-						Color.accentColor
-					)
-					.frame(
-						width: 20
-					)
-				}
-				.navigationBarTitle(
-					"Discord"
-				)
-			
-			self.wwwView.background(.black)
-				.tabItem {
-					Text(
-						"Browse Web"
-					)
-					Image(
-						systemName: "globe"
-					)
-					.resizable()
-					.aspectRatio(
-						contentMode: .fit
-					)
-					.foregroundColor(
-						Color.accentColor
-					)
-					.frame(
-						width: 20
-					)
-				}
-				.navigationBarTitle(
-					"Web"
-				)
-			self.settingsView.background(.black)
-			
-				.tabItem {
-					Text(
-						"Settings"
-					)
-					Image(
-						systemName: "gear"
-					)
-					.resizable()
-					.aspectRatio(
-						contentMode: .fit
-					)
-					.foregroundColor(
-						Color.accentColor
-					)
-					.frame(
-						width: 20
-					)
-				}
-				.navigationBarTitle(
-					"Settings"
-				)
-			
-		}.background(.black)
-		
-		
-#elseif os(macOS)
-		
+		#if os(macOS)
 		NavigationSplitView(
 			columnVisibility: $sideBarVisibility
 		) {
@@ -367,9 +226,11 @@ struct ContentView: View {
 			.listStyle(
 				SidebarListStyle()
 			)
+			
 			.background(
 				BlurView()
 			)
+			
 		} detail: {
 			destinationView(
 				for: selectedSideBarItem
@@ -378,9 +239,11 @@ struct ContentView: View {
 		.background(
 			.ultraThinMaterial
 		)
+		
 		.background(
 			BlurView()
 		)
+		
 		.onAppear {
 			selectedSideBarItem = .ClassSide
 			selectedSideBarItem_Global = .ClassSide
@@ -388,11 +251,30 @@ struct ContentView: View {
 			.prominentDetail
 		)
 		
-#endif
+#elseif os(iOS)
+		NavigationView {
+			List(SideBarItem.allCases, id: \.self) { item in
+				NavigationLink(
+					destination: destinationView(for: item)
+				) {
+					Label(
+						title: { Text(item.title) },
+						icon: { Image(systemName: item.systemImage) }
+					)
+				}
+			}
+			.listStyle(SidebarListStyle())
+			.navigationBarTitle("Home", displayMode: .inline)
+			
+			if let selectedSideBarItem = selectedSideBarItem {
+				destinationView(for: selectedSideBarItem)
+					.navigationBarTitle(selectedSideBarItem.title)
+			}
+		}
+		#endif
 		
 	}
 	
-#if os(macOS)
 	
 	
 	func destinationView(
@@ -419,10 +301,12 @@ struct ContentView: View {
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .OSZimt
 				return oszimtView
+				#if os(macOS)
 			case .ChatGPT:
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .ChatGPT
 				return chatGPTView
+				#endif
 			case .Discord:
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Discord
@@ -433,11 +317,13 @@ struct ContentView: View {
 				return AnyView(
 					wwwView
 				)
+			case .Settings:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .Settings
+				return settingsView
 		}
 	}
 	
-	
-#endif
 }
 
 
@@ -452,9 +338,14 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	case TimeTable
 	case WebUntis
 	case OSZimt
+	#if os(macOS)
 	case ChatGPT
+	#endif
 	case Discord
 	case WWW
+	#if os(iOS)
+	case Settings
+	#endif
 	
 	var title: String {
 		switch self {
@@ -463,9 +354,14 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 			case .TimeTable: return "Stundenplan"
 			case .WebUntis: return "WebUntis"
 			case .OSZimt: return "OSZ IMT Webseite"
+				#if os(macOS)
 			case .ChatGPT: return "ChatGPT"
+				#endif
 			case .Discord: return "Discord"
 			case .WWW: return "Browse Web"
+				#if os(iOS)
+			case .Settings: return "Settings"
+				#endif
 		}
 	}
 	
@@ -476,9 +372,14 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 			case .TimeTable: return "info.circle"
 			case .WebUntis: return "info.circle"
 			case .OSZimt: return "graduationcap.circle"
+#if os(macOS)
 			case .ChatGPT: return "message.circle"
+				#endif
 			case .Discord: return "message.badge.circle.rtl"
 			case .WWW: return "globe"
+				#if os(iOS)
+			case .Settings: return "gear"
+				#endif
 		}
 	}
 }
@@ -1258,7 +1159,9 @@ struct ChatGPTView: View {
 			
 			
 		}.onAppear {
+			#if os(macOS)
 			selectedSideBarItem_Global = .ChatGPT
+			#endif
 			startTimer()
 		}
 	}
