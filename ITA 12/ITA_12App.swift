@@ -359,7 +359,7 @@ struct SettingsView: View {
 							.padding(.horizontal)
 							.clipShape(Capsule())
 							.background(Capsule().strokeBorder(Color.accentColor))
-#if os(iOS)
+#if os(iOS) || os(xrOS)
 							.autocapitalization(.none)
 							.disableAutocorrection(true)
 #endif

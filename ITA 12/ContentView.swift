@@ -102,7 +102,7 @@ struct ContentView: View {
 	)
 	
 #endif
-#if os(iOS)
+#if os(iOS) || os(xrOS)
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem? = .ClassSide
 		// views
@@ -120,8 +120,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var timeTableView = AnyView(
@@ -129,8 +128,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var webUntisView = AnyView(
@@ -138,8 +136,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var oszimtView = AnyView(
@@ -147,8 +144,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var discordView = AnyView(
@@ -156,8 +152,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var wwwView = AnyView(
@@ -165,8 +160,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 	@State var settingsView = AnyView(
@@ -174,8 +168,7 @@ struct ContentView: View {
 			10
 		).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+		)
 		
 	)
 #endif
@@ -271,11 +264,151 @@ struct ContentView: View {
 					.navigationBarTitle(selectedSideBarItem.title)
 			}
 		}
-		#endif
+		#elseif os(xrOS)
 		
+		TabView {
+			self.classSideView
+				.tabItem {
+					Text(
+						"Klassen Webseite"
+					)
+					Image(
+						systemName: "doc.richtext"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20.0
+					)
+				}
+				.navigationBarTitle(
+					"Klassen Webseite"
+				)
+			
+			self.moodleView
+				.tabItem {
+					Text("Moodle")
+					Image(systemName: "studentdesk")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20.0)
+				}
+				.navigationBarTitle("Moodle")
+			
+			self.timeTableView
+				.tabItem {
+					Text("Stundenplan")
+					Image(systemName: "info.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+				}
+				.navigationBarTitle("Stundenplan")
+			
+			self.webUntisView
+				.tabItem {
+					Text("WebUntis")
+					Image(systemName: "info.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+				}
+				.navigationBarTitle("WebUntis")
+			
+			self.oszimtView
+				.tabItem {
+					Text("OSZ IMT Website")
+					Image(systemName: "graduationcap.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+				}
+				.navigationBarTitle("OSZ IMT Webseite")
+			
+			self.discordView
+				.tabItem {
+					Text(
+						"Discord"
+					)
+					Image(
+						systemName: "message.badge.circle.rtl"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20
+					)
+				}
+				.navigationBarTitle(
+					"Discord"
+				)
+			
+			self.wwwView
+				.tabItem {
+					Text(
+						"Browse Web"
+					)
+					Image(
+						systemName: "globe"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20
+					)
+				}
+				.navigationBarTitle(
+					"Web"
+				)
+			self.settingsView
+			
+				.tabItem {
+					Text(
+						"Settings"
+					)
+					Image(
+						systemName: "gear"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20
+					)
+				}
+				.navigationBarTitle(
+					"Settings"
+				)
+			
+		}
+		
+		#endif
 	}
 	
-	
+	#if !os(xrOS)
 	
 	func destinationView(
 		for item: SideBarItem
@@ -323,6 +456,7 @@ struct ContentView: View {
 				return settingsView
 		}
 	}
+	#endif
 	
 }
 
@@ -403,7 +537,7 @@ struct BlurView: NSViewRepresentable {
 
 #endif
 
-#if os(iOS)
+#if os(iOS) || os(xrOS)
 struct CustomWebView: UIViewRepresentable {
 	var webView: WKWebView
 	let request: URLRequest
@@ -1343,7 +1477,7 @@ struct WWWView: View {
 					.padding(.horizontal)
 					.clipShape(Capsule())
 					.background(Capsule().strokeBorder(Color.accentColor))
-#if os(iOS)
+#if os(iOS) || os(xrOS)
 					.autocapitalization(.none)
 					.disableAutocorrection(true)
 					.keyboardType(.webSearch)
