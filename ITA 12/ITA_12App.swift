@@ -402,7 +402,7 @@ struct SettingsView: View {
 							.padding(.vertical, 8)
 							.padding(.horizontal)
 							.clipShape(Capsule())
-							.background(Capsule().strokeBorder(Color.accentColor))
+							.background(Capsule().strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor))
 #if os(iOS) || os(xrOS)
 							.autocapitalization(.none)
 							.disableAutocorrection(true)

@@ -1559,26 +1559,30 @@ struct WWWView: View {
 				.buttonStyle(PlainButtonStyle())
 				.keyboardShortcut("f", modifiers: [.command, .shift])
 				
-				TextField("Suche", text: $searchText, onCommit: search)
-					.textFieldStyle(PlainTextFieldStyle())
-					.padding(.vertical, 8)
-					.padding(.horizontal)
-					.clipShape(Capsule())
-					.background(Capsule().strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor))
+				HStack{
+					TextField("Suche", text: $searchText, onCommit: search)
+						.textFieldStyle(PlainTextFieldStyle())
 #if os(iOS) || os(xrOS)
-					.autocapitalization(.none)
-					.disableAutocorrection(true)
-					.keyboardType(.webSearch)
+						.autocapitalization(.none)
+						.disableAutocorrection(true)
+						.keyboardType(.webSearch)
 #endif
-				Button(action: search) {
-					Image(systemName: "magnifyingglass.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-						.frame(width: 20)
+					Button(action: search) {
+						Image(systemName: "magnifyingglass")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+							.frame(width: 20)
+					}
+					.buttonStyle(PlainButtonStyle())
+					.keyboardShortcut(.defaultAction)
 				}
-				.buttonStyle(PlainButtonStyle())
-				.keyboardShortcut(.defaultAction)
+				.frame(height: 14)
+				.padding(.vertical, 8)
+				.padding(.horizontal)
+				.clipShape(Capsule())
+				.background(Capsule().strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor))
+				
 				Button(action: goBack) {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
