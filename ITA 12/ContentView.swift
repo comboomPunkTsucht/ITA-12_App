@@ -14,15 +14,10 @@ import Cocoa
 
 var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
-@available(
-	macOS 14.0,
-	*
-)
-@available(
-	iOS 17.0,
-	*
-)
 struct ContentView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	//@Environment(\.managedObjectContext) private var viewContext
 #if os(macOS)
 	
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
@@ -100,77 +95,149 @@ struct ContentView: View {
 			BlurView()
 		)
 	)
+	/*@State var homeWorkView = AnyView(
+		HomeworkView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)*/
 	
 #endif
-#if os(iOS) || os(xrOS)
+#if os(iOS)
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem? = .ClassSide
 		// views
 	@State var classSideView = AnyView(
-		ClassSideView().padding(
-			10
-		).background(
+		ClassSideView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		).background(
-			Color.black)
+			).navigationTitle(SideBarItem.ClassSide.title)
 			
 	)
 	@State var moodleView = AnyView(
-		MoodleView().padding(
-			10
-		).background(
+		MoodleView()
+			.background(
+			Color.black)
+		.background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.Moodle.title)
 		
 	)
 	@State var timeTableView = AnyView(
-		TimeTableView().padding(
-			10
-		).background(
+		TimeTableView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.TimeTable.title)
 		
 	)
 	@State var webUntisView = AnyView(
-		WebUntisView().padding(
-			10
-		).background(
+		WebUntisView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.WebUntis.title)
 		
 	)
 	@State var oszimtView = AnyView(
-		OSZimtView().padding(
-			10
-		).background(
+		OSZimtView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.OSZimt.title)
 		
 	)
 	@State var discordView = AnyView(
-		DiscordView().padding(
-			10
-		).background(
+		DiscordView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.Discord.title)
 		
 	)
 	@State var wwwView = AnyView(
-		WWWView().padding(
-			10
-		).background(
+		WWWView().background(
+			Color.black).background(
 			.ultraThinMaterial
-		)
+		).navigationTitle(SideBarItem.WWW.title)
 		
 	)
 	@State var settingsView = AnyView(
-		SettingsView().padding(
+		SettingsView().background(
+			Color.black).background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.Settings.title)
+		
+	)
+/*	@State var homeWorkView = AnyView(
+		HomeworkView().padding(
 			10
 		).background(
 			.ultraThinMaterial
 		)
 		
+	)*/
+#endif
+#if os(xrOS)
+	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
+	@State var selectedSideBarItem: SideBarItem? = .ClassSide
+		// views
+	@State var classSideView = AnyView(
+		ClassSideView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.ClassSide.title)
+		
 	)
+	@State var moodleView = AnyView(
+		MoodleView()
+			.background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.Moodle.title)
+		
+	)
+	@State var timeTableView = AnyView(
+		TimeTableView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.TimeTable.title)
+		
+	)
+	@State var webUntisView = AnyView(
+		WebUntisView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.WebUntis.title)
+		
+	)
+	@State var oszimtView = AnyView(
+		OSZimtView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.OSZimt.title)
+		
+	)
+	@State var discordView = AnyView(
+		DiscordView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.Discord.title)
+		
+	)
+	@State var wwwView = AnyView(
+		WWWView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.WWW.title)
+		
+	)
+	@State var settingsView = AnyView(
+		SettingsView().background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.Settings.title)
+		
+	)
+	/*	@State var homeWorkView = AnyView(
+	 HomeworkView().padding(
+	 10
+	 ).background(
+	 .ultraThinMaterial
+	 )
+	 
+	 )*/
 #endif
 	
 	var body: some View {
@@ -245,25 +312,27 @@ struct ContentView: View {
 		)
 		
 #elseif os(iOS)
-		NavigationView {
-			List(SideBarItem.allCases, id: \.self) { item in
-				NavigationLink(
-					destination: destinationView(for: item)
-				) {
-					Label(
-						title: { Text(item.title) },
-						icon: { Image(systemName: item.systemImage) }
-					)
+		ZStack {
+			Color(.black).ignoresSafeArea(edges: .all)
+			NavigationView {
+				List(SideBarItem.allCases, id: \.self) { item in
+					NavigationLink(
+						destination: destinationView(for: item)
+					) {
+						Label(
+							title: { Text(item.title) },
+							icon: { Image(systemName: item.systemImage).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor) }
+						)
+					}
+				}
+				.listStyle(SidebarListStyle())
+				.navigationBarTitle("Home", displayMode: .inline)
+				
+				if let selectedSideBarItem = selectedSideBarItem {
+					destinationView(for: selectedSideBarItem)
 				}
 			}
-			.listStyle(SidebarListStyle())
-			.navigationBarTitle("Home", displayMode: .inline)
-			
-			if let selectedSideBarItem = selectedSideBarItem {
-				destinationView(for: selectedSideBarItem)
-					.navigationBarTitle(selectedSideBarItem.title)
-			}
-		}
+		}.background(.black)
 		#elseif os(xrOS)
 		
 		TabView {
@@ -279,9 +348,7 @@ struct ContentView: View {
 					.aspectRatio(
 						contentMode: .fit
 					)
-					.foregroundColor(
-						Color.accentColor
-					)
+					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					.frame(
 						width: 20.0
 					)
@@ -296,7 +363,7 @@ struct ContentView: View {
 					Image(systemName: "studentdesk")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20.0)
 				}
 				.navigationBarTitle("Moodle")
@@ -307,7 +374,7 @@ struct ContentView: View {
 					Image(systemName: "info.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.navigationBarTitle("Stundenplan")
@@ -318,7 +385,7 @@ struct ContentView: View {
 					Image(systemName: "info.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.navigationBarTitle("WebUntis")
@@ -329,7 +396,7 @@ struct ContentView: View {
 					Image(systemName: "graduationcap.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.navigationBarTitle("OSZ IMT Webseite")
@@ -450,10 +517,16 @@ struct ContentView: View {
 				return AnyView(
 					wwwView
 				)
+				#if os(iOS)
 			case .Settings:
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Settings
 				return settingsView
+				#endif
+			/*case .Homework:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .Homework
+				return homeWorkView*/
 		}
 	}
 	#endif
@@ -477,9 +550,10 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	#endif
 	case Discord
 	case WWW
-	#if os(iOS)
+	#if os(iOS) || os(xrOS)
 	case Settings
 	#endif
+	//case Homework
 	
 	var title: String {
 		switch self {
@@ -493,9 +567,10 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 				#endif
 			case .Discord: return "Discord"
 			case .WWW: return "Browse Web"
-				#if os(iOS)
+#if os(iOS) || os(xrOS)
 			case .Settings: return "Settings"
 				#endif
+			//case .Homework: return "All Homework"
 		}
 	}
 	
@@ -511,9 +586,10 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 				#endif
 			case .Discord: return "message.badge.circle.rtl"
 			case .WWW: return "globe"
-				#if os(iOS)
+#if os(iOS) || os(xrOS)
 			case .Settings: return "gear"
 				#endif
+			//case .Homework: return "doc.text.image"
 		}
 	}
 }
@@ -675,6 +751,8 @@ struct CustomWebView: NSViewRepresentable {
 }
 #endif
 struct ClassSideView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -686,7 +764,7 @@ struct ClassSideView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -709,7 +787,7 @@ struct ClassSideView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -720,7 +798,7 @@ struct ClassSideView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -731,7 +809,7 @@ struct ClassSideView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -742,7 +820,7 @@ struct ClassSideView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -809,6 +887,8 @@ struct ClassSideView: View {
 	}
 }
 struct MoodleView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -820,7 +900,7 @@ struct MoodleView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://moodle.oszimt.de/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -842,7 +922,7 @@ struct MoodleView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -853,7 +933,7 @@ struct MoodleView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -864,7 +944,7 @@ struct MoodleView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -875,7 +955,7 @@ struct MoodleView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -943,6 +1023,8 @@ struct MoodleView: View {
 }
 
 struct TimeTableView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -954,7 +1036,7 @@ struct TimeTableView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/monitor?school=OSZ%20IMT&simple=2&type=1&monitorType=tt&name=ITA%2012")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -976,7 +1058,7 @@ struct TimeTableView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -987,7 +1069,7 @@ struct TimeTableView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -998,7 +1080,7 @@ struct TimeTableView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1009,7 +1091,7 @@ struct TimeTableView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1077,6 +1159,8 @@ struct TimeTableView: View {
 }
 
 struct OSZimtView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -1088,7 +1172,7 @@ struct OSZimtView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://oszimt.de")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -1111,7 +1195,7 @@ struct OSZimtView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1122,7 +1206,7 @@ struct OSZimtView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1133,7 +1217,7 @@ struct OSZimtView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1144,7 +1228,7 @@ struct OSZimtView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1212,6 +1296,8 @@ struct OSZimtView: View {
 }
 
 struct ChatGPTView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
@@ -1224,7 +1310,7 @@ struct ChatGPTView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://chat.openai.com/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -1246,7 +1332,7 @@ struct ChatGPTView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1257,7 +1343,7 @@ struct ChatGPTView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1268,7 +1354,7 @@ struct ChatGPTView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1279,7 +1365,7 @@ struct ChatGPTView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1441,6 +1527,8 @@ class WebViewManager: ObservableObject {
 }
 
 struct WWWView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -1452,7 +1540,7 @@ struct WWWView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -1476,7 +1564,7 @@ struct WWWView: View {
 					.padding(.vertical, 8)
 					.padding(.horizontal)
 					.clipShape(Capsule())
-					.background(Capsule().strokeBorder(Color.accentColor))
+					.background(Capsule().strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor))
 #if os(iOS) || os(xrOS)
 					.autocapitalization(.none)
 					.disableAutocorrection(true)
@@ -1486,7 +1574,7 @@ struct WWWView: View {
 					Image(systemName: "magnifyingglass.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1495,7 +1583,7 @@ struct WWWView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1506,7 +1594,7 @@ struct WWWView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1517,7 +1605,7 @@ struct WWWView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1528,7 +1616,7 @@ struct WWWView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1602,6 +1690,8 @@ struct WWWView: View {
 }
 
 struct WebUntisView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -1613,7 +1703,7 @@ struct WebUntisView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://mese.webuntis.com/WebUntis/?school=OSZ+IMT#/basic/login")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -1636,7 +1726,7 @@ struct WebUntisView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1647,7 +1737,7 @@ struct WebUntisView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1658,7 +1748,7 @@ struct WebUntisView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1669,7 +1759,7 @@ struct WebUntisView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1737,6 +1827,9 @@ struct WebUntisView: View {
 }
 
 struct DiscordView: View {
+	
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		// Konfigurieren der WKWebViewConfiguration-Instanz
 	static let webViewConfiguration: WKWebViewConfiguration = {
 		let configuration = WKWebViewConfiguration()
@@ -1748,7 +1841,7 @@ struct DiscordView: View {
 	}()
 	
 	
-	@StateObject var webViewManager = WebViewManager(for: Self.webViewConfiguration)
+	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
 	let startURL = URL(string: "https://ptb.discord.com/login")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
@@ -1771,7 +1864,7 @@ struct DiscordView: View {
 					Image(systemName: "arrowshape.turn.up.left.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1782,7 +1875,7 @@ struct DiscordView: View {
 					Image(systemName: "arrowshape.turn.up.right.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1793,7 +1886,7 @@ struct DiscordView: View {
 					Image(systemName: "house.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
@@ -1804,7 +1897,7 @@ struct DiscordView: View {
 					Image(systemName: "arrow.clockwise.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())

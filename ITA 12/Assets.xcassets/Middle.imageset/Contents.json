@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "Klassen_App_Icon_xrOS2.png",
       "idiom" : "reality",
       "scale" : "2x"
     }
@@ -8,5 +9,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
   }
 }

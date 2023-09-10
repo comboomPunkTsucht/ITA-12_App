@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 #if os(macOS)
 import LaunchAtLogin
 #endif
@@ -13,7 +14,9 @@ import LaunchAtLogin
 @main
 struct ITA_12App: App {
 	
-	#if os(macOS)
+	@Environment(\.scenePhase) private var scenePhase
+	//let persistenceController = PersistenceController.shared
+#if os(macOS)
 	@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
 	var appState: AppState = AppState()
 	@State private var screenWidth: CGFloat
@@ -24,7 +27,7 @@ struct ITA_12App: App {
 	private var idealWidth: CGFloat = 0.0
 	private var idealHeight: CGFloat = 0.0
 	
-	 init() {
+	init() {
 			// Calculate initial screen width and height
 		let initialScreenWidth = NSScreen.main?.frame.size.width ?? 1280
 		let initialScreenHeight = NSScreen.main?.frame.size.height ?? 720
@@ -33,12 +36,12 @@ struct ITA_12App: App {
 		_screenWidth = State(initialValue: initialScreenWidth)
 		_screenHeight = State(initialValue: initialScreenHeight)
 		
-			 // Initialize minWidth and minHeight using the calculated values
-		 
-		 minWidth = screenWidth * appState.minFactor
-		 minHeight = screenHeight * appState.minFactor
-		 idealWidth = screenWidth * appState.idealFactor
-		 idealHeight = screenHeight * appState.idealFactor
+			// Initialize minWidth and minHeight using the calculated values
+		
+		minWidth = screenWidth * appState.minFactor
+		minHeight = screenHeight * appState.minFactor
+		idealWidth = screenWidth * appState.idealFactor
+		idealHeight = screenHeight * appState.idealFactor
 	}
 	
 	
@@ -101,73 +104,74 @@ struct ITA_12App: App {
 		}
 	}
 	
-		func goHome() {
-				// Implement go home logic
-			switch selectedSideBarItem_Global {
-				case .Moodle:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .Moodle_goHome
-				case .TimeTable:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .TimeTable_goHome
-				case .WebUntis:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .WebUntis_goHome
-				case .OSZimt:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .OSZimt_goHome
-				case .ChatGPT:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .ChatGPT_goHome
-				case .Discord:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .Discord_goHome
-				case .WWW:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .WWW_goHome
-				default:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .ClassSide_goHome
-			}
+	func goHome() {
+			// Implement go home logic
+		switch selectedSideBarItem_Global {
+			case .Moodle:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .Moodle_goHome
+			case .TimeTable:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .TimeTable_goHome
+			case .WebUntis:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .WebUntis_goHome
+			case .OSZimt:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .OSZimt_goHome
+			case .ChatGPT:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .ChatGPT_goHome
+			case .Discord:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .Discord_goHome
+			case .WWW:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .WWW_goHome
+			default:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .ClassSide_goHome
 		}
+	}
 	
-		func reload() {
-				// Implement reload logic
-			switch selectedSideBarItem_Global {
-				case .Moodle:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .Moodle_reload
-				case .TimeTable:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .TimeTable_reload
-					print(selectedSideBarItem_Global.title)
-				case .WebUntis:
-					menubarAktions = .WebUntis_reload
-					print(selectedSideBarItem_Global.title)
-				case .OSZimt:
-					menubarAktions = .OSZimt_reload
-					print(selectedSideBarItem_Global.title)
-				case .ChatGPT:
-					menubarAktions = .ChatGPT_reload
-					print(selectedSideBarItem_Global.title)
-				case .Discord:
-					menubarAktions = .Discord_reload
-					print(selectedSideBarItem_Global.title)
-				case .WWW:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .WWW_reload
-				default:
-					print(selectedSideBarItem_Global.title)
-					menubarAktions = .ClassSide_reload
-			}
+	func reload() {
+			// Implement reload logic
+		switch selectedSideBarItem_Global {
+			case .Moodle:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .Moodle_reload
+			case .TimeTable:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .TimeTable_reload
+				print(selectedSideBarItem_Global.title)
+			case .WebUntis:
+				menubarAktions = .WebUntis_reload
+				print(selectedSideBarItem_Global.title)
+			case .OSZimt:
+				menubarAktions = .OSZimt_reload
+				print(selectedSideBarItem_Global.title)
+			case .ChatGPT:
+				menubarAktions = .ChatGPT_reload
+				print(selectedSideBarItem_Global.title)
+			case .Discord:
+				menubarAktions = .Discord_reload
+				print(selectedSideBarItem_Global.title)
+			case .WWW:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .WWW_reload
+			default:
+				print(selectedSideBarItem_Global.title)
+				menubarAktions = .ClassSide_reload
 		}
-	 
+	}
+	
 #endif
-
+	
 	
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+				//.environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
 #if os(macOS)
 				.frame(
 					minWidth: minWidth,
@@ -185,10 +189,16 @@ struct ITA_12App: App {
 				)
 #endif
 		}
-
-		#if os(macOS)
+		/*.onChange(of: scenePhase) { newScenePhase in
+			if newScenePhase == .inactive {
+				persistenceController.save()
+			}
+		}*/
+		
+		
+#if os(macOS)
 		Settings{
-			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: 600,minHeight: 100,idealHeight: 100,maxHeight: 150).background(.ultraThinMaterial)
+			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: .infinity,minHeight: 100,idealHeight: 100,maxHeight: .infinity).background(.ultraThinMaterial)
 				.background(BlurView())
 		}
 		.commands {
@@ -227,26 +237,27 @@ struct ITA_12App: App {
 				}
 				.keyboardShortcut(".", modifiers: .command)
 				
-					Button(action: reload) {
-						Image(systemName: "arrow.clockwise.circle")
-							.resizable()
-							.aspectRatio(contentMode: .fit)
-							.foregroundColor(Color.accentColor)
-							.frame(width: 20)
-						Text("Reload")
-					}
+				Button(action: reload) {
+					Image(systemName: "arrow.clockwise.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.accentColor)
+						.frame(width: 20)
+					Text("Reload")
+				}
 				.keyboardShortcut("r", modifiers: .command)
 				Divider()
 			}
-					
-				
-			}
+			
+			
+		}
 		
 		
 		
-		#endif
+#endif
 	}
 }
+
 var menubarAktions: MenubarAktions = .nothing
 enum MenubarAktions: String, Identifiable, CaseIterable {
 	var id: String {
@@ -304,10 +315,14 @@ struct SettingsView: View {
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
+	let ac = ["Blau", "Lila", "Rosa", "Rot", "Orange", "Gelb", "Grün", "Graphit"]
 	
-	@AppStorage("ITA 12_selectedSE") var selectedSEIndex: Int = 2  // Default to "DuckDuckGo" (index 2)
+	@AppStorage("ITA 12_selectedSEIndex") var selectedSEIndex: Int = 2  // Default to "DuckDuckGo" (index 2)
 	@AppStorage("ITA 12_cSE") var cSE: String?
 	@AppStorage("ITA 12_cSEisSet") var cSEisSet: Bool?
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorIndex") var colorIndex: Int = 0
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	
 	init() {
 		if cSEisSet ?? false {
@@ -334,6 +349,35 @@ struct SettingsView: View {
 				searchEngine = formatSearchEngineString(for: cSE!)
 			default:
 				searchEngine = "https://duckduckgo.com/?q="
+		}
+	}
+	
+	func safeAC() {
+		switch colorIndex {
+			case 1:
+				colorString = ac[1]
+				colorisSet = true
+			case 2:
+				colorString = ac[2]
+				colorisSet = true
+			case 3:
+				colorString = ac[3]
+				colorisSet = true
+			case 4:
+				colorString = ac[4]
+				colorisSet = true
+			case 5:
+				colorString = ac[5]
+				colorisSet = true
+			case 6:
+				colorString = ac[6]
+				colorisSet = true
+			case 7:
+				colorString = ac[7]
+				colorisSet = true
+			default:
+				colorString = ac[0]
+				colorisSet = true
 		}
 	}
 	
@@ -367,15 +411,296 @@ struct SettingsView: View {
 					
 					Button("Save Search Engine", action: {
 						safeSE()
-					})
+					}).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
+				#if os(iOS) || os(xrOS)
+				Section(header: Text("Accennt Color")) {
+					Picker("Select Accent Color", selection: $colorIndex) {
+						ForEach(0..<ac.count, id: \.self) { index in
+							Text(ac[index]).foregroundStyle(Color(ac[index]))
+						}
+					}
+					Button("Save Accent Color", action: {
+						safeAC()
+					}).foregroundStyle(Color(colorString ?? ac[0]))
+				}
+				#endif
+			}
+		}
+	}
+}
+/*
+struct PersistenceController {
+	static let shared = PersistenceController()
+	
+	let container: NSPersistentContainer
+	
+	init() {
+		container = NSPersistentContainer(name: "ITA-12") // Name deines Data Models
+		container.loadPersistentStores { (storeDescription, error) in
+			if let error = error as NSError? {
+				fatalError("Unresolved error \(error), \(error.userInfo)")
+			}
+		}
+	}
+	
+	func save() {
+		let context = container.viewContext
+		if context.hasChanges {
+			do {
+				try context.save()
+			} catch {
+				let nsError = error as NSError
+				fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+			}
+		}
+	}
+}
+struct HomeworkView: View {
+	@Environment(\.managedObjectContext) private var viewContext
+	
+	@FetchRequest(
+		sortDescriptors: [NSSortDescriptor(keyPath: \HomeworkEntry.dueDate, ascending: true)],
+		animation: .default)
+	private var homeworkEntries: FetchedResults<HomeworkEntry>
+	
+	@State private var showAddView = false
+	@State private var showAddSView = false
+	
+	var body: some View {
+		NavigationView {
+			List {
+				ForEach(Array(homeworkEntries), id: \.self) { entry in
+					NavigationLink(destination: HomeworkDetail(entry: entry)) {
+						VStack(alignment: .leading) {
+							HStack {
+								Text(entry.task ?? "Unnamed Task")
+									.font(.headline)
+								Spacer()
+								Text(entry.dueDate?.formatted(date: .abbreviated, time: .omitted) ?? "")
+									.foregroundColor(.secondary)
+							}
+							HStack {
+								Text(entry.subjectsArrayAsString) // Change this to the appropriate property/method
+									.font(.subheadline)
+									.foregroundColor(.secondary)
+								Spacer()
+							}
+						}
+					}
+				}
+				.onDelete(perform: deleteHomeworkEntries)
+			}
+			.navigationTitle("Hausaufgaben Tracker")
+			.toolbar {
+				ToolbarItem(placement: .navigation) {
+					Button(action: {
+						showAddView.toggle()
+					}) {
+						Label("Homework", systemImage: "plus.circle")
+					}
+				}
+				ToolbarItem(placement: .navigation) {
+					Button(action: {
+						showAddSView.toggle()
+					}) {
+						Label("Subject", systemImage: "plus.circle")
+					}
 				}
 			}
+		}
+		.sheet(isPresented: $showAddView) {
+			AddHomeworkView()
+				.environment(\.managedObjectContext, viewContext)
+		}
+		.sheet(isPresented: $showAddSView) {
+			AddSubjectView()
+				.environment(\.managedObjectContext, viewContext)
+		}
+	}
+	
+	private func deleteHomeworkEntries(offsets: IndexSet) {
+		withAnimation {
+			offsets.map { homeworkEntries[$0] }.forEach(viewContext.delete)
 			
-#if os(iOS)
-			.navigationBarTitle("Search Engine Settings")
-#endif
+			do {
+				try viewContext.save()
+			} catch {
+					// Handle the Core Data error
+			}
 		}
 	}
 }
 
+
+
+	
+	struct HomeworkDetail: View {
+		var entry: HomeworkEntry
+		
+		var body: some View {
+			VStack {
+				Text("Aufgabe: \(entry.task ?? "Unnamed Task")")
+					.font(.title)
+				Text("Erstelldatum: \(formattedDate(entry.creationDate))")
+				Text("Fälligkeitsdatum: \(formattedDate(entry.dueDate))")
+				Text("Fächer: \(formattedSubjects(entry.subjects))")
+				Text("Notizen: \(entry.notes ?? "")")
+			}
+			.padding()
+		}
+		
+		func formattedDate(_ date: Date?) -> String {
+			guard let date = date else {
+				return ""
+			}
+			let formatter = DateFormatter()
+			formatter.dateStyle = .medium
+			return formatter.string(from: date)
+		}
+		
+		func formattedSubjects(_ subjects: NSSet?) -> String {
+			guard let subjectsSet = subjects as? Set<Subject> else {
+				return ""
+			}
+			let subjectNames = subjectsSet.map { $0.name ?? "" }
+			return subjectNames.joined(separator: ", ")
+		}
+	}
+	
+	struct AddHomeworkView: View {
+		@Environment(\.managedObjectContext) private var viewContext
+		@State private var task = ""
+		@State private var dueDate = Date()
+		@State private var selectedSubjects: [Subject] = []
+		@State private var notes = ""
+		
+		@FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Subject.name, ascending: true)])
+		private var subjects: FetchedResults<Subject>
+		
+		var body: some View {
+			NavigationView {
+				Form {
+					Section(header: Text("Aufgaben Details")) {
+						TextField("Aufgabe", text: $task).frame(height: 200)
+						DatePicker("Fälligkeitsdatum", selection: $dueDate, displayedComponents: .date)
+						MultiSelect(subjects: $selectedSubjects, allSubjects: subjects)
+						TextField("Notizen", text: $notes).frame(height: 200)
+					}
+					Section {
+						Button("Speichern") {
+							let newEntry = HomeworkEntry(context: viewContext)
+							newEntry.creationDate = Date()
+							newEntry.dueDate = dueDate
+							newEntry.task = task
+							newEntry.notes = notes
+							
+							for subject in selectedSubjects {
+								newEntry.addToSubjects(subject)
+							}
+							
+							do {
+								try viewContext.save()
+							} catch {
+									// Handle the Core Data error
+							}
+							
+							task = ""
+							dueDate = Date()
+							selectedSubjects = []
+							notes = ""
+						}
+					}
+				}
+#if os(iOS)
+				.navigationBarTitle("Neue Aufgabe hinzufügen")
+#endif
+			}
+		}
+	}
+	
+	
+	struct MultiSelect: View {
+		@Binding var subjects: [Subject]
+		let allSubjects: FetchedResults<Subject>
+		
+		var body: some View {
+			DisclosureGroup("Fächer auswählen") {
+				ForEach(allSubjects) { subject in
+					MultipleSelectionRow(title: subject.name ?? "", isSelected: self.subjects.contains(subject)) {
+						if self.subjects.contains(subject) {
+							self.subjects.removeAll { $0 == subject }
+						} else {
+							self.subjects.append(subject)
+						}
+					}
+				}
+			}
+			.padding()
+		}
+	}
+	
+	struct MultipleSelectionRow: View {
+		var title: String
+		var isSelected: Bool
+		var action: () -> Void
+		
+		var body: some View {
+			HStack {
+				Text(title)
+				Spacer()
+				if isSelected {
+					Image(systemName: "checkmark")
+						.foregroundColor(.blue)
+				}
+			}
+			.contentShape(Rectangle())
+			.onTapGesture {
+				self.action()
+			}
+		}
+	}
+	
+	struct AddSubjectView: View {
+		@Environment(\.managedObjectContext) private var viewContext
+		@State private var fullName = ""
+		@State private var shortName = ""
+		
+		var body: some View {
+			NavigationView {
+				Form {
+					Section(header: Text("Subject Details")) {
+						TextField("Full Name", text: $fullName)
+						TextField("Short Name", text: $shortName)
+					}
+					Section {
+						Button("Save") {
+							saveSubject()
+						}
+					}
+				}
+#if os(iOS)
+				.navigationBarTitle("Add Subject")
+#endif
+			}
+		}
+		
+		private func saveSubject() {
+			let newSubject = Subject(context: viewContext)
+			newSubject.name = fullName
+			newSubject.shortName = shortName
+			
+			do {
+				try viewContext.save()
+			} catch {
+					// Handle the Core Data error
+			}
+			
+			fullName = ""
+			shortName = ""
+		}
+	}
+	
+	*/
+	
 
