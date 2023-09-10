@@ -12,183 +12,224 @@ import Foundation
 import Cocoa
 #endif
 
+#if os(macOS)
+@available(macOS 13.0, *)
 var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
+
+@available(macOS 12.0, *)
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
+
+#elseif os(iOS)
+var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
+
+var selectedSideBarItem_Global: SideBarItem = .ClassSide
+#endif
+
+#if os(macOS)
+struct ContentView: View {
+		@AppStorage("ITA 12_colorString") var colorString: String?
+		@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+			//@Environment(\.managedObjectContext) private var viewContext
+		
+		@State var selectedSideBarItem: SideBarItem = .ClassSide
+		
+			// views
+		@State var classSideView = AnyView(
+			ClassSideView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var moodleView = AnyView(
+			MoodleView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var timeTableView = AnyView(
+			TimeTableView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var webUntisView = AnyView(
+			WebUntisView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var oszimtView = AnyView(
+			OSZimtView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var chatGPTView = AnyView(
+			ChatGPTView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var discordView = AnyView(
+			DiscordView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		@State var wwwView = AnyView(
+			WWWView().padding(
+				10
+			).background(
+				.ultraThinMaterial
+			).background(
+				BlurView()
+			)
+		)
+		/*@State var homeWorkView = AnyView(
+		 HomeworkView().padding(
+		 10
+		 ).background(
+		 .ultraThinMaterial
+		 ).background(
+		 BlurView()
+		 )
+		 )*/
+		
+	func destinationView(
+		for item: SideBarItem
+	) -> AnyView {
+		switch item {
+			case .ClassSide:
+				selectedSideBarItem_Global = .ClassSide
+				return classSideView
+			case .Moodle:
+				selectedSideBarItem_Global = .Moodle
+				return moodleView
+			case .TimeTable:
+				selectedSideBarItem_Global = .TimeTable
+				return timeTableView
+			case .WebUntis:
+				selectedSideBarItem_Global = .WebUntis
+				return webUntisView
+			case .OSZimt:
+				selectedSideBarItem_Global = .OSZimt
+				return oszimtView
+			case .ChatGPT:
+				selectedSideBarItem_Global = .ChatGPT
+				return chatGPTView
+
+			case .Discord:
+				selectedSideBarItem_Global = .Discord
+				return discordView
+			case .WWW:
+				selectedSideBarItem_Global = .WWW
+				return wwwView
+				
+				/*case .Homework:
+				 sideBarVisibility_Global = sideBarVisibility
+				 selectedSideBarItem_Global = .Homework
+				 return homeWorkView*/
+		}
+	}
+		
+		var body: some View {
+			
+			if #available(macOS 13.0, *) {
+				NavigationSplitView{
+					List(SideBarItem.allCases, selection: $selectedSideBarItem) { item in
+						NavigationLink(
+							destination: destinationView(for: item)) {
+								Label(item.title,systemImage: item.systemImage)
+							}
+						
+					}
+					.frame(width: 190)
+					.padding(.top,10).padding(.bottom,10
+					).padding(.leading,10)
+						.padding(.trailing,0).background(.ultraThinMaterial)
+						.listStyle(SidebarListStyle())
+						.background(BlurView())
+				} detail: {
+					destinationView(for: selectedSideBarItem_Global)
+				}
+				.background(.ultraThinMaterial)
+				.background(BlurView())
+				.onAppear {
+					selectedSideBarItem_Global = .ClassSide
+				}.navigationSplitViewStyle(
+					.prominentDetail
+				)
+			} else  {
+					// Fallback code for macOS versions earlier than 13.0
+				NavigationView {
+					List {
+						ForEach(SideBarItem.allCases, id: \.self) { item in
+							NavigationLink(destination: destinationView(for: item)) {
+								Label(item.title, systemImage: item.systemImage)
+							}
+						}
+					}
+					.listStyle(SidebarListStyle())
+					.frame(width: 190)
+					.padding(.top, 10)
+					.padding(.bottom, 10)
+					.padding(.leading, 10)
+					.background(.ultraThinMaterial)
+					.background(BlurView())
+					destinationView(for: selectedSideBarItem)
+						.background(.ultraThinMaterial)
+						.background(BlurView())
+				}
+				.onAppear {
+					selectedSideBarItem = .ClassSide
+					selectedSideBarItem_Global = .ClassSide
+				}
+			}
+			
+		}
+		}
+
+#elseif os(iOS)
+
 struct ContentView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
-	//@Environment(\.managedObjectContext) private var viewContext
-#if os(macOS)
-	
-	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State var selectedSideBarItem: SideBarItem = .ClassSide
-		// views
-	@State var classSideView = AnyView(
-		ClassSideView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var moodleView = AnyView(
-		MoodleView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var timeTableView = AnyView(
-		TimeTableView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var webUntisView = AnyView(
-		WebUntisView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var oszimtView = AnyView(
-		OSZimtView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var chatGPTView = AnyView(
-		ChatGPTView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var discordView = AnyView(
-		DiscordView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	@State var wwwView = AnyView(
-		WWWView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)
-	/*@State var homeWorkView = AnyView(
-		HomeworkView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		).background(
-			BlurView()
-		)
-	)*/
-	
-#endif
-#if os(iOS)
+		//@Environment(\.managedObjectContext) private var viewContext
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
 	@State var selectedSideBarItem: SideBarItem? = .ClassSide
 		// views
 	@State var classSideView = AnyView(
 		ClassSideView().background(
 			Color.black).background(
-			.ultraThinMaterial
-			).navigationTitle(SideBarItem.ClassSide.title)
-			
-	)
-	@State var moodleView = AnyView(
-		MoodleView()
-			.background(
-			Color.black)
-		.background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.Moodle.title)
-		
-	)
-	@State var timeTableView = AnyView(
-		TimeTableView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.TimeTable.title)
-		
-	)
-	@State var webUntisView = AnyView(
-		WebUntisView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.WebUntis.title)
-		
-	)
-	@State var oszimtView = AnyView(
-		OSZimtView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.OSZimt.title)
-		
-	)
-	@State var discordView = AnyView(
-		DiscordView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.Discord.title)
-		
-	)
-	@State var wwwView = AnyView(
-		WWWView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.WWW.title)
-		
-	)
-	@State var settingsView = AnyView(
-		SettingsView().background(
-			Color.black).background(
-			.ultraThinMaterial
-		).navigationTitle(SideBarItem.Settings.title)
-		
-	)
-/*	@State var homeWorkView = AnyView(
-		HomeworkView().padding(
-			10
-		).background(
-			.ultraThinMaterial
-		)
-		
-	)*/
-#endif
-#if os(xrOS)
-	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State var selectedSideBarItem: SideBarItem? = .ClassSide
-		// views
-	@State var classSideView = AnyView(
-		ClassSideView().background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.ClassSide.title)
 		
 	)
 	@State var moodleView = AnyView(
 		MoodleView()
+			.background(
+				Color.black)
 			.background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.Moodle.title)
@@ -196,36 +237,42 @@ struct ContentView: View {
 	)
 	@State var timeTableView = AnyView(
 		TimeTableView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.TimeTable.title)
 		
 	)
 	@State var webUntisView = AnyView(
 		WebUntisView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.WebUntis.title)
 		
 	)
 	@State var oszimtView = AnyView(
 		OSZimtView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.OSZimt.title)
 		
 	)
 	@State var discordView = AnyView(
 		DiscordView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.Discord.title)
 		
 	)
 	@State var wwwView = AnyView(
 		WWWView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.WWW.title)
 		
 	)
 	@State var settingsView = AnyView(
 		SettingsView().background(
+			Color.black).background(
 				.ultraThinMaterial
 			).navigationTitle(SideBarItem.Settings.title)
 		
@@ -238,80 +285,8 @@ struct ContentView: View {
 	 )
 	 
 	 )*/
-#endif
 	
 	var body: some View {
-		#if os(macOS)
-		NavigationSplitView(
-			columnVisibility: $sideBarVisibility
-		) {
-			List(
-				SideBarItem.allCases,
-				selection: $selectedSideBarItem
-			) { item in
-				NavigationLink(
-					destination: destinationView(
-						for: item
-					)
-				) {
-					Label(
-						item.title,
-						systemImage: item.systemImage
-					)
-				}
-				
-			}
-			.frame(
-				width: 190
-			)
-			.padding(
-				.top,
-				10
-			)
-			.padding(
-				.bottom,
-				10
-			)
-			.padding(
-				.leading,
-				10
-			)
-			.padding(
-				.trailing,
-				0
-			)
-			.background(
-				.ultraThinMaterial
-			)
-			.listStyle(
-				SidebarListStyle()
-			)
-			
-			.background(
-				BlurView()
-			)
-			
-		} detail: {
-			destinationView(
-				for: selectedSideBarItem
-			)
-		}
-		.background(
-			.ultraThinMaterial
-		)
-		
-		.background(
-			BlurView()
-		)
-		
-		.onAppear {
-			selectedSideBarItem = .ClassSide
-			selectedSideBarItem_Global = .ClassSide
-		}.navigationSplitViewStyle(
-			.prominentDetail
-		)
-		
-#elseif os(iOS)
 		ZStack {
 			Color(.black).ignoresSafeArea(edges: .all)
 			NavigationView {
@@ -333,8 +308,121 @@ struct ContentView: View {
 				}
 			}
 		}.background(.black)
-		#elseif os(xrOS)
+	}
+
+	func destinationView(
+		for item: SideBarItem
+	) -> AnyView {
+		switch item {
+			case .ClassSide:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .ClassSide
+				return classSideView
+			case .Moodle:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .Moodle
+				return moodleView
+			case .TimeTable:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .TimeTable
+				return timeTableView
+			case .WebUntis:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .WebUntis
+				return webUntisView
+			case .OSZimt:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .OSZimt
+				return oszimtView
+			case .Discord:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .Discord
+				return discordView
+			case .WWW:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .WWW
+				return AnyView(
+					wwwView
+				)
+			case .Settings:
+				sideBarVisibility_Global = sideBarVisibility
+				selectedSideBarItem_Global = .Settings
+				return settingsView
+				/*case .Homework:
+				 sideBarVisibility_Global = sideBarVisibility
+				 selectedSideBarItem_Global = .Homework
+				 return homeWorkView*/
+		}
+	}
+	
+}
+#elseif os(xrOS)
+struct ContentView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+		//@Environment(\.managedObjectContext) private var viewContext
+	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
+	@State var selectedSideBarItem: SideBarItem? = .ClassSide
+		// views
+	@State var classSideView = AnyView(
+		ClassSideView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.ClassSide.title)
 		
+	)
+	@State var moodleView = AnyView(
+		MoodleView()
+			.background(
+				.ultraThinMaterial
+			).navigationTitle(SideBarItem.Moodle.title)
+		
+	)
+	@State var timeTableView = AnyView(
+		TimeTableView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.TimeTable.title)
+		
+	)
+	@State var webUntisView = AnyView(
+		WebUntisView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.WebUntis.title)
+		
+	)
+	@State var oszimtView = AnyView(
+		OSZimtView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.OSZimt.title)
+		
+	)
+	@State var discordView = AnyView(
+		DiscordView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.Discord.title)
+		
+	)
+	@State var wwwView = AnyView(
+		WWWView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.WWW.title)
+		
+	)
+	@State var settingsView = AnyView(
+		SettingsView().background(
+			.ultraThinMaterial
+		).navigationTitle(SideBarItem.Settings.title)
+		
+	)
+	/*	@State var homeWorkView = AnyView(
+	 HomeworkView().padding(
+	 10
+	 ).background(
+	 .ultraThinMaterial
+	 )
+	 
+	 )*/
+	
+	var body: some View {
 		TabView {
 			self.classSideView
 				.tabItem {
@@ -471,12 +559,10 @@ struct ContentView: View {
 				)
 			
 		}
-		
-		#endif
 	}
 	
-	#if !os(xrOS)
 	
+#if os(iOS)
 	func destinationView(
 		for item: SideBarItem
 	) -> AnyView {
@@ -501,12 +587,6 @@ struct ContentView: View {
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .OSZimt
 				return oszimtView
-				#if os(macOS)
-			case .ChatGPT:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .ChatGPT
-				return chatGPTView
-				#endif
 			case .Discord:
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Discord
@@ -517,22 +597,21 @@ struct ContentView: View {
 				return AnyView(
 					wwwView
 				)
-				#if os(iOS)
 			case .Settings:
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Settings
 				return settingsView
-				#endif
-			/*case .Homework:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Homework
-				return homeWorkView*/
+				/*case .Homework:
+				 sideBarVisibility_Global = sideBarVisibility
+				 selectedSideBarItem_Global = .Homework
+				 return homeWorkView*/
 		}
 	}
-	#endif
+#endif
 	
 }
 
+#endif
 
 
 enum SideBarItem: String, Identifiable, CaseIterable {
