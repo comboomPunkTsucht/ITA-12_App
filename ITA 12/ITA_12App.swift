@@ -419,10 +419,15 @@ struct SettingsView: View {
 						ForEach(0..<ac.count, id: \.self) { index in
 							Text(ac[index]).foregroundStyle(Color(ac[index]))
 						}
-					}
-					Button("Save Accent Color", action: {
+					}.onDisappear {
 						safeAC()
-					}).foregroundStyle(Color(colorString ?? ac[0]))
+					}
+					.onChange(of: colorIndex) { _ in
+						safeAC()
+					}
+//					Button("Save Accent Color", action: {
+//						safeAC()
+//					}).foregroundStyle(Color(colorString ?? ac[0]))
 				}
 				#endif
 			}
