@@ -213,6 +213,7 @@ struct ContentView: View {
 #elseif os(iOS)
 
 struct ContentView: View {
+
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		//@Environment(\.managedObjectContext) private var viewContext
@@ -719,6 +720,11 @@ struct CustomWebView: UIViewRepresentable {
 					"https://ita12docoszimt.serveblog.net/"
 				) {
 					parent.searchText = ""
+				} else if url.absoluteString.hasPrefix(
+					"https://www.youtube.com/watch?v=o-YBDTqX_ZU"
+				) {
+					parent.searchText = ""
+					
 				} else {
 					parent.searchText = url.absoluteString
 				}
