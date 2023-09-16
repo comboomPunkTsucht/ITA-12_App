@@ -879,6 +879,7 @@ struct ClassSideView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1014,6 +1015,7 @@ struct MoodleView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1150,6 +1152,7 @@ struct TimeTableView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1287,6 +1290,7 @@ struct OSZimtView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1424,6 +1428,7 @@ struct ChatGPTView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1683,6 +1688,7 @@ struct WWWView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1826,6 +1832,7 @@ struct WebUntisView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif
@@ -1964,6 +1971,7 @@ struct DiscordView: View {
 						.frame(width: 20)
 				}
 				.buttonStyle(PlainButtonStyle())
+				.buttonRepeatBehavior(.enabled)
 #if os(iOS)
 				.keyboardShortcut("r", modifiers: .command)
 #endif

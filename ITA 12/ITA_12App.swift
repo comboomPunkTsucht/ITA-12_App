@@ -241,6 +241,7 @@ struct ITA_12App: App {
 						.frame(width: 20)
 					Text("Reload")
 				}
+				.buttonRepeatBehavior(.enabled)
 				.keyboardShortcut("r", modifiers: .command)
 				Divider()
 			}
