@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F5F2A98E2B000EC2DE8 /* WebKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		91BCE9A62AB1277100D2C108 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 91BCE9A52AB1277100D2C108 /* LaunchAtLogin */; settings = {ATTRIBUTES = (Weak, ); }; };
-		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; };
+		919DF7482AB6049400855B4D /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 919DF7472AB6049400855B4D /* LaunchAtLogin */; };
+		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; platformFilters = (macos, ); };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
 		91E6C0A62A829B4400F3E206 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91E6C0A52A829B4400F3E206 /* Assets.xcassets */; };
@@ -53,8 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91BCE9A62AB1277100D2C108 /* LaunchAtLogin in Frameworks */,
 				91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */,
+				919DF7482AB6049400855B4D /* LaunchAtLogin in Frameworks */,
 				91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,7 +132,7 @@
 			);
 			name = "ITA 12";
 			packageProductDependencies = (
-				91BCE9A52AB1277100D2C108 /* LaunchAtLogin */,
+				919DF7472AB6049400855B4D /* LaunchAtLogin */,
 			);
 			productName = "ITA 12";
 			productReference = 91E6C09E2A829B4100F3E206 /* ITA 12.app */;
@@ -163,7 +163,7 @@
 			);
 			mainGroup = 91E6C0952A829B4100F3E206;
 			packageReferences = (
-				91BCE9A42AB1277100D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
+				91BCE9A72AB6035500D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 			);
 			productRefGroup = 91E6C09F2A829B4100F3E206 /* Products */;
 			projectDirPath = "";
@@ -413,9 +413,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.6.6;
-				ONLY_ACTIVE_ARCH = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.7;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -490,8 +490,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.6.6;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.7;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "comboomPunkTsucht.ITA-12";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -532,9 +533,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91BCE9A42AB1277100D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+		91BCE9A72AB6035500D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -543,9 +544,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		91BCE9A52AB1277100D2C108 /* LaunchAtLogin */ = {
+		919DF7472AB6049400855B4D /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91BCE9A42AB1277100D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			package = 91BCE9A72AB6035500D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */

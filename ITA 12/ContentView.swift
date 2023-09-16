@@ -13,10 +13,7 @@ import Cocoa
 #endif
 
 #if os(macOS)
-@available(macOS 13.0, *)
 var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
-
-@available(macOS 12.0, *)
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
 
 #elseif os(iOS)
@@ -155,7 +152,6 @@ struct ContentView: View {
 		
 		var body: some View {
 			
-			if #available(macOS 13.0, *) {
 				NavigationSplitView{
 					List(SideBarItem.allCases, selection: $selectedSideBarItem) { item in
 						NavigationLink(
@@ -180,32 +176,6 @@ struct ContentView: View {
 				}.navigationSplitViewStyle(
 					.prominentDetail
 				)
-			} else  {
-					// Fallback code for macOS versions earlier than 13.0
-				NavigationView {
-					List {
-						ForEach(SideBarItem.allCases, id: \.self) { item in
-							NavigationLink(destination: destinationView(for: item)) {
-								Label(item.title, systemImage: item.systemImage)
-							}
-						}
-					}
-					.listStyle(SidebarListStyle())
-					.frame(width: 190)
-					.padding(.top, 10)
-					.padding(.bottom, 10)
-					.padding(.leading, 10)
-					.background(.ultraThinMaterial)
-					.background(BlurView())
-					destinationView(for: selectedSideBarItem)
-						.background(.ultraThinMaterial)
-						.background(BlurView())
-				}
-				.onAppear {
-					selectedSideBarItem = .ClassSide
-					selectedSideBarItem_Global = .ClassSide
-				}
-			}
 			
 		}
 		}
@@ -1629,7 +1599,9 @@ struct WWWView: View {
 	let startURL = URL(string: "https://ita12docoszimt.serveblog.net/")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
-	
+	private var isSearchEmpty: Bool {
+		searchText.isEmpty
+	}
 	var body: some View {
 		VStack{
 			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
@@ -1660,7 +1632,9 @@ struct WWWView: View {
 							.frame(width: 20)
 					}
 					.buttonStyle(PlainButtonStyle())
+					.disabled(isSearchEmpty)
 					.keyboardShortcut(.defaultAction)
+					
 				}
 				.frame(height: 14)
 				.padding(.vertical, 8)
@@ -2052,6 +2026,8 @@ struct DiscordView: View {
 		webViewManager.reload()
 	}
 }
+
+
 
 #Preview {
 	ContentView()
