@@ -22,10 +22,10 @@ struct ITA_12App: App {
 	@State private var screenWidth: CGFloat
 	@State private var screenHeight: CGFloat
 	
-	private var minWidth: CGFloat = 0.0
-	private var minHeight: CGFloat = 0.0
-	private var idealWidth: CGFloat = 0.0
-	private var idealHeight: CGFloat = 0.0
+	@State private var minWidth: CGFloat = 0.0
+	@State private var minHeight: CGFloat = 0.0
+	@State private var idealWidth: CGFloat = 0.0
+	@State private var idealHeight: CGFloat = 0.0
 	
 	init() {
 			// Calculate initial screen width and height
@@ -42,6 +42,8 @@ struct ITA_12App: App {
 		minHeight = screenHeight * appState.minFactor
 		idealWidth = screenWidth * appState.idealFactor
 		idealHeight = screenHeight * appState.idealFactor
+		
+		
 	}
 	
 	
@@ -190,8 +192,6 @@ struct ITA_12App: App {
 		 persistenceController.save()
 		 }
 		 }*/
-		
-		
 #if os(macOS)
 		Settings{
 			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: .infinity,minHeight: 100,idealHeight: 100,maxHeight: .infinity).background(.ultraThinMaterial)
