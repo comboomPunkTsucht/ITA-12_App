@@ -6,7 +6,7 @@
 	//
 
 import SwiftUI
-import CoreData
+import SwiftData
 #if os(macOS)
 import LaunchAtLogin
 #endif
@@ -186,7 +186,7 @@ struct ITA_12App: App {
 				.background(.ultraThinMaterial)
 				.background(BlurView())
 #endif
-		}
+		}.modelContainer(for: [Homework.self])
 		/*.onChange(of: scenePhase) { newScenePhase in
 		 if newScenePhase == .inactive {
 		 persistenceController.save()
@@ -469,278 +469,148 @@ struct SettingsView: View {
 		}
 	}
 }
-/*
- struct PersistenceController {
- static let shared = PersistenceController()
- 
- let container: NSPersistentContainer
- 
- init() {
- container = NSPersistentContainer(name: "ITA-12") // Name deines Data Models
- container.loadPersistentStores { (storeDescription, error) in
- if let error = error as NSError? {
- fatalError("Unresolved error \(error), \(error.userInfo)")
- }
- }
- }
- 
- func save() {
- let context = container.viewContext
- if context.hasChanges {
- do {
- try context.save()
- } catch {
- let nsError = error as NSError
- fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
- }
- }
- }
- }
- struct HomeworkView: View {
- @Environment(\.managedObjectContext) private var viewContext
- 
- @FetchRequest(
- sortDescriptors: [NSSortDescriptor(keyPath: \HomeworkEntry.dueDate, ascending: true)],
- animation: .default)
- private var homeworkEntries: FetchedResults<HomeworkEntry>
- 
- @State private var showAddView = false
- @State private var showAddSView = false
- 
- var body: some View {
- NavigationView {
- List {
- ForEach(Array(homeworkEntries), id: \.self) { entry in
- NavigationLink(destination: HomeworkDetail(entry: entry)) {
- VStack(alignment: .leading) {
- HStack {
- Text(entry.task ?? "Unnamed Task")
- .font(.headline)
- Spacer()
- Text(entry.dueDate?.formatted(date: .abbreviated, time: .omitted) ?? "")
- .foregroundColor(.secondary)
- }
- HStack {
- Text(entry.subjectsArrayAsString) // Change this to the appropriate property/method
- .font(.subheadline)
- .foregroundColor(.secondary)
- Spacer()
- }
- }
- }
- }
- .onDelete(perform: deleteHomeworkEntries)
- }
- .navigationTitle("Hausaufgaben Tracker")
- .toolbar {
- ToolbarItem(placement: .navigation) {
- Button(action: {
- showAddView.toggle()
- }) {
- Label("Homework", systemImage: "plus.circle")
- }
- }
- ToolbarItem(placement: .navigation) {
- Button(action: {
- showAddSView.toggle()
- }) {
- Label("Subject", systemImage: "plus.circle")
- }
- }
- }
- }
- .sheet(isPresented: $showAddView) {
- AddHomeworkView()
- .environment(\.managedObjectContext, viewContext)
- }
- .sheet(isPresented: $showAddSView) {
- AddSubjectView()
- .environment(\.managedObjectContext, viewContext)
- }
- }
- 
- private func deleteHomeworkEntries(offsets: IndexSet) {
- withAnimation {
- offsets.map { homeworkEntries[$0] }.forEach(viewContext.delete)
- 
- do {
- try viewContext.save()
- } catch {
- // Handle the Core Data error
- }
- }
- }
- }
- 
- 
- 
- 
- struct HomeworkDetail: View {
- var entry: HomeworkEntry
- 
- var body: some View {
- VStack {
- Text("Aufgabe: \(entry.task ?? "Unnamed Task")")
- .font(.title)
- Text("Erstelldatum: \(formattedDate(entry.creationDate))")
- Text("Fälligkeitsdatum: \(formattedDate(entry.dueDate))")
- Text("Fächer: \(formattedSubjects(entry.subjects))")
- Text("Notizen: \(entry.notes ?? "")")
- }
- .padding()
- }
- 
- func formattedDate(_ date: Date?) -> String {
- guard let date = date else {
- return ""
- }
- let formatter = DateFormatter()
- formatter.dateStyle = .medium
- return formatter.string(from: date)
- }
- 
- func formattedSubjects(_ subjects: NSSet?) -> String {
- guard let subjectsSet = subjects as? Set<Subject> else {
- return ""
- }
- let subjectNames = subjectsSet.map { $0.name ?? "" }
- return subjectNames.joined(separator: ", ")
- }
- }
- 
- struct AddHomeworkView: View {
- @Environment(\.managedObjectContext) private var viewContext
- @State private var task = ""
- @State private var dueDate = Date()
- @State private var selectedSubjects: [Subject] = []
- @State private var notes = ""
- 
- @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Subject.name, ascending: true)])
- private var subjects: FetchedResults<Subject>
- 
- var body: some View {
- NavigationView {
- Form {
- Section(header: Text("Aufgaben Details")) {
- TextField("Aufgabe", text: $task).frame(height: 200)
- DatePicker("Fälligkeitsdatum", selection: $dueDate, displayedComponents: .date)
- MultiSelect(subjects: $selectedSubjects, allSubjects: subjects)
- TextField("Notizen", text: $notes).frame(height: 200)
- }
- Section {
- Button("Speichern") {
- let newEntry = HomeworkEntry(context: viewContext)
- newEntry.creationDate = Date()
- newEntry.dueDate = dueDate
- newEntry.task = task
- newEntry.notes = notes
- 
- for subject in selectedSubjects {
- newEntry.addToSubjects(subject)
- }
- 
- do {
- try viewContext.save()
- } catch {
- // Handle the Core Data error
- }
- 
- task = ""
- dueDate = Date()
- selectedSubjects = []
- notes = ""
- }
- }
- }
- #if os(iOS)
- .navigationBarTitle("Neue Aufgabe hinzufügen")
- #endif
- }
- }
- }
+
+struct HomeworkView: View {
+	@Environment(\.modelContext) var context
+	@Query(sort: \Homework.dueDate) var homeworkEntries: [Homework]
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@State private var showAddView = false
+	
+	var body: some View {
+		NavigationView {
+			List {
+				ForEach(homeworkEntries) { entry in
+					NavigationLink(destination: HomeworkDetail(entry: entry)) {
+						HomeworkListEntry(entry: entry)
+					}
+				}
+				.onDelete(perform: { IndexSet in
+					for index in IndexSet {
+						context.delete(homeworkEntries[index])
+					}
+				})
+			}
+			.navigationTitle("Hausaufgaben Tracker")
+			.toolbar {
+				ToolbarItem(placement: .navigation) {
+					Button(action: {
+						showAddView.toggle()
+					}) {
+						Label("Homework", systemImage: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					}
+				}
+			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+		}
+		.sheet(isPresented: $showAddView) {
+			AddHomeworkView(isShown: $showAddView)
+		}
+	}
+}
+
+struct HomeworkListEntry: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	var entry: Homework
+	var body: some View {
+		VStack(alignment: .leading) {
+			HStack {
+				Text(entry.task)
+					.font(.headline).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				Spacer()
+				Text(entry.dueDate.formatted(date: .abbreviated, time: .omitted))
+					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			}
+			HStack {
+				Text(entry.selectedSubjects) // Change this to the appropriate property/method
+					.font(.subheadline)
+					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				Spacer()
+			}
+		}
+	}
+}
+
+
+
+struct HomeworkDetail: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	var entry: Homework
+	
+	var body: some View {
+		VStack {
+			Text("Aufgabe: \(entry.task)")
+				.font(.title).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			Text("Erstelldatum: \(formattedDate(entry.creationDate))").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			Text("Fälligkeitsdatum: \(formattedDate(entry.dueDate))").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			Text("Fächer: \(entry.selectedSubjects)").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			Text("Notizen: \(entry.notes)").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+		}
+		.padding()
+	}
+	
+	func formattedDate(_ date: Date?) -> String {
+		guard let date = date else {
+			return ""
+		}
+		let formatter = DateFormatter()
+		formatter.dateStyle = .medium
+		return formatter.string(from: date)
+	}
+}
+
+struct AddHomeworkView: View {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@Binding var isShown: Bool
+	@Environment(\.modelContext) var context
+	@State private var task = ""
+	@State private var dueDate = Date()
+	@State private var selectedSubjects = ""
+	@State private var notes = ""
+	
+	var body: some View {
+		NavigationView {
+			Form {
+				Section(header: Text("Aufgaben Details")) {
+					TextField("Aufgabe", text: $task).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					DatePicker("Fälligkeitsdatum", selection: $dueDate, displayedComponents: .date).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					TextField("Fäch", text: $selectedSubjects).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					TextField("Notizen", text: $notes).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
+				Section {
+					Button("Speichern") {
+						let newEntry = Homework(task: task, dueDate: dueDate,creationDate: Date(), selectedSubjects: selectedSubjects, notes: notes)
+						context.insert(newEntry)
+						isShown.toggle()
+					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
+			}
+#if os(iOS)
+			.navigationBarTitle("Neue Aufgabe hinzufügen")
+#endif
+		}
+	}
+}
+
  
  
- struct MultiSelect: View {
- @Binding var subjects: [Subject]
- let allSubjects: FetchedResults<Subject>
- 
- var body: some View {
- DisclosureGroup("Fächer auswählen") {
- ForEach(allSubjects) { subject in
- MultipleSelectionRow(title: subject.name ?? "", isSelected: self.subjects.contains(subject)) {
- if self.subjects.contains(subject) {
- self.subjects.removeAll { $0 == subject }
- } else {
- self.subjects.append(subject)
- }
- }
- }
- }
- .padding()
- }
- }
- 
- struct MultipleSelectionRow: View {
- var title: String
- var isSelected: Bool
- var action: () -> Void
- 
- var body: some View {
- HStack {
- Text(title)
- Spacer()
- if isSelected {
- Image(systemName: "checkmark")
- .foregroundColor(.blue)
- }
- }
- .contentShape(Rectangle())
- .onTapGesture {
- self.action()
- }
- }
- }
- 
- struct AddSubjectView: View {
- @Environment(\.managedObjectContext) private var viewContext
- @State private var fullName = ""
- @State private var shortName = ""
- 
- var body: some View {
- NavigationView {
- Form {
- Section(header: Text("Subject Details")) {
- TextField("Full Name", text: $fullName)
- TextField("Short Name", text: $shortName)
- }
- Section {
- Button("Save") {
- saveSubject()
- }
- }
- }
- #if os(iOS)
- .navigationBarTitle("Add Subject")
- #endif
- }
- }
- 
- private func saveSubject() {
- let newSubject = Subject(context: viewContext)
- newSubject.name = fullName
- newSubject.shortName = shortName
- 
- do {
- try viewContext.save()
- } catch {
- // Handle the Core Data error
- }
- 
- fullName = ""
- shortName = ""
- }
- }
- 
- */
+@Model
+class Homework {
+	var task: String!
+	var creationDate: Date!
+	var dueDate: Date!
+	var selectedSubjects: String!
+	var notes: String!
+	
+	init(task: String!, dueDate: Date!, creationDate: Date!, selectedSubjects: String!, notes: String!) {
+		self.task = task
+		self.dueDate = dueDate
+		self.creationDate = creationDate
+		self.selectedSubjects = selectedSubjects
+		self.notes = notes
+	}
+}
 
 

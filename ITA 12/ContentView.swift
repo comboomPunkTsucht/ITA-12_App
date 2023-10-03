@@ -20,6 +20,8 @@ var selectedSideBarItem_Global: SideBarItem = .ClassSide
 var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
 
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
+#elseif os(xrOS)
+var selectedSideBarItem_Global: SideBarItem = .ClassSide
 #endif
 
 #if os(macOS)
@@ -103,7 +105,7 @@ struct ContentView: View {
 				BlurView()
 			)
 		)
-		/*@State var homeWorkView = AnyView(
+		@State var homeWorkView = AnyView(
 		 HomeworkView().padding(
 		 10
 		 ).background(
@@ -111,7 +113,7 @@ struct ContentView: View {
 		 ).background(
 		 BlurView()
 		 )
-		 )*/
+		 )
 		
 	func destinationView(
 		for item: SideBarItem
@@ -143,10 +145,9 @@ struct ContentView: View {
 				selectedSideBarItem_Global = .WWW
 				return wwwView
 				
-				/*case .Homework:
-				 sideBarVisibility_Global = sideBarVisibility
+				case .Homework:
 				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView*/
+				 return homeWorkView
 		}
 	}
 		
@@ -248,14 +249,11 @@ struct ContentView: View {
 			).navigationTitle(SideBarItem.Settings.title)
 		
 	)
-	/*	@State var homeWorkView = AnyView(
-	 HomeworkView().padding(
-	 10
-	 ).background(
-	 .ultraThinMaterial
-	 )
-	 
-	 )*/
+	@State var homeWorkView = AnyView(
+		HomeworkView().background(
+			Color.black).background(
+				.ultraThinMaterial)
+			.navigationTitle(SideBarItem.Homework.title))
 	
 	var body: some View {
 		ZStack {
@@ -319,10 +317,10 @@ struct ContentView: View {
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Settings
 				return settingsView
-				/*case .Homework:
+				case .Homework:
 				 sideBarVisibility_Global = sideBarVisibility
 				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView*/
+				 return homeWorkView
 		}
 	}
 	
@@ -384,14 +382,14 @@ struct ContentView: View {
 		).navigationTitle(SideBarItem.Settings.title)
 		
 	)
-	/*	@State var homeWorkView = AnyView(
+	@State var homeWorkView = AnyView(
 	 HomeworkView().padding(
 	 10
 	 ).background(
 	 .ultraThinMaterial
 	 )
 	 
-	 )*/
+	 )
 	
 	var body: some View {
 		TabView {
@@ -572,10 +570,10 @@ struct ContentView: View {
 				sideBarVisibility_Global = sideBarVisibility
 				selectedSideBarItem_Global = .Settings
 				return settingsView
-				/*case .Homework:
+				case .Homework:
 				 sideBarVisibility_Global = sideBarVisibility
 				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView*/
+				 return homeWorkView
 		}
 	}
 #endif
@@ -603,7 +601,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	#if os(iOS) || os(xrOS)
 	case Settings
 	#endif
-	//case Homework
+	case Homework
 	
 	var title: String {
 		switch self {
@@ -620,7 +618,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 #if os(iOS) || os(xrOS)
 			case .Settings: return "Settings"
 				#endif
-			//case .Homework: return "All Homework"
+			case .Homework: return "All Homework"
 		}
 	}
 	
@@ -639,7 +637,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 #if os(iOS) || os(xrOS)
 			case .Settings: return "gear"
 				#endif
-			//case .Homework: return "doc.text.image"
+			case .Homework: return "doc.text.image"
 		}
 	}
 }

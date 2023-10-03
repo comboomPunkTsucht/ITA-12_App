@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F5F2A98E2B000EC2DE8 /* WebKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		919DF7482AB6049400855B4D /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 919DF7472AB6049400855B4D /* LaunchAtLogin */; };
+		915896F72ACC371B0055E391 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 915896F62ACC371B0055E391 /* LaunchAtLogin */; };
 		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; platformFilters = (macos, ); };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
@@ -54,7 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */,
-				919DF7482AB6049400855B4D /* LaunchAtLogin in Frameworks */,
+				915896F72ACC371B0055E391 /* LaunchAtLogin in Frameworks */,
 				91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,8 +100,8 @@
 				91DAF3742A8C18A900C86573 /* AppDeligate.swift */,
 				91E6C0A52A829B4400F3E206 /* Assets.xcassets */,
 				917F2A0A2A98F51800383978 /* ITA_12.entitlements */,
-				91E6C0A82A829B4400F3E206 /* Preview Content */,
 				91FA409C2A9F8EEF00F11603 /* ITA-12.xcdatamodeld */,
+				91E6C0A82A829B4400F3E206 /* Preview Content */,
 			);
 			path = "ITA 12";
 			sourceTree = "<group>";
@@ -132,7 +132,7 @@
 			);
 			name = "ITA 12";
 			packageProductDependencies = (
-				919DF7472AB6049400855B4D /* LaunchAtLogin */,
+				915896F62ACC371B0055E391 /* LaunchAtLogin */,
 			);
 			productName = "ITA 12";
 			productReference = 91E6C09E2A829B4100F3E206 /* ITA 12.app */;
@@ -546,7 +546,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		919DF7472AB6049400855B4D /* LaunchAtLogin */ = {
+		915896F62ACC371B0055E391 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 91BCE9A72AB6035500D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
