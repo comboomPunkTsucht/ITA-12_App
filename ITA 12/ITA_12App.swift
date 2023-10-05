@@ -174,6 +174,7 @@ struct ITA_12App: App {
 		WindowGroup {
 			ContentView()
 				//.environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+				.modelContainer(for: [Homework.self])
 #if os(macOS)
 				.frame(
 					minWidth: minWidth,
@@ -186,7 +187,7 @@ struct ITA_12App: App {
 				.background(.ultraThinMaterial)
 				.background(BlurView())
 #endif
-		}.modelContainer(for: [Homework.self])
+		}
 		/*.onChange(of: scenePhase) { newScenePhase in
 		 if newScenePhase == .inactive {
 		 persistenceController.save()
@@ -196,7 +197,7 @@ struct ITA_12App: App {
 		Settings{
 			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: .infinity,minHeight: 100,idealHeight: 100,maxHeight: .infinity).background(.ultraThinMaterial)
 				.background(BlurView())
-		}
+		}.modelContainer(for: [Homework.self])
 		.commands {
 			CommandGroup(after:.appInfo) {
 				Divider()
@@ -309,6 +310,7 @@ class AppState: ObservableObject, Codable {
 	}
 }
 struct SettingsView: View {
+	@Environment(\.modelContext) var context
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
@@ -377,6 +379,20 @@ struct SettingsView: View {
 				colorisSet = true
 		}
 	}
+	
+	func generateRandomHomework() -> Homework {
+		let subjects = ["Mathematik", "Deutsch", "Englisch", "Anwendungssysteme", "IT-Systeme"]
+		let selectedSubject = subjects.randomElement()!
+		let task = "Hausaufgabe für \(selectedSubject)"
+		let randomDueDate = Date().addingTimeInterval(Double.random(in: 1...30) * 24 * 60 * 60) // Fälligkeitsdatum zwischen 1 und 30 Tagen ab heute
+		let randomCreationDate = Date().addingTimeInterval(-Double.random(in: 1...7) * 24 * 60 * 60) // Erstellungsdatum zwischen 1 und 7 Tagen vor heute
+		let notes = "Dummy Notizen für die Hausaufgabe"
+		
+		return Homework(task: task, dueDate: randomDueDate, creationDate: randomCreationDate, selectedSubjects: selectedSubject, notes: notes)
+	}
+	
+	@State var randomHomeworks: [Homework] = []
+
 	
 	var body: some View {
 		VStack {
@@ -462,6 +478,17 @@ struct SettingsView: View {
 						}
 					}
 				}
+#endif
+#if os(iOS)
+				Section(header: Text("Teste Homework Liste")) {
+					Button("Add Test Entries") {
+						for _ in 0...19 {
+							let randomHomework = generateRandomHomework()
+							self.randomHomeworks.append(randomHomework)
+							context.insert(randomHomework) // Assuming context is a managed object context for Core Data
+						}
+					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
 				
 #endif
 				
@@ -476,6 +503,8 @@ struct HomeworkView: View {
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	@State private var showAddView = false
 	@State var searchText = ""
+	@State private var selectedIndices = IndexSet()
+	@State private var isBatchDeleteActive = false
 	
 	var filteredHomeworkEntries: [Homework] {
 		if searchText.isEmpty {
@@ -488,106 +517,154 @@ struct HomeworkView: View {
 			}
 		}
 	}
+	func deleteSelectedEntries(at indices: IndexSet) {
+		for index in indices {
+			context.delete(filteredHomeworkEntries[index])
+			
+			selectedIndices.remove(index)
+		}
+		
+		do {
+			try context.save()
+		} catch {
+			print("Error saving context: \(error)")
+		}
+	}
+
 	
 	var body: some View {
-#if os(macOS)
 		NavigationSplitView {
-				List{
-					if filteredHomeworkEntries.isEmpty {
-						VStack(alignment: .center) {
-							ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding().background(.ultraThinMaterial).background(BlurView())
-						}.background(.ultraThinMaterial).background(BlurView())
-					}else {
-						ForEach(filteredHomeworkEntries) { entry in
-							NavigationLink(destination: HomeworkDetail(entry: entry)) {
-								HomeworkListEntry(entry: entry).background(.ultraThinMaterial).background(BlurView())
-							}.background(.ultraThinMaterial).background(BlurView())//.searchable(text: $searchText, placement: .toolbar).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-						}.onDelete(perform: { IndexSet in
-							for index in IndexSet {
-								context.delete(homeworkEntries[index])
-							}
-						})
-					}
-				}.listStyle(.sidebar)
-		} detail: { ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding().background(.ultraThinMaterial).background(BlurView()) }
-		.sheet(isPresented: $showAddView) {
-				AddHomeworkView(isShown: $showAddView).frame(width: 680, height: 160, alignment: .center).background(.ultraThinMaterial).padding().background(.ultraThinMaterial).background(BlurView())
-			}
-			.toolbar {
-				ToolbarItem(placement: .primaryAction) {
-					Button(action: {
-						showAddView.toggle()
-					}) {
-						Label("Homework", systemImage: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-					}
-				}
-				ToolbarItem(placement: .automatic){
-					TextField("Search", text: $searchText).frame(width: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-				}
-			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-		
-#else
-		NavigationSplitView {
+			HStack {
+				Image(systemName: "magnifyingglass").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				TextField("Search", text: $searchText).textFieldStyle(.plain).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			}.padding().clipShape(Capsule()).background(Capsule(style: .continuous).strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor)).padding()
 			List{
 				if filteredHomeworkEntries.isEmpty {
 					VStack(alignment: .center) {
-						ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding()
+						ContentUnavailableView("No Homwork Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()
 					}
 				}else {
-					ForEach(filteredHomeworkEntries) { entry in
-						NavigationLink(destination: HomeworkDetail(entry: entry)) {
-							HomeworkListEntry(entry: entry)
-						}.background(.ultraThinMaterial).searchable(text: $searchText, placement: .toolbar).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					ForEach(filteredHomeworkEntries, id: \.self) { entry in
+						if let index = filteredHomeworkEntries.firstIndex(of: entry) {
+							let isSelected = Binding(
+								get: {
+									selectedIndices.contains(index)
+								},
+								set: {
+									if $0 {
+										selectedIndices.insert(index)
+									} else {
+										selectedIndices.remove(index)
+									}
+								}
+							)
+							NavigationLink(destination: HomeworkDetail(entry: entry)) {
+								HomeworkListEntry(entry: entry, isSelected: isSelected, isBatchDeleteActive: $isBatchDeleteActive)
+							}
+						}
 					}.onDelete(perform: { IndexSet in
 						for index in IndexSet {
-							context.delete(homeworkEntries[index])
+							context.delete(filteredHomeworkEntries[index])
+							try! context.save()
 						}
 					})
+					
 				}
 			}.listStyle(.sidebar)
-		} detail: { ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding() }
+		} detail: {ContentUnavailableView("No Homwork Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()}
 			.sheet(isPresented: $showAddView) {
-				AddHomeworkView(isShown: $showAddView).frame(width: 680, height: 160, alignment: .center).padding()
+				AddHomeworkView(isShown: $showAddView).padding()
 			}
 			.toolbar {
-				ToolbarItem(placement: .primaryAction) {
-					Button(action: {
-						showAddView.toggle()
-					}) {
-						Label("Homework", systemImage: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				if isBatchDeleteActive == false {
+					ToolbarItem(placement: .topBarTrailing) {
+						Button(action: {
+							showAddView.toggle()
+						}) {
+							Text("ADD").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}
+					}
+					ToolbarItem(placement: .topBarLeading) {
+						Button(action: {
+							isBatchDeleteActive.toggle()
+						}) {
+							Text("DELETE").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}
+					}
+				} else {
+					ToolbarItem(placement: .cancellationAction) {
+						Button(action: {
+							isBatchDeleteActive.toggle()
+						}) {
+							Text("CANCEL").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}
+					}
+					ToolbarItem(placement: .confirmationAction) {
+						Button(action: {
+								// Implement the logic to delete selected entries
+							deleteSelectedEntries(at: selectedIndices)
+							isBatchDeleteActive.toggle() // Make sure to toggle batch delete mode off
+						}) {
+							Text("DONE").foregroundStyle(selectedIndices.isEmpty ? .secondary : (colorisSet ?? false ? Color(colorString!): .accentColor))
+						}.disabled(selectedIndices.isEmpty)
 					}
 				}
+				
 			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-		
-#endif
 	}
 }
-@MainActor
+struct CustomCheckboxStyle: ToggleStyle {
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	func makeBody(configuration: Configuration) -> some View {
+		HStack {
+			Image(systemName: configuration.isOn ? "checkmark.circle.fill" : "checkmark.circle")
+				.resizable()
+				.frame(width: 20, height: 20)
+				.foregroundColor(configuration.isOn ? (colorisSet ?? false ? Color(colorString!): .accentColor) : .secondary)
+				.onTapGesture { configuration.isOn.toggle() }
+			
+			configuration.label
+		}
+	}
+}
+
 struct HomeworkListEntry: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	var entry: Homework
+	@Binding var isSelected: Bool // Add this binding for selection
+	@Binding var isBatchDeleteActive: Bool
+	
 	var body: some View {
-		VStack(alignment: .leading) {
+		HStack(alignment: .center) {
+			if isBatchDeleteActive {
+				Toggle(isOn: $isSelected) {
+						// Empty Text to reserve space for the Toggle
+					Text("")
+				}.toggleStyle(CustomCheckboxStyle())
+				.fixedSize() // Fix the size of the Toggle
+			}
 			HStack {
-				Text(entry.task)
-					.font(.headline).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				VStack(alignment: .leading) {
+					Text(entry.task)
+						.font(.headline)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					Text(entry.selectedSubjects)
+						.font(.subheadline)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
 				Spacer()
 				Text(entry.dueDate.formatted(date: .abbreviated, time: .omitted))
 					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 			}
-			HStack {
-				Text(entry.selectedSubjects) // Change this to the appropriate property/method
-					.font(.subheadline)
-					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-				Spacer()
-			}
+			.layoutPriority(1) // Allow this part to be compressed if needed
 		}
 	}
 }
 
 
-@MainActor
+
 struct HomeworkDetail: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -614,7 +691,7 @@ struct HomeworkDetail: View {
 		return formatter.string(from: date)
 	}
 }
-@MainActor
+
 struct AddHomeworkView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?

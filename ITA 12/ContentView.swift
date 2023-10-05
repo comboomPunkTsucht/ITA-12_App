@@ -105,15 +105,6 @@ struct ContentView: View {
 				BlurView()
 			)
 		)
-		@State var homeWorkView = AnyView(
-		 HomeworkView().padding(
-		 10
-		 ).background(
-			.ultraThinMaterial
-		 ).background(
-			BlurView()
-		 )
-		 )
 		
 	func destinationView(
 		for item: SideBarItem
@@ -144,10 +135,6 @@ struct ContentView: View {
 			case .WWW:
 				selectedSideBarItem_Global = .WWW
 				return wwwView
-				
-				case .Homework:
-				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView
 		}
 	}
 		
@@ -382,14 +369,6 @@ struct ContentView: View {
 		).navigationTitle(SideBarItem.Settings.title)
 		
 	)
-	@State var homeWorkView = AnyView(
-	 HomeworkView().padding(
-	 10
-	 ).background(
-	 .ultraThinMaterial
-	 )
-	 
-	 )
 	
 	var body: some View {
 		TabView {
@@ -503,28 +482,6 @@ struct ContentView: View {
 				.navigationBarTitle(
 					"Web"
 				)
-			self.homeWorkView
-				.tabItem {
-					Text(
-						"All Homework"
-					)
-					Image(
-						systemName: "doc.text.image"
-					)
-					.resizable()
-					.aspectRatio(
-						contentMode: .fit
-					)
-					.foregroundColor(
-						Color.accentColor
-					)
-					.frame(
-						width: 20
-					)
-				}
-				.navigationBarTitle(
-					"Homework"
-				)
 			self.settingsView
 			
 				.tabItem {
@@ -620,7 +577,9 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	#endif
 	case Discord
 	case WWW
+	#if os(iOS)
 	case Homework
+	#endif
 	#if os(iOS) || os(xrOS)
 	case Settings
 	#endif
@@ -640,7 +599,9 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 #if os(iOS) || os(xrOS)
 			case .Settings: return "Settings"
 				#endif
+				#if os(iOS)
 			case .Homework: return "All Homework"
+				#endif
 		}
 	}
 	
@@ -659,7 +620,9 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 #if os(iOS) || os(xrOS)
 			case .Settings: return "gear"
 				#endif
+				#if os(iOS)
 			case .Homework: return "doc.text.image"
+				#endif
 		}
 	}
 }
