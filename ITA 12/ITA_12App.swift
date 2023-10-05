@@ -310,7 +310,7 @@ class AppState: ObservableObject, Codable {
 	}
 }
 struct SettingsView: View {
-	@Environment(\.modelContext) var context
+	//@Environment(\.modelContext) var context
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
@@ -380,7 +380,7 @@ struct SettingsView: View {
 		}
 	}
 	
-	func generateRandomHomework() -> Homework {
+	/*func generateRandomHomework() -> Homework {
 		let subjects = ["Mathematik", "Deutsch", "Englisch", "Anwendungssysteme", "IT-Systeme"]
 		let selectedSubject = subjects.randomElement()!
 		let task = "Hausaufgabe für \(selectedSubject)"
@@ -391,7 +391,7 @@ struct SettingsView: View {
 		return Homework(task: task, dueDate: randomDueDate, creationDate: randomCreationDate, selectedSubjects: selectedSubject, notes: notes)
 	}
 	
-	@State var randomHomeworks: [Homework] = []
+	@State var randomHomeworks: [Homework] = []*/
 
 	
 	var body: some View {
@@ -479,7 +479,7 @@ struct SettingsView: View {
 					}
 				}
 #endif
-#if os(iOS)
+/*#if os(iOS)
 				Section(header: Text("Teste Homework Liste")) {
 					Button("Add Test Entries") {
 						for _ in 0...19 {
@@ -490,12 +490,14 @@ struct SettingsView: View {
 					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
 				
-#endif
+#endif*/
 				
 			}
 		}
 	}
 }
+
+#if os(iOS)
 struct HomeworkView: View {
 	@Environment(\.modelContext) var context
 	@Query(sort: \Homework.dueDate) var homeworkEntries: [Homework]
@@ -709,7 +711,8 @@ struct AddHomeworkView: View {
 					TextField("Aufgabe", text: $task).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					DatePicker("Fälligkeitsdatum", selection: $dueDate, displayedComponents: .date).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					TextField("Fäch", text: $selectedSubjects).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-					TextField("Notizen", text: $notes).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					MultilineTextField(hint:"Notizen" ,text: $notes)// Hintergrundfarbe anpassen
+						.foregroundColor(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
 				Section {
 					Button("Speichern") {
@@ -719,14 +722,28 @@ struct AddHomeworkView: View {
 					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
 			}
-#if os(iOS)
+
 			.navigationBarTitle("Neue Aufgabe hinzufügen")
-#endif
+		}
+	}
+}
+struct MultilineTextField: View {
+	var hint: String
+	@Binding var text: String
+	
+	var body: some View {
+		LazyVStack(alignment: .leading){
+			if text.isEmpty {
+				Text(hint).font(.footnote).foregroundStyle(.secondary)
+			}
+			TextEditor(text: $text)
+				.frame(minHeight: 100) // Setzen Sie eine Mindesthöhe für das Textfeld
+				.textFieldStyle(RoundedBorderTextFieldStyle()) // Optional, für das Erscheinungsbild
 		}
 	}
 }
 
- 
+#endif
  
 @Model
 class Homework {
