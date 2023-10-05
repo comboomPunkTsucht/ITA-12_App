@@ -109,9 +109,9 @@ struct ContentView: View {
 		 HomeworkView().padding(
 		 10
 		 ).background(
-		 .ultraThinMaterial
+			.ultraThinMaterial
 		 ).background(
-		 BlurView()
+			BlurView()
 		 )
 		 )
 		
@@ -168,7 +168,7 @@ struct ContentView: View {
 						.listStyle(SidebarListStyle())
 						.background(BlurView())
 				} detail: {
-					destinationView(for: selectedSideBarItem_Global)
+					destinationView(for: selectedSideBarItem_Global).background(.ultraThinMaterial).background(BlurView())
 				}
 				.background(.ultraThinMaterial)
 				.background(BlurView())
@@ -503,6 +503,28 @@ struct ContentView: View {
 				.navigationBarTitle(
 					"Web"
 				)
+			self.homeWorkView
+				.tabItem {
+					Text(
+						"All Homework"
+					)
+					Image(
+						systemName: "doc.text.image"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20
+					)
+				}
+				.navigationBarTitle(
+					"Homework"
+				)
 			self.settingsView
 			
 				.tabItem {
@@ -598,10 +620,10 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	#endif
 	case Discord
 	case WWW
+	case Homework
 	#if os(iOS) || os(xrOS)
 	case Settings
 	#endif
-	case Homework
 	
 	var title: String {
 		switch self {

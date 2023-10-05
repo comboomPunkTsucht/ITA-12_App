@@ -361,7 +361,7 @@ struct SettingsView: View {
 				colorString = ac[3]
 				colorisSet = true
 			case 4:
-				colorString = ac[4]
+				colorString = "Orange_me"
 				colorisSet = true
 			case 5:
 				colorString = ac[5]
@@ -444,13 +444,13 @@ struct SettingsView: View {
 							Section {
 								HStack {
 									Circle()
-										.fill(Color(ac[index]))
+										.fill(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
 										.frame(width: 20, height: 20)
 										.padding(5)
 										.onTapGesture {
 											colorIndex = index
 										}
-									Text(ac[index]).foregroundStyle(Color(ac[index]))
+									Text(ac[index]).foregroundStyle(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
 										.onTapGesture {
 											colorIndex = index
 										}
@@ -469,31 +469,88 @@ struct SettingsView: View {
 		}
 	}
 }
-
 struct HomeworkView: View {
 	@Environment(\.modelContext) var context
 	@Query(sort: \Homework.dueDate) var homeworkEntries: [Homework]
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 	@State private var showAddView = false
+	@State var searchText = ""
+	
+	var filteredHomeworkEntries: [Homework] {
+		if searchText.isEmpty {
+			return homeworkEntries
+		} else {
+			return homeworkEntries.filter { entry in
+				entry.task.localizedCaseInsensitiveContains(searchText) ||
+				entry.selectedSubjects.localizedCaseInsensitiveContains(searchText) ||
+				entry.notes.localizedCaseInsensitiveContains(searchText)
+			}
+		}
+	}
 	
 	var body: some View {
-		NavigationView {
-			List {
-				ForEach(homeworkEntries) { entry in
-					NavigationLink(destination: HomeworkDetail(entry: entry)) {
-						HomeworkListEntry(entry: entry)
+#if os(macOS)
+		NavigationSplitView {
+				List{
+					if filteredHomeworkEntries.isEmpty {
+						VStack(alignment: .center) {
+							ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding().background(.ultraThinMaterial).background(BlurView())
+						}.background(.ultraThinMaterial).background(BlurView())
+					}else {
+						ForEach(filteredHomeworkEntries) { entry in
+							NavigationLink(destination: HomeworkDetail(entry: entry)) {
+								HomeworkListEntry(entry: entry).background(.ultraThinMaterial).background(BlurView())
+							}.background(.ultraThinMaterial).background(BlurView())//.searchable(text: $searchText, placement: .toolbar).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}.onDelete(perform: { IndexSet in
+							for index in IndexSet {
+								context.delete(homeworkEntries[index])
+							}
+						})
+					}
+				}.listStyle(.sidebar)
+		} detail: { ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding().background(.ultraThinMaterial).background(BlurView()) }
+		.sheet(isPresented: $showAddView) {
+				AddHomeworkView(isShown: $showAddView).frame(width: 680, height: 160, alignment: .center).background(.ultraThinMaterial).padding().background(.ultraThinMaterial).background(BlurView())
+			}
+			.toolbar {
+				ToolbarItem(placement: .primaryAction) {
+					Button(action: {
+						showAddView.toggle()
+					}) {
+						Label("Homework", systemImage: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					}
 				}
-				.onDelete(perform: { IndexSet in
-					for index in IndexSet {
-						context.delete(homeworkEntries[index])
+				ToolbarItem(placement: .automatic){
+					TextField("Search", text: $searchText).frame(width: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+				}
+			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+		
+#else
+		NavigationSplitView {
+			List{
+				if filteredHomeworkEntries.isEmpty {
+					VStack(alignment: .center) {
+						ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding()
 					}
-				})
+				}else {
+					ForEach(filteredHomeworkEntries) { entry in
+						NavigationLink(destination: HomeworkDetail(entry: entry)) {
+							HomeworkListEntry(entry: entry)
+						}.background(.ultraThinMaterial).searchable(text: $searchText, placement: .toolbar).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					}.onDelete(perform: { IndexSet in
+						for index in IndexSet {
+							context.delete(homeworkEntries[index])
+						}
+					})
+				}
+			}.listStyle(.sidebar)
+		} detail: { ContentUnavailableView("No Homwork", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar")).padding() }
+			.sheet(isPresented: $showAddView) {
+				AddHomeworkView(isShown: $showAddView).frame(width: 680, height: 160, alignment: .center).padding()
 			}
-			.navigationTitle("Hausaufgaben Tracker")
 			.toolbar {
-				ToolbarItem(placement: .navigation) {
+				ToolbarItem(placement: .primaryAction) {
 					Button(action: {
 						showAddView.toggle()
 					}) {
@@ -501,13 +558,11 @@ struct HomeworkView: View {
 					}
 				}
 			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-		}
-		.sheet(isPresented: $showAddView) {
-			AddHomeworkView(isShown: $showAddView)
-		}
+		
+#endif
 	}
 }
-
+@MainActor
 struct HomeworkListEntry: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -532,7 +587,7 @@ struct HomeworkListEntry: View {
 }
 
 
-
+@MainActor
 struct HomeworkDetail: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -559,7 +614,7 @@ struct HomeworkDetail: View {
 		return formatter.string(from: date)
 	}
 }
-
+@MainActor
 struct AddHomeworkView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -574,10 +629,10 @@ struct AddHomeworkView: View {
 		NavigationView {
 			Form {
 				Section(header: Text("Aufgaben Details")) {
-					TextField("Aufgabe", text: $task).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					TextField("Aufgabe", text: $task).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					DatePicker("Fälligkeitsdatum", selection: $dueDate, displayedComponents: .date).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-					TextField("Fäch", text: $selectedSubjects).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-					TextField("Notizen", text: $notes).frame(height: 200).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					TextField("Fäch", text: $selectedSubjects).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+					TextField("Notizen", text: $notes).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
 				Section {
 					Button("Speichern") {
