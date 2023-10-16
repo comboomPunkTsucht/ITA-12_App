@@ -536,10 +536,10 @@ struct HomeworkView: View {
 	
 	var body: some View {
 		NavigationSplitView {
-			HStack {
+			/*HStack {
 				Image(systemName: "magnifyingglass").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				TextField("Search", text: $searchText).textFieldStyle(.plain).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-			}.padding().clipShape(Capsule()).background(Capsule(style: .continuous).strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor)).padding()
+			}.padding().clipShape(Capsule()).background(Capsule(style: .continuous).strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor)).padding()*/
 			List{
 				if filteredHomeworkEntries.isEmpty {
 					VStack(alignment: .center) {
@@ -573,6 +573,7 @@ struct HomeworkView: View {
 					
 				}
 			}.listStyle(.sidebar)
+				.searchable(text: $searchText)
 		} detail: {ContentUnavailableView("No Homwork Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()}
 			.sheet(isPresented: $showAddView) {
 				AddHomeworkView(isShown: $showAddView).padding()
