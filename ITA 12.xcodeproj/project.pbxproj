@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F5F2A98E2B000EC2DE8 /* WebKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91354F612A98E2CA00EC2DE8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		915896F72ACC371B0055E391 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 915896F62ACC371B0055E391 /* LaunchAtLogin */; };
+		919290FD2AE51F6F00629DBE /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 919290FC2AE51F6F00629DBE /* LaunchAtLogin */; };
 		91DAF3752A8C18A900C86573 /* AppDeligate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DAF3742A8C18A900C86573 /* AppDeligate.swift */; platformFilters = (macos, ); };
 		91E6C0A22A829B4100F3E206 /* ITA_12App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A12A829B4100F3E206 /* ITA_12App.swift */; };
 		91E6C0A42A829B4100F3E206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E6C0A32A829B4100F3E206 /* ContentView.swift */; };
@@ -54,7 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91354F622A98E2CA00EC2DE8 /* SwiftUI.framework in Frameworks */,
-				915896F72ACC371B0055E391 /* LaunchAtLogin in Frameworks */,
+				919290FD2AE51F6F00629DBE /* LaunchAtLogin in Frameworks */,
 				91354F602A98E2B000EC2DE8 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,7 +132,7 @@
 			);
 			name = "ITA 12";
 			packageProductDependencies = (
-				915896F62ACC371B0055E391 /* LaunchAtLogin */,
+				919290FC2AE51F6F00629DBE /* LaunchAtLogin */,
 			);
 			productName = "ITA 12";
 			productReference = 91E6C09E2A829B4100F3E206 /* ITA 12.app */;
@@ -372,13 +372,14 @@
 				CLANG_ANALYZER_USE_AFTER_MOVE = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "ITA 12/ITA_12.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMPILER_INDEX_STORE_ENABLE = YES;
 				CURRENT_PROJECT_VERSION = 1.8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				EAGER_LINKING = NO;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_APP_SANDBOX = NO;
@@ -395,7 +396,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "ITA 12";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_LSUIElement = NO;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = NO;
@@ -408,7 +408,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleLightContent;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "NO UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
@@ -449,13 +449,14 @@
 				CLANG_ANALYZER_USE_AFTER_MOVE = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "ITA 12/ITA_12.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMPILER_INDEX_STORE_ENABLE = YES;
 				CURRENT_PROJECT_VERSION = 1.8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"ITA 12/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3KUZ76Z8W3;
 				EAGER_LINKING = NO;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_APP_SANDBOX = NO;
@@ -473,7 +474,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "ITA 12";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_LSUIElement = NO;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = NO;
@@ -486,7 +486,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleLightContent;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "NO UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
@@ -546,7 +546,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		915896F62ACC371B0055E391 /* LaunchAtLogin */ = {
+		919290FC2AE51F6F00629DBE /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 91BCE9A72AB6035500D2C108 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
