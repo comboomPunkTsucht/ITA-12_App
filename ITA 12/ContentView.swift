@@ -670,7 +670,7 @@ struct CustomWebView: UIViewRepresentable {
 				// Aktualisieren Sie hier das Textfeld mit der tatsächlich geladenen URL
 			if let url = webView.url {
 				if url.absoluteString.hasPrefix(
-					"https://ita12docoszimt.netlify.app/"
+					"https://ita12.comboompunksucht.app/"
 				) {
 					parent.searchText = ""
 				} else if url.absoluteString.hasPrefix(
@@ -741,7 +741,7 @@ struct CustomWebView: NSViewRepresentable {
 				// Update the text field with the actually loaded URL here
 			if let url = webView.url {
 				if url.absoluteString.hasPrefix(
-					"https://ita12docoszimt.netlify.app"
+					"https://ita12.comboompunksucht.app"
 				) {
 					parent.searchText = ""
 				} else if url.absoluteString.hasPrefix(
@@ -803,7 +803,7 @@ struct ClassSideView: View {
 	
 	
 	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
-	let startURL = URL(string: "https://ita12docoszimt.netlify.app")!
+	let startURL = URL(string: "https://ita12.comboompunksucht.app")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	
@@ -1584,7 +1584,7 @@ struct WWWView: View {
 	
 	
 	@State var webViewManager = WebViewManager(for: Self.webViewConfiguration)
-	let startURL = URL(string: "https://ita12docoszimt.netlify.app")!
+	let startURL = URL(string: "https://ita12.comboompunksucht.app")!
 	let rickrollURL = URL(string: "https://www.youtube.com/watch?v=o-YBDTqX_ZU")!
 	@State private var searchText = ""
 	private var isSearchEmpty: Bool {
