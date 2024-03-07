@@ -20,7 +20,7 @@ var selectedSideBarItem_Global: SideBarItem = .ClassSide
 var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
 
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
-#elseif os(xrOS)
+#elseif os(visionOS)
 var selectedSideBarItem_Global: SideBarItem = .ClassSide
 #endif
 
@@ -312,7 +312,7 @@ struct ContentView: View {
 	}
 	
 }
-#elseif os(xrOS)
+#elseif os(visionOS)
 struct ContentView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -580,7 +580,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 	#if os(iOS)
 	case Homework
 	#endif
-	#if os(iOS) || os(xrOS)
+	#if os(iOS) || os(visionOS)
 	case Settings
 	#endif
 	
@@ -596,7 +596,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 				#endif
 			case .Discord: return "Discord"
 			case .WWW: return "Browse Web"
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 			case .Settings: return "Settings"
 				#endif
 				#if os(iOS)
@@ -617,7 +617,7 @@ enum SideBarItem: String, Identifiable, CaseIterable {
 				#endif
 			case .Discord: return "message.badge.circle.rtl"
 			case .WWW: return "globe"
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 			case .Settings: return "gear"
 				#endif
 				#if os(iOS)
@@ -646,7 +646,7 @@ struct BlurView: NSViewRepresentable {
 
 #endif
 
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 struct CustomWebView: UIViewRepresentable {
 	var webView: WKWebView
 	let request: URLRequest
@@ -1607,7 +1607,7 @@ struct WWWView: View {
 				HStack{
 					TextField("Suche", text: $searchText, onCommit: search)
 						.textFieldStyle(PlainTextFieldStyle())
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 						.autocapitalization(.none)
 						.disableAutocorrection(true)
 						.keyboardType(.webSearch)

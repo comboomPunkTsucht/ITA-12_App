@@ -392,6 +392,7 @@ struct SettingsView: View {
 	}
 	
 	@State var randomHomeworks: [Homework] = []*/
+	
 
 	
 	var body: some View {
@@ -416,7 +417,7 @@ struct SettingsView: View {
 							.padding(.horizontal)
 							.clipShape(Capsule())
 							.background(Capsule().strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor))
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 							.autocapitalization(.none)
 							.disableAutocorrection(true)
 #endif
@@ -426,7 +427,7 @@ struct SettingsView: View {
 						safeSE()
 					}).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
-#if os(iOS) || os(xrOS)
+#if os(iOS) || os(visionOS)
 				Section(header: Text("Accent Color")) {
 					Picker("Select Accent Color", selection: $colorIndex) {
 						ForEach(0..<ac.count, id: \.self) { index in
@@ -441,7 +442,7 @@ struct SettingsView: View {
 					}.onDisappear {
 						safeAC()
 					}
-					.onChange(of: colorIndex) { _ in
+					.onChange(of: colorIndex) {
 						safeAC()
 					}
 					
@@ -458,20 +459,24 @@ struct SettingsView: View {
 						Divider()
 						ForEach(0..<ac.count, id: \.self) { index in
 							Section {
+								
 								HStack {
 									Circle()
 										.fill(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
 										.frame(width: 20, height: 20)
 										.padding(5)
-										.onTapGesture {
-											colorIndex = index
-										}
-									Text(ac[index]).foregroundStyle(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
-										.onTapGesture {
-											colorIndex = index
-										}
+									Text(ac[index])
+										.foregroundStyle(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
+								}
+								.contentShape(Rectangle()) // Ensure whole HStack is tappable
+								.onTapGesture {
+									colorIndex = index
 								}
 							}
+							.onTapGesture {
+								colorIndex = index
+							}
+							
 							if (index + 1) < ac.count {
 								Divider()
 							}
@@ -479,6 +484,27 @@ struct SettingsView: View {
 					}
 				}
 #endif
+				Section(header: Text("Informationen")) {
+					VStack(alignment: .leading) {
+						HStack {
+							Text("App Version:") // Beschreibung Linke kante
+							Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") // content Rechte kante
+						}
+						HStack {
+							Text("App Build:") // Beschreibung Linke kante
+							Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "") // content Rechte kante
+						}
+						HStack {
+							Text("OS Version:") // Beschreibung Linke kante
+							Text(ProcessInfo.processInfo.operatingSystemVersionString) // content Rechte kante
+						}
+						HStack {
+							Text("OS Build:") // Beschreibung Linke kante
+							Text(ProcessInfo.processInfo.operatingSystemVersionString) // content Rechte kante
+						}
+					}
+				}
+				
 /*#if os(iOS)
 				Section(header: Text("Teste Homework Liste")) {
 					Button("Add Test Entries") {
@@ -584,7 +610,7 @@ struct HomeworkView: View {
 						Button(action: {
 							showAddView.toggle()
 						}) {
-							Text("ADD").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+							Image(systemName: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						}
 					}
 					ToolbarItem(placement: .topBarLeading) {
@@ -722,9 +748,12 @@ struct AddHomeworkView: View {
 						isShown.toggle()
 					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 				}
+				Button("Abreichen") {
+					self.isShown.toggle()
+				}
 			}
 
-			.navigationBarTitle("Neue Aufgabe hinzufügen")
+			.navigationBarTitle("Neue Aufgabe")
 		}
 	}
 }
