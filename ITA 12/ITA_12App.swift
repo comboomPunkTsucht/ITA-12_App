@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import CryptoKit
 #if os(macOS)
 import LaunchAtLogin
 #endif
@@ -310,7 +311,9 @@ class AppState: ObservableObject, Codable {
 	}
 }
 struct SettingsView: View {
-	//@Environment(\.modelContext) var context
+	#if os(iOS)
+	@Environment(\.modelContext) var context
+	#endif
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
@@ -322,6 +325,7 @@ struct SettingsView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorIndex") var colorIndex: Int = 0
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@AppStorage("ITA 12_devtools") var devtools: Bool = false
 	
 	init() {
 		if cSEisSet ?? false {
@@ -380,7 +384,9 @@ struct SettingsView: View {
 		}
 	}
 	
-	/*func generateRandomHomework() -> Homework {
+	#if os(iOS)
+	
+	func generateRandomHomework() -> Homework {
 		let subjects = ["Mathematik", "Deutsch", "Englisch", "Anwendungssysteme", "IT-Systeme"]
 		let selectedSubject = subjects.randomElement()!
 		let task = "Hausaufgabe für \(selectedSubject)"
@@ -391,9 +397,9 @@ struct SettingsView: View {
 		return Homework(task: task, dueDate: randomDueDate, creationDate: randomCreationDate, selectedSubjects: selectedSubject, notes: notes)
 	}
 	
-	@State var randomHomeworks: [Homework] = []*/
+	@State var randomHomeworks: [Homework] = []
 	
-
+	#endif
 	
 	var body: some View {
 		VStack {
@@ -446,8 +452,6 @@ struct SettingsView: View {
 						safeAC()
 					}
 					
-					VStack(alignment: .leading, spacing: 10) { // Use LazyVStack for vertical alignment
-						Section {
 							HStack{
 								Circle()
 									.fill(colorisSet ?? false ? Color(colorString!): .accentColor)
@@ -455,68 +459,66 @@ struct SettingsView: View {
 									.padding(5)
 								Text("Current").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 							}
-						}
-						Divider()
+						
 						ForEach(0..<ac.count, id: \.self) { index in
-							Section {
-								
-								HStack {
-									Circle()
-										.fill(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
-										.frame(width: 20, height: 20)
-										.padding(5)
-									Text(ac[index])
-										.foregroundStyle(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
-								}
-								.contentShape(Rectangle()) // Ensure whole HStack is tappable
-								.onTapGesture {
-									colorIndex = index
-								}
-							}
-							.onTapGesture {
-								colorIndex = index
-							}
 							
-							if (index + 1) < ac.count {
-								Divider()
+							Button(action: {
+								colorIndex = index
+							}) {
+									HStack {
+										Circle()
+											.fill(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
+											.frame(width: 20, height: 20)
+											.padding(5)
+										Text(ac[index])
+											.foregroundStyle(Color(ac[index] == "Orange" ? "Orange_me" : ac[index]))
+										Spacer()
+									}
+									.contentShape(Rectangle()) // Ensure whole HStack is tappable
+									.onTapGesture {
+										colorIndex = index
+									}
 							}
 						}
 					}
-				}
+#endif
+				
+#if os(iOS)
+				Section(header: Text("Entwikler Tools")) {
+						HStack {
+							Text("Entwikler Tools")
+							Spacer()
+							Toggle("", isOn: $devtools).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}
+						if (devtools) {
+							Button("Add Test Entries", action: {
+									for _ in 0...19 {
+										let randomHomework = generateRandomHomework()
+										self.randomHomeworks.append(randomHomework)
+										context.insert(randomHomework) // Assuming context is a managed object context for Core Data
+									}
+								}).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+							
+						}
+					}
+				
 #endif
 				Section(header: Text("Informationen")) {
-					VStack(alignment: .leading) {
 						HStack {
+							let buildString = ((Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String ?? "") + " " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""))
+							let hashValueString = String(hashAndTruncate(buildString) ?? "")
+							let capitalizedBuildString = hashValueString.capitalized
 							Text("App Version:") // Beschreibung Linke kante
-							Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") // content Rechte kante
-						}
-						HStack {
-							Text("App Build:") // Beschreibung Linke kante
-							Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "") // content Rechte kante
+							Spacer()
+							Text("Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + " (Build " + capitalizedBuildString + ")").foregroundStyle(Color("Graphit")).onTapGesture(perform: {print(capitalizedBuildString)}) // content Rechte kante
 						}
 						HStack {
 							Text("OS Version:") // Beschreibung Linke kante
-							Text(ProcessInfo.processInfo.operatingSystemVersionString) // content Rechte kante
+							Spacer()
+							Text(ProcessInfo.processInfo.operatingSystemVersionString).foregroundStyle(Color("Graphit")) // content Rechte kante
 						}
-						HStack {
-							Text("OS Build:") // Beschreibung Linke kante
-							Text(ProcessInfo.processInfo.operatingSystemVersionString) // content Rechte kante
-						}
-					}
+
 				}
-				
-/*#if os(iOS)
-				Section(header: Text("Teste Homework Liste")) {
-					Button("Add Test Entries") {
-						for _ in 0...19 {
-							let randomHomework = generateRandomHomework()
-							self.randomHomeworks.append(randomHomework)
-							context.insert(randomHomework) // Assuming context is a managed object context for Core Data
-						}
-					}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-				}
-				
-#endif*/
 				
 			}
 		}
@@ -558,6 +560,19 @@ struct HomeworkView: View {
 			print("Error saving context: \(error)")
 		}
 	}
+	
+	func deleteAllEntries() {
+		for entry in homeworkEntries {
+			context.delete(entry)
+		}
+		
+		do {
+			try context.save()
+		} catch {
+			print("Error saving context: \(error)")
+		}
+	}
+
 
 	
 	var body: some View {
@@ -637,8 +652,18 @@ struct HomeworkView: View {
 							Text("DONE").foregroundStyle(selectedIndices.isEmpty ? .secondary : (colorisSet ?? false ? Color(colorString!): .accentColor))
 						}.disabled(selectedIndices.isEmpty)
 					}
+					
+						// "DELETE ALL" button
+					ToolbarItem(placement: .secondaryAction) {
+						Button(action: {
+								// Implement the logic to delete all entries
+							deleteAllEntries()
+							isBatchDeleteActive.toggle()
+						}) {
+							Text("DELETE ALL").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						}
+					}
 				}
-				
 			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 	}
 }
@@ -775,6 +800,25 @@ struct MultilineTextField: View {
 
 #endif
  
+func hashAndTruncate(_ input: String) -> String? {
+	guard let inputData = input.data(using: .utf8) else {
+		return nil
+	}
+	
+		// Hash the input string using SHA256
+	let hashedData = SHA256.hash(data: inputData)
+	
+		// Truncate the hash to 6 bytes
+	let truncatedHash = hashedData.prefix(3)
+	
+		// Convert the truncated hash to a hex string
+	let hexString = truncatedHash.map { String(format: "%02x", $0) }.joined()
+	
+	return hexString
+}
+
+
+
 @Model
 class Homework {
 	var task: String!

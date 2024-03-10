@@ -4,6 +4,8 @@
 <dict>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
+	<key>com.apple.developer.kernel.increased-memory-limit</key>
+	<true/>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
 	<key>com.apple.security.assets.movies.read-write</key>
@@ -19,8 +21,6 @@
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
 	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
-	<true/>
-	<key>com.apple.security.cs.debugger</key>
 	<true/>
 	<key>com.apple.security.cs.disable-executable-page-protection</key>
 	<true/>
@@ -51,6 +51,8 @@
 	<key>com.apple.security.personal-information.photos-library</key>
 	<true/>
 	<key>com.apple.security.print</key>
+	<true/>
+	<key>inter-app-audio</key>
 	<true/>
 </dict>
 </plist>
