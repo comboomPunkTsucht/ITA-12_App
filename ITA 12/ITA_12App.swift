@@ -18,7 +18,7 @@ struct ITA_12App: App {
 	@Environment(\.scenePhase) private var scenePhase
 		//let persistenceController = PersistenceController.shared
 #if os(macOS)
-	@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
+	//@NSApplicationDelegateAdaptor(AppDeligate.self) private var appDeligate
 	var appState: AppState = AppState()
 	@State private var screenWidth: CGFloat
 	@State private var screenHeight: CGFloat
@@ -45,127 +45,6 @@ struct ITA_12App: App {
 		idealHeight = screenHeight * appState.idealFactor
 		
 		
-	}
-	
-	
-	func goBack() {
-		switch selectedSideBarItem_Global {
-			case .Moodle:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Moodle_goBack
-			case .TimeTable:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .TimeTable_goBack
-			case .WebUntis:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WebUntis_goBack
-			case .OSZimt:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .OSZimt_goBack
-			case .ChatGPT:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ChatGPT_goBack
-			case .Discord:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Discord_goBack
-			case .WWW:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WWW_goBack
-			default:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ClassSide_goBack
-				
-		}
-	}
-	func goForward() {
-			// Implement go forward logic
-		switch selectedSideBarItem_Global {
-			case .Moodle:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Moodle_goForword
-			case .TimeTable:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .TimeTable_goForword
-			case .WebUntis:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WebUntis_goForword
-			case .OSZimt:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .OSZimt_goForword
-			case .ChatGPT:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ChatGPT_goForword
-			case .Discord:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Discord_goForword
-			case .WWW:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WWW_goForword
-			default:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ClassSide_goForword
-		}
-	}
-	
-	func goHome() {
-			// Implement go home logic
-		switch selectedSideBarItem_Global {
-			case .Moodle:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Moodle_goHome
-			case .TimeTable:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .TimeTable_goHome
-			case .WebUntis:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WebUntis_goHome
-			case .OSZimt:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .OSZimt_goHome
-			case .ChatGPT:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ChatGPT_goHome
-			case .Discord:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Discord_goHome
-			case .WWW:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WWW_goHome
-			default:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ClassSide_goHome
-		}
-	}
-	
-	func reload() {
-			// Implement reload logic
-		switch selectedSideBarItem_Global {
-			case .Moodle:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .Moodle_reload
-			case .TimeTable:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .TimeTable_reload
-				print(selectedSideBarItem_Global.title)
-			case .WebUntis:
-				menubarAktions = .WebUntis_reload
-				print(selectedSideBarItem_Global.title)
-			case .OSZimt:
-				menubarAktions = .OSZimt_reload
-				print(selectedSideBarItem_Global.title)
-			case .ChatGPT:
-				menubarAktions = .ChatGPT_reload
-				print(selectedSideBarItem_Global.title)
-			case .Discord:
-				menubarAktions = .Discord_reload
-				print(selectedSideBarItem_Global.title)
-			case .WWW:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .WWW_reload
-			default:
-				print(selectedSideBarItem_Global.title)
-				menubarAktions = .ClassSide_reload
-		}
 	}
 	
 #endif
@@ -195,56 +74,12 @@ struct ITA_12App: App {
 		 }
 		 }*/
 #if os(macOS)
-		Settings{
-			SettingsView().frame(minWidth: 300,idealWidth: 450,maxWidth: .infinity,minHeight: 100,idealHeight: 100,maxHeight: .infinity).background(.ultraThinMaterial)
-				.background(BlurView())
-		}.modelContainer(for: [Homework.self])
 		.commands {
 			CommandGroup(after:.appInfo) {
 				Divider()
 				LaunchAtLogin.Toggle {
 					Text("Launch at login")
 				}
-			}
-			CommandGroup(before: .toolbar) {
-				Button(action: goBack) {
-					Image(systemName: "arrowshape.turn.up.left.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-					Text("Go Back")
-				}
-				.keyboardShortcut("<", modifiers: .command)
-				
-				Button(action: goForward) {
-					Image(systemName: "arrowshape.turn.up.right.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-					Text("Go Forward")
-				}
-				.keyboardShortcut(">", modifiers: .command)
-				Button(action: goHome) {
-					Image(systemName: "house.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-					Text("Go Home")
-				}
-				.keyboardShortcut(".", modifiers: .command)
-				
-				Button(action: reload) {
-					Image(systemName: "arrow.clockwise.circle")
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.foregroundColor(Color.accentColor)
-						.frame(width: 20)
-					Text("Reload")
-				}
-				.buttonRepeatBehavior(.enabled)
-				.keyboardShortcut("r", modifiers: .command)
 				Divider()
 			}
 			
@@ -255,49 +90,6 @@ struct ITA_12App: App {
 		
 #endif
 	}
-}
-
-var menubarAktions: MenubarAktions = .nothing
-enum MenubarAktions: String, Identifiable, CaseIterable {
-	var id: String {
-		rawValue
-	}
-	case ClassSide_goBack
-	case ClassSide_goForword
-	case ClassSide_goHome
-	case ClassSide_reload
-	case Moodle_goBack
-	case Moodle_goForword
-	case Moodle_goHome
-	case Moodle_reload
-	case TimeTable_goBack
-	case TimeTable_goForword
-	case TimeTable_goHome
-	case TimeTable_reload
-	case WebUntis_goBack
-	case WebUntis_goForword
-	case WebUntis_goHome
-	case WebUntis_reload
-	case OSZimt_goBack
-	case OSZimt_goForword
-	case OSZimt_goHome
-	case OSZimt_reload
-	case ChatGPT_goBack
-	case ChatGPT_goForword
-	case ChatGPT_goHome
-	case ChatGPT_reload
-	case Discord_goBack
-	case Discord_goForword
-	case Discord_goHome
-	case Discord_reload
-	case WWW_goBack
-	case WWW_goForword
-	case WWW_goHome
-	case WWW_reload
-	case nothing
-	
-	
-	
 }
 
 
@@ -311,9 +103,9 @@ class AppState: ObservableObject, Codable {
 	}
 }
 struct SettingsView: View {
-	#if os(iOS)
+	
 	@Environment(\.modelContext) var context
-	#endif
+	
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
 	let searchEngines = ["Google", "Bing", "DuckDuckGo", "Yahoo", "Other"]
@@ -384,7 +176,7 @@ struct SettingsView: View {
 		}
 	}
 	
-	#if os(iOS)
+	
 	
 	func generateRandomHomework() -> Homework {
 		let subjects = ["Mathematik", "Deutsch", "Englisch", "Anwendungssysteme", "IT-Systeme"]
@@ -399,7 +191,7 @@ struct SettingsView: View {
 	
 	@State var randomHomeworks: [Homework] = []
 	
-	#endif
+
 	
 	var body: some View {
 		VStack {
@@ -483,7 +275,7 @@ struct SettingsView: View {
 					}
 #endif
 				
-#if os(iOS)
+
 				Section(header: Text("Entwikler Tools")) {
 						HStack {
 							Text("Entwikler Tools")
@@ -502,7 +294,7 @@ struct SettingsView: View {
 						}
 					}
 				
-#endif
+
 				Section(header: Text("Informationen")) {
 						HStack {
 							let buildString = ((Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String ?? "") + " " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""))
@@ -525,13 +317,14 @@ struct SettingsView: View {
 	}
 }
 
-#if os(iOS)
 struct HomeworkView: View {
-	@Environment(\.modelContext) var context
+	@Environment(\.modelContext) private var context
 	@Query(sort: \Homework.dueDate) var homeworkEntries: [Homework]
-	@AppStorage("ITA 12_colorString") var colorString: String?
-	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@AppStorage("ITA_12_colorString") var colorString: String?
+	@AppStorage("ITA_12_colorisSet") var colorisSet: Bool?
 	@State private var showAddView = false
+	@State private var showDetailView = false
+	@State private var selectedHomeworkEntry: Homework?
 	@State var searchText = ""
 	@State private var selectedIndices = IndexSet()
 	@State private var isBatchDeleteActive = false
@@ -547,11 +340,12 @@ struct HomeworkView: View {
 			}
 		}
 	}
+	
 	func deleteSelectedEntries(at indices: IndexSet) {
 		for index in indices {
 			context.delete(filteredHomeworkEntries[index])
-			
 			selectedIndices.remove(index)
+			selectedHomeworkEntry = nil
 		}
 		
 		do {
@@ -564,7 +358,9 @@ struct HomeworkView: View {
 	func deleteAllEntries() {
 		for entry in homeworkEntries {
 			context.delete(entry)
+			
 		}
+		selectedHomeworkEntry = nil
 		
 		do {
 			try context.save()
@@ -572,21 +368,15 @@ struct HomeworkView: View {
 			print("Error saving context: \(error)")
 		}
 	}
-
-
 	
 	var body: some View {
-		NavigationSplitView {
-			/*HStack {
-				Image(systemName: "magnifyingglass").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-				TextField("Search", text: $searchText).textFieldStyle(.plain).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-			}.padding().clipShape(Capsule()).background(Capsule(style: .continuous).strokeBorder(colorisSet ?? false ? Color(colorString!): .accentColor)).padding()*/
-			List{
+		NavigationView {
+			List {
 				if filteredHomeworkEntries.isEmpty {
 					VStack(alignment: .center) {
-						ContentUnavailableView("No Homwork Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()
+						ContentUnavailableView("No Homework Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()
 					}
-				}else {
+				} else {
 					ForEach(filteredHomeworkEntries, id: \.self) { entry in
 						if let index = filteredHomeworkEntries.firstIndex(of: entry) {
 							let isSelected = Binding(
@@ -601,41 +391,42 @@ struct HomeworkView: View {
 									}
 								}
 							)
+#if os(iOS)
 							NavigationLink(destination: HomeworkDetail(entry: entry)) {
 								HomeworkListEntry(entry: entry, isSelected: isSelected, isBatchDeleteActive: $isBatchDeleteActive)
 							}
+#else
+							Button(action: {
+								self.selectedHomeworkEntry = entry
+								self.showDetailView.toggle()
+							}) {
+								HomeworkListEntry(entry: entry, isSelected: isSelected, isBatchDeleteActive: $isBatchDeleteActive)
+							}
+							#endif
 						}
-					}.onDelete(perform: { IndexSet in
-						for index in IndexSet {
-							context.delete(filteredHomeworkEntries[index])
-							try! context.save()
-						}
-					})
-					
+					}
+					.onDelete(perform: deleteSelectedEntries)
 				}
-			}.listStyle(.sidebar)
-				.searchable(text: $searchText)
-		} detail: {ContentUnavailableView("No Homwork Found", systemImage: "doc.text.image", description: Text("Create a Homework Task with the Plus at the Right in the Toolbar or clear the Searchbox")).padding()}
-			.sheet(isPresented: $showAddView) {
-				AddHomeworkView(isShown: $showAddView).padding()
 			}
+			.listStyle(SidebarListStyle())
+			.searchable(text: $searchText)
+			.navigationTitle("Homework")
 			.toolbar {
-				if isBatchDeleteActive == false {
-					ToolbarItem(placement: .topBarTrailing) {
-						Button(action: {
-							showAddView.toggle()
-						}) {
-							Image(systemName: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-						}
+				ToolbarItem(placement: .primaryAction) {
+					Button(action: {
+						showAddView.toggle()
+					}) {
+						Image(systemName: "plus.circle").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					}
-					ToolbarItem(placement: .topBarLeading) {
-						Button(action: {
-							isBatchDeleteActive.toggle()
-						}) {
-							Text("DELETE").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
-						}
+				}
+				ToolbarItem(placement: .destructiveAction) {
+					Button(action: {
+						isBatchDeleteActive.toggle()
+					}) {
+						Text("DELETE").foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 					}
-				} else {
+				}
+				if isBatchDeleteActive {
 					ToolbarItem(placement: .cancellationAction) {
 						Button(action: {
 							isBatchDeleteActive.toggle()
@@ -645,18 +436,15 @@ struct HomeworkView: View {
 					}
 					ToolbarItem(placement: .confirmationAction) {
 						Button(action: {
-								// Implement the logic to delete selected entries
 							deleteSelectedEntries(at: selectedIndices)
-							isBatchDeleteActive.toggle() // Make sure to toggle batch delete mode off
+							isBatchDeleteActive.toggle()
 						}) {
 							Text("DONE").foregroundStyle(selectedIndices.isEmpty ? .secondary : (colorisSet ?? false ? Color(colorString!): .accentColor))
-						}.disabled(selectedIndices.isEmpty)
+						}
+						.disabled(selectedIndices.isEmpty)
 					}
-					
-						// "DELETE ALL" button
-					ToolbarItem(placement: .secondaryAction) {
+					ToolbarItem(placement: .destructiveAction) {
 						Button(action: {
-								// Implement the logic to delete all entries
 							deleteAllEntries()
 							isBatchDeleteActive.toggle()
 						}) {
@@ -664,12 +452,23 @@ struct HomeworkView: View {
 						}
 					}
 				}
-			}.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+			}
+			.sheet(isPresented: $showAddView) {
+				AddHomeworkView(isShown: $showAddView).padding()
+			}
+			if let entry = selectedHomeworkEntry {
+				HomeworkDetail(entry: entry).padding().frame(alignment: .center)
+			} else {
+				ContentUnavailableView("No Homework Selected", systemImage: "doc.text.image", description: Text("Select a Homework to View it's Details")).padding().frame(alignment: .center)
+			}
+			
+		}
 	}
 }
+
 struct CustomCheckboxStyle: ToggleStyle {
-	@AppStorage("ITA 12_colorString") var colorString: String?
-	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@AppStorage("ITA_12_colorString") var colorString: String?
+	@AppStorage("ITA_12_colorisSet") var colorisSet: Bool?
 	func makeBody(configuration: Configuration) -> some View {
 		HStack {
 			Image(systemName: configuration.isOn ? "checkmark.circle.fill" : "checkmark.circle")
@@ -684,20 +483,20 @@ struct CustomCheckboxStyle: ToggleStyle {
 }
 
 struct HomeworkListEntry: View {
-	@AppStorage("ITA 12_colorString") var colorString: String?
-	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@AppStorage("ITA_12_colorString") var colorString: String?
+	@AppStorage("ITA_12_colorisSet") var colorisSet: Bool?
 	var entry: Homework
-	@Binding var isSelected: Bool // Add this binding for selection
+	@Binding var isSelected: Bool
 	@Binding var isBatchDeleteActive: Bool
 	
 	var body: some View {
 		HStack(alignment: .center) {
 			if isBatchDeleteActive {
 				Toggle(isOn: $isSelected) {
-						// Empty Text to reserve space for the Toggle
 					Text("")
-				}.toggleStyle(CustomCheckboxStyle())
-				.fixedSize() // Fix the size of the Toggle
+				}
+				.toggleStyle(CustomCheckboxStyle())
+				.fixedSize()
 			}
 			HStack {
 				VStack(alignment: .leading) {
@@ -712,16 +511,14 @@ struct HomeworkListEntry: View {
 				Text(entry.dueDate.formatted(date: .abbreviated, time: .omitted))
 					.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 			}
-			.layoutPriority(1) // Allow this part to be compressed if needed
+			.layoutPriority(1)
 		}
 	}
 }
 
-
-
 struct HomeworkDetail: View {
-	@AppStorage("ITA 12_colorString") var colorString: String?
-	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+	@AppStorage("ITA_12_colorString") var colorString: String?
+	@AppStorage("ITA_12_colorisSet") var colorisSet: Bool?
 	var entry: Homework
 	
 	var body: some View {
@@ -777,8 +574,9 @@ struct AddHomeworkView: View {
 					self.isShown.toggle()
 				}
 			}
-
+#if !os(macOS)
 			.navigationBarTitle("Neue Aufgabe")
+			#endif
 		}
 	}
 }
@@ -798,7 +596,7 @@ struct MultilineTextField: View {
 	}
 }
 
-#endif
+
  
 func hashAndTruncate(_ input: String) -> String? {
 	guard let inputData = input.data(using: .utf8) else {

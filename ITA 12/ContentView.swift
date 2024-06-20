@@ -13,176 +13,121 @@ import Cocoa
 #endif
 
 #if os(macOS)
-var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
-var selectedSideBarItem_Global: SideBarItem = .ClassSide
-
+let sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
 #elseif os(iOS)
-var sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
-
-var selectedSideBarItem_Global: SideBarItem = .ClassSide
-#elseif os(visionOS)
-var selectedSideBarItem_Global: SideBarItem = .ClassSide
+let sideBarVisibility_Global: NavigationSplitViewVisibility = .doubleColumn
 #endif
 
+struct ContentView: View {
 #if os(macOS)
-struct ContentView: View {
-		@AppStorage("ITA 12_colorString") var colorString: String?
-		@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
-			//@Environment(\.managedObjectContext) private var viewContext
-		
-		@State var selectedSideBarItem: SideBarItem = .ClassSide
-		
-			// views
-		@State var classSideView = AnyView(
-			ClassSideView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var moodleView = AnyView(
-			MoodleView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var timeTableView = AnyView(
-			TimeTableView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var webUntisView = AnyView(
-			WebUntisView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var oszimtView = AnyView(
-			OSZimtView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var chatGPTView = AnyView(
-			ChatGPTView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var discordView = AnyView(
-			DiscordView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		@State var wwwView = AnyView(
-			WWWView().padding(
-				10
-			).background(
-				.ultraThinMaterial
-			).background(
-				BlurView()
-			)
-		)
-		
-	func destinationView(
-		for item: SideBarItem
-	) -> AnyView {
-		switch item {
-			case .ClassSide:
-				selectedSideBarItem_Global = .ClassSide
-				return classSideView
-			case .Moodle:
-				selectedSideBarItem_Global = .Moodle
-				return moodleView
-			case .TimeTable:
-				selectedSideBarItem_Global = .TimeTable
-				return timeTableView
-			case .WebUntis:
-				selectedSideBarItem_Global = .WebUntis
-				return webUntisView
-			case .OSZimt:
-				selectedSideBarItem_Global = .OSZimt
-				return oszimtView
-			case .ChatGPT:
-				selectedSideBarItem_Global = .ChatGPT
-				return chatGPTView
-
-			case .Discord:
-				selectedSideBarItem_Global = .Discord
-				return discordView
-			case .WWW:
-				selectedSideBarItem_Global = .WWW
-				return wwwView
-		}
-	}
-		
-		var body: some View {
-			
-				NavigationSplitView{
-					List(SideBarItem.allCases, selection: $selectedSideBarItem) { item in
-						NavigationLink(
-							destination: destinationView(for: item)) {
-								Label(item.title,systemImage: item.systemImage)
-							}
-						
-					}
-					.frame(width: 190)
-					.padding(.top,10).padding(.bottom,10
-					).padding(.leading,10)
-						.padding(.trailing,0).background(.ultraThinMaterial)
-						.listStyle(SidebarListStyle())
-						.background(BlurView())
-				} detail: {
-					destinationView(for: selectedSideBarItem_Global).background(.ultraThinMaterial).background(BlurView())
-				}
-				.background(.ultraThinMaterial)
-				.background(BlurView())
-				.onAppear {
-					selectedSideBarItem_Global = .ClassSide
-				}.navigationSplitViewStyle(
-					.prominentDetail
-				)
-			
-		}
-		}
-
-#elseif os(iOS)
-
-struct ContentView: View {
-
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		//@Environment(\.managedObjectContext) private var viewContext
-	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State var selectedSideBarItem: SideBarItem? = .ClassSide
+		// views
+	@State var classSideView = AnyView(
+		ClassSideView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var moodleView = AnyView(
+		MoodleView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var timeTableView = AnyView(
+		TimeTableView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var webUntisView = AnyView(
+		WebUntisView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var oszimtView = AnyView(
+		OSZimtView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var chatGPTView = AnyView(
+		ChatGPTView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var discordView = AnyView(
+		DiscordView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var wwwView = AnyView(
+		WWWView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	@State var settingsView = AnyView(
+		SettingsView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+		
+	)
+	
+	@State var homeWorkView = AnyView(
+		HomeworkView().padding(
+			10
+		).background(
+			.ultraThinMaterial
+		).background(
+			BlurView()
+		)
+	)
+	
+	
+	
+#elseif os(iOS)
+	
+	@AppStorage("ITA 12_colorString") var colorString: String?
+	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
+		//@Environment(\.managedObjectContext) private var viewContext
 		// views
 	@State var classSideView = AnyView(
 		ClassSideView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.ClassSide.title)
+			Color.black).navigationTitle("Klassen Webseite")
 		
 	)
 	@State var moodleView = AnyView(
@@ -190,185 +135,111 @@ struct ContentView: View {
 			.background(
 				Color.black)
 			.background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.Moodle.title)
+				.ultraThinMaterial).navigationTitle("Moodle")
 		
 	)
 	@State var timeTableView = AnyView(
 		TimeTableView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.TimeTable.title)
+			Color.black).navigationTitle("Stundenplan")
 		
 	)
 	@State var webUntisView = AnyView(
 		WebUntisView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.WebUntis.title)
+			Color.black).navigationTitle("WebUntis")
 		
 	)
 	@State var oszimtView = AnyView(
 		OSZimtView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.OSZimt.title)
+			Color.black).navigationTitle("OSZ IMT Webseite")
 		
 	)
 	@State var discordView = AnyView(
 		DiscordView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.Discord.title)
+			Color.black).navigationTitle("Discord")
 		
 	)
 	@State var wwwView = AnyView(
 		WWWView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.WWW.title)
+			Color.black).navigationTitle("Web")
 		
 	)
 	@State var settingsView = AnyView(
 		SettingsView().background(
-			Color.black).background(
-				.ultraThinMaterial
-			).navigationTitle(SideBarItem.Settings.title)
+			Color.black).navigationTitle("Settings")
 		
 	)
 	@State var homeWorkView = AnyView(
 		HomeworkView().background(
-			Color.black).background(
-				.ultraThinMaterial)
-			.navigationTitle(SideBarItem.Homework.title))
+			Color.black).navigationTitle(
+				"All Homework"
+			)
+		)
 	
-	var body: some View {
-		ZStack {
-			Color(.black).ignoresSafeArea(edges: .all)
-			NavigationView {
-				List(SideBarItem.allCases, id: \.self) { item in
-					NavigationLink(
-						destination: destinationView(for: item)
-					) {
-						Label(
-							title: { Text(item.title) },
-							icon: { Image(systemName: item.systemImage).foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor) }
-						)
-					}
-				}
-				.listStyle(SidebarListStyle())
-				.navigationBarTitle("Home", displayMode: .inline)
-				
-				if let selectedSideBarItem = selectedSideBarItem {
-					destinationView(for: selectedSideBarItem)
-				}
-			}
-		}.background(.black)
-	}
-
-	func destinationView(
-		for item: SideBarItem
-	) -> AnyView {
-		switch item {
-			case .ClassSide:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .ClassSide
-				return classSideView
-			case .Moodle:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Moodle
-				return moodleView
-			case .TimeTable:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .TimeTable
-				return timeTableView
-			case .WebUntis:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .WebUntis
-				return webUntisView
-			case .OSZimt:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .OSZimt
-				return oszimtView
-			case .Discord:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Discord
-				return discordView
-			case .WWW:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .WWW
-				return AnyView(
-					wwwView
-				)
-			case .Settings:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Settings
-				return settingsView
-				case .Homework:
-				 sideBarVisibility_Global = sideBarVisibility
-				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView
-		}
-	}
 	
-}
 #elseif os(visionOS)
-struct ContentView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
 		//@Environment(\.managedObjectContext) private var viewContext
 	@State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
-	@State var selectedSideBarItem: SideBarItem? = .ClassSide
+	
 		// views
 	@State var classSideView = AnyView(
 		ClassSideView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.ClassSide.title)
+		).navigationTitle("Klassen Webseite")
 		
 	)
 	@State var moodleView = AnyView(
 		MoodleView()
 			.background(
 				.ultraThinMaterial
-			).navigationTitle(SideBarItem.Moodle.title)
+			).navigationTitle("Moodle")
 		
 	)
 	@State var timeTableView = AnyView(
 		TimeTableView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.TimeTable.title)
+		).navigationTitle("Stundenplan")
 		
 	)
 	@State var webUntisView = AnyView(
 		WebUntisView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.WebUntis.title)
+		).navigationTitle("WebUntis")
 		
 	)
 	@State var oszimtView = AnyView(
 		OSZimtView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.OSZimt.title)
+		).navigationTitle("OSZ IMT Webseite")
 		
 	)
 	@State var discordView = AnyView(
 		DiscordView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.Discord.title)
+		).navigationTitle("Discord")
 		
 	)
 	@State var wwwView = AnyView(
 		WWWView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.WWW.title)
+		).navigationTitle("Web")
 		
 	)
 	@State var settingsView = AnyView(
 		SettingsView().background(
 			.ultraThinMaterial
-		).navigationTitle(SideBarItem.Settings.title)
+		).navigationTitle("Settings")
 		
 	)
+	
+	@State var homeWorkView = AnyView(
+		HomeworkView().background(
+			.ultraThinMaterial
+		).navigationTitle("All Homework")
+	)
+	
+#endif
 	
 	var body: some View {
 		TabView {
@@ -389,9 +260,11 @@ struct ContentView: View {
 						width: 20.0
 					)
 				}
+			#if !os(macOS)
 				.navigationBarTitle(
 					"Klassen Webseite"
 				)
+			#endif
 			
 			self.moodleView
 				.tabItem {
@@ -402,8 +275,9 @@ struct ContentView: View {
 						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20.0)
 				}
+			#if !os(macOS)
 				.navigationBarTitle("Moodle")
-			
+			#endif
 			self.timeTableView
 				.tabItem {
 					Text("Stundenplan")
@@ -413,8 +287,9 @@ struct ContentView: View {
 						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
+			#if !os(macOS)
 				.navigationBarTitle("Stundenplan")
-			
+			#endif
 			self.webUntisView
 				.tabItem {
 					Text("WebUntis")
@@ -424,19 +299,32 @@ struct ContentView: View {
 						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
+			#if !os(macOS)
 				.navigationBarTitle("WebUntis")
-			
+			#endif
 			self.oszimtView
 				.tabItem {
-					Text("OSZ IMT Website")
+					Text("OSZ IMT Webseite")
 					Image(systemName: "graduationcap.circle")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
 						.frame(width: 20)
 				}
+			#if !os(macOS)
 				.navigationBarTitle("OSZ IMT Webseite")
-			
+			#endif
+			#if os(macOS)
+			self.chatGPTView
+				.tabItem {
+					Text("ChatGPT")
+					Image(systemName: "message.circle")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundStyle(colorisSet ?? false ? Color(colorString!): .accentColor)
+						.frame(width: 20)
+				}
+			#endif
 			self.discordView
 				.tabItem {
 					Text(
@@ -456,9 +344,11 @@ struct ContentView: View {
 						width: 20
 					)
 				}
+			#if !os(macOS)
 				.navigationBarTitle(
 					"Discord"
 				)
+			#endif
 			
 			self.wwwView
 				.tabItem {
@@ -479,11 +369,16 @@ struct ContentView: View {
 						width: 20
 					)
 				}
+			#if !os(macOS)
 				.navigationBarTitle(
 					"Web"
 				)
+			#endif
+
 			self.settingsView
-			
+#if os(macOS)
+				.frame(width:(NSScreen.main?.visibleFrame.width ?? 1280)/2, height:.infinity, alignment: .center)
+#endif
 				.tabItem {
 					Text(
 						"Settings"
@@ -502,130 +397,49 @@ struct ContentView: View {
 						width: 20
 					)
 				}
+#if !os(macOS)
 				.navigationBarTitle(
 					"Settings"
 				)
-			
-		}
-	}
-	
-	
-#if os(iOS)
-	func destinationView(
-		for item: SideBarItem
-	) -> AnyView {
-		switch item {
-			case .ClassSide:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .ClassSide
-				return classSideView
-			case .Moodle:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Moodle
-				return moodleView
-			case .TimeTable:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .TimeTable
-				return timeTableView
-			case .WebUntis:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .WebUntis
-				return webUntisView
-			case .OSZimt:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .OSZimt
-				return oszimtView
-			case .Discord:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Discord
-				return discordView
-			case .WWW:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .WWW
-				return AnyView(
-					wwwView
+#endif
+
+			self.homeWorkView
+				.tabItem {
+					Text(
+						"All Homework"
+					)
+					Image(
+						systemName: "doc.text.image"
+					)
+					.resizable()
+					.aspectRatio(
+						contentMode: .fit
+					)
+					.foregroundColor(
+						Color.accentColor
+					)
+					.frame(
+						width: 20
+					)
+				}
+#if !os(macOS)
+				.navigationBarTitle(
+					"All Homework"
 				)
-			case .Settings:
-				sideBarVisibility_Global = sideBarVisibility
-				selectedSideBarItem_Global = .Settings
-				return settingsView
-				case .Homework:
-				 sideBarVisibility_Global = sideBarVisibility
-				 selectedSideBarItem_Global = .Homework
-				 return homeWorkView
-		}
-	}
-#endif
-	
-}
-
-#endif
-
-
-enum SideBarItem: String, Identifiable, CaseIterable {
-	var id: String {
-		rawValue
-	}
-	
-	case ClassSide
-	case Moodle
-	case TimeTable
-	case WebUntis
-	case OSZimt
-	#if os(macOS)
-	case ChatGPT
-	#endif
-	case Discord
-	case WWW
-	#if os(iOS)
-	case Homework
-	#endif
-	#if os(iOS) || os(visionOS)
-	case Settings
-	#endif
-	
-	var title: String {
-		switch self {
-			case .ClassSide: return "Klassen Webseite"
-			case .Moodle: return "Moodle"
-			case .TimeTable: return "Stundenplan"
-			case .WebUntis: return "WebUntis"
-			case .OSZimt: return "OSZ IMT Webseite"
-				#if os(macOS)
-			case .ChatGPT: return "ChatGPT"
-				#endif
-			case .Discord: return "Discord"
-			case .WWW: return "Browse Web"
-#if os(iOS) || os(visionOS)
-			case .Settings: return "Settings"
-				#endif
-				#if os(iOS)
-			case .Homework: return "All Homework"
-				#endif
-		}
-	}
-	
-	var systemImage: String {
-		switch self {
-			case .ClassSide: return "doc.richtext"
-			case .Moodle: return "studentdesk"
-			case .TimeTable: return "info.circle"
-			case .WebUntis: return "info.circle"
-			case .OSZimt: return "graduationcap.circle"
+			#endif
+		}.tabViewStyle(.sidebarAdaptable)
 #if os(macOS)
-			case .ChatGPT: return "message.circle"
-				#endif
-			case .Discord: return "message.badge.circle.rtl"
-			case .WWW: return "globe"
-#if os(iOS) || os(visionOS)
-			case .Settings: return "gear"
-				#endif
-				#if os(iOS)
-			case .Homework: return "doc.text.image"
-				#endif
-		}
-	}
+			.background(.ultraThinMaterial)
+			.background(BlurView())
+			.toolbarBackgroundVisibility(.hidden, for: .windowToolbar)
+			.toolbar(removing: .title)
+		#elseif os(visionOS)
+			.background(.ultraThinMaterial)
+		#endif
 }
+}
+
+
 #if os(macOS)
 struct BlurView: NSViewRepresentable {
 	func makeNSView(
@@ -646,40 +460,47 @@ struct BlurView: NSViewRepresentable {
 
 #endif
 
+
+
+
 #if os(iOS) || os(visionOS)
+
+protocol CustomWebViewParent: AnyObject {
+	var searchText: String { get set }
+}
+class CustomWebViewState: CustomWebViewParent {
+	@Published var searchText: String
+	
+	init(searchText: String) {
+		self.searchText = searchText
+	}
+}
+
 struct CustomWebView: UIViewRepresentable {
 	var webView: WKWebView
 	let request: URLRequest
 	@Binding var searchText: String
 	let webViewConfiguration = WKWebViewConfiguration()
+	var state: CustomWebViewState
 	
-	
-	class Coordinator: NSObject, WKNavigationDelegate {
-		let parent: CustomWebView
+	class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
+		unowned let parent: CustomWebViewParent
 		
-		init(
-			_ parent: CustomWebView
-		) {
+		init(_ parent: CustomWebViewParent) {
 			self.parent = parent
 		}
 		
-		func webView(
-			_ webView: WKWebView,
-			didFinish navigation: WKNavigation!
-		) {
-				// Aktualisieren Sie hier das Textfeld mit der tatsächlich geladenen URL
-			if let url = webView.url {
-				if url.absoluteString.hasPrefix(
-					"https://ita12.comboompunksucht.app/"
-				) {
-					parent.searchText = ""
-				} else if url.absoluteString.hasPrefix(
-					"https://www.youtube.com/watch?v=o-YBDTqX_ZU"
-				) {
-					parent.searchText = ""
-					
-				} else {
-					parent.searchText = url.absoluteString
+		func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+				// Ensure URL and searchText are updated on the main actor
+			Task { @MainActor in
+				if let url = webView.url {
+					if url.absoluteString.hasPrefix("https://ita12.comboompunksucht.app/") {
+						parent.searchText = ""
+					} else if url.absoluteString.hasPrefix("https://www.youtube.com/watch?v=o-YBDTqX_ZU") {
+						parent.searchText = ""
+					} else {
+						parent.searchText = url.absoluteString
+					}
 				}
 			}
 		}
@@ -687,7 +508,8 @@ struct CustomWebView: UIViewRepresentable {
 	
 	func makeCoordinator() -> Coordinator {
 		Coordinator(
-			self
+			
+			self.state
 		)
 	}
 	
@@ -718,39 +540,44 @@ struct CustomWebView: UIViewRepresentable {
 	}
 }
 #elseif os(macOS)
+
+protocol CustomWebViewParent: AnyObject {
+	var searchText: String { get set }
+}
+class CustomWebViewState: CustomWebViewParent {
+	@Published var searchText: String
+	
+	init(searchText: String) {
+		self.searchText = searchText
+	}
+}
+
 struct CustomWebView: NSViewRepresentable {
 	
 	var webView: WKWebView
 	let request: URLRequest
 	@Binding var searchText: String
 	let webViewConfiguration = WKWebViewConfiguration()
+	var state: CustomWebViewState
 	
-	class Coordinator: NSObject, WKNavigationDelegate {
-		let parent: CustomWebView
+	class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
+		unowned let parent: CustomWebViewParent
 		
-		init(
-			_ parent: CustomWebView
-		) {
+		init(_ parent: CustomWebViewParent) {
 			self.parent = parent
 		}
 		
-		func webView(
-			_ webView: WKWebView,
-			didFinish navigation: WKNavigation!
-		) {
-				// Update the text field with the actually loaded URL here
-			if let url = webView.url {
-				if url.absoluteString.hasPrefix(
-					"https://ita12.comboompunksucht.app"
-				) {
-					parent.searchText = ""
-				} else if url.absoluteString.hasPrefix(
-					"https://www.youtube.com/watch?v=o-YBDTqX_ZU"
-				) {
-					parent.searchText = ""
-					
-				} else {
-					parent.searchText = url.absoluteString
+		func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+				// Ensure URL and searchText are updated on the main actor
+			Task { @MainActor in
+				if let url = webView.url {
+					if url.absoluteString.hasPrefix("https://ita12.comboompunksucht.app/") {
+						parent.searchText = ""
+					} else if url.absoluteString.hasPrefix("https://www.youtube.com/watch?v=o-YBDTqX_ZU") {
+						parent.searchText = ""
+					} else {
+						parent.searchText = url.absoluteString
+					}
 				}
 			}
 		}
@@ -758,9 +585,11 @@ struct CustomWebView: NSViewRepresentable {
 	
 	func makeCoordinator() -> Coordinator {
 		Coordinator(
-			self
+			
+			self.state
 		)
 	}
+
 	
 	func makeNSView(
 		context: Context
@@ -788,6 +617,7 @@ struct CustomWebView: NSViewRepresentable {
 	}
 }
 #endif
+
 struct ClassSideView: View {
 	@AppStorage("ITA 12_colorString") var colorString: String?
 	@AppStorage("ITA 12_colorisSet") var colorisSet: Bool?
@@ -809,7 +639,7 @@ struct ClassSideView: View {
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText);
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText));
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -872,34 +702,6 @@ struct ClassSideView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .ClassSide
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .ClassSide_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .ClassSide_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .ClassSide_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .ClassSide_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
@@ -945,7 +747,7 @@ struct MoodleView: View {
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1008,34 +810,6 @@ struct MoodleView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .Moodle
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .Moodle_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .Moodle_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .Moodle_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .Moodle_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
@@ -1082,7 +856,7 @@ struct TimeTableView: View {
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1145,34 +919,6 @@ struct TimeTableView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .TimeTable
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .TimeTable_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .TimeTable_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .TimeTable_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .TimeTable_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
@@ -1220,7 +966,7 @@ struct OSZimtView: View {
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1283,34 +1029,6 @@ struct OSZimtView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .OSZimt
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .OSZimt_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .OSZimt_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .OSZimt_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .OSZimt_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
@@ -1358,7 +1076,7 @@ struct ChatGPTView: View {
 	@State private var searchText = ""
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1421,38 +1139,10 @@ struct ChatGPTView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			#if os(macOS)
-			selectedSideBarItem_Global = .ChatGPT
-			#endif
-			startTimer()
 		}
 	}
 	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .ChatGPT_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .ChatGPT_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .ChatGPT_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .ChatGPT_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
-		}
-	}
+	
 	func goBack() {
 		webViewManager.goBack()
 	}
@@ -1481,11 +1171,11 @@ class WebViewManager: ObservableObject {
 	@Published var webView: WKWebView
 	@AppStorage("ITA 12_searchEngine") var searchEngine: String?
 	
-	init(for configuration: WKWebViewConfiguration) {
+	@MainActor init(for configuration: WKWebViewConfiguration) {
 		self.webView = WKWebView(frame: .zero, configuration: configuration)
 	}
 	
-	func search(for searchText: String) {
+	@MainActor func search(for searchText: String) {
 			// Check if the search text starts with "!yt:"
 		if searchText.hasPrefix("!yt ") {
 				// Extract the search query
@@ -1542,25 +1232,25 @@ class WebViewManager: ObservableObject {
 		return nil
 	}
 	
-	func goBack() {
+	@MainActor func goBack() {
 		webView.goBack()
 	}
-	func goForward() {
+	@MainActor func goForward() {
 			// Implement go forward logic
 		webView.goForward()
 	}
 	
-	func goHome(for startURL: URL) {
+	@MainActor func goHome(for startURL: URL) {
 			// Implement go home logic
 		webView.load(URLRequest(url: startURL))
 	}
-	func rickrol(for rickrollURL: URL) {
+	@MainActor func rickrol(for rickrollURL: URL) {
 		print("rickrol")
 			// Implement go home logic
 		webView.load(URLRequest(url: rickrollURL))
 	}
 	
-	func reload() {
+	@MainActor func reload() {
 			// Implement reload logic
 		webView.reload()
 	}
@@ -1592,7 +1282,7 @@ struct WWWView: View {
 	}
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1681,34 +1371,6 @@ struct WWWView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .WWW
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .WWW_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .WWW_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .WWW_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .WWW_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 
@@ -1762,7 +1424,7 @@ struct WebUntisView: View {
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1825,34 +1487,6 @@ struct WebUntisView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .WebUntis
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .WebUntis_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .WebUntis_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .WebUntis_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .WebUntis_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
@@ -1901,7 +1535,7 @@ struct DiscordView: View {
 	
 	var body: some View {
 		VStack{
-			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText)
+			CustomWebView(webView: webViewManager.webView, request: URLRequest(url: startURL), searchText: $searchText, state: CustomWebViewState(searchText: searchText))
 			HStack {
 				Button(action: rickrol) {
 					Image(systemName: "")
@@ -1964,34 +1598,6 @@ struct DiscordView: View {
 			.padding([.horizontal, .bottom])
 			
 			
-		}.onAppear {
-			selectedSideBarItem_Global = .Discord
-			startTimer()
-		}
-	}
-	
-	func startTimer() {
-		Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-			switch menubarAktions {
-				case .Discord_goBack:
-					print("goBack")
-					goBack()
-					menubarAktions = .nothing
-				case .Discord_goForword:
-					print("goForword")
-					goForward()
-					menubarAktions = .nothing
-				case .Discord_goHome:
-					print("goHome")
-					goHome()
-					menubarAktions = .nothing
-				case .Discord_reload:
-					print("reload")
-					reload()
-					menubarAktions = .nothing
-				default:
-					break
-			}
 		}
 	}
 	func goBack() {
